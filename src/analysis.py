@@ -1,8 +1,28 @@
 import concurrent.futures
+import glob
+import os
 import subprocess
 import sys
 import zipfile
 from pathlib import Path
+
+
+def reassemble_data_zip():
+    """Reassemble data.zip from chunks if it doesn't exist."""
+    if os.path.exists("data.zip"):
+        return
+
+    chunks = sorted(glob.glob("data.zip.*"))
+    if not chunks:
+        print("No data.zip chunks found.")
+        return
+
+    print("Reassembling data.zip from chunks...")
+    with open("data.zip", "wb") as output:
+        for chunk in chunks:
+            with open(chunk, "rb") as f:
+                output.write(f.read())
+    print("data.zip reassembled.")
 
 
 def generate_data_directory():
@@ -29,6 +49,12 @@ def cleanup_data_directory():
                 shutil.rmtree(item)
         data_dir.rmdir()
         print("Cleanup complete.")
+
+    # delete data.zip as well
+    data_zip = Path("data.zip")
+    if data_zip.exists():
+        data_zip.unlink()
+        print("data.zip deleted.")
 
 
 def run_analysis():

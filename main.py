@@ -1,29 +1,12 @@
-import glob
-import os
 import sys
 
 from src import KalshiClient
-from src.analysis import cleanup_data_directory, generate_data_directory, run_analysis
-
-
-def reassemble_data_zip():
-    """Reassemble data.zip from chunks if it doesn't exist."""
-    if os.path.exists("data.zip"):
-        return
-
-    chunks = sorted(glob.glob("data.zip.*"))
-    if not chunks:
-        print("No data.zip chunks found.")
-        return
-
-    print("Reassembling data.zip from chunks...")
-    with open("data.zip", "wb") as output:
-        for chunk in chunks:
-            with open(chunk, "rb") as f:
-                output.write(f.read())
-    print("data.zip reassembled.")
-
-
+from src.analysis import (
+    cleanup_data_directory,
+    generate_data_directory,
+    reassemble_data_zip,
+    run_analysis,
+)
 from src.backfill import backfill
 from src.backfill_trades import backfill_trades
 
