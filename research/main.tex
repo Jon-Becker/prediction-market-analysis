@@ -1,0 +1,210 @@
+\documentclass[a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+
+% AMS Packages
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{multicol}
+\usepackage{booktabs}
+\usepackage{fancyvrb}
+\usepackage{siunitx}
+
+% Unicode
+\usepackage[utf8]{inputenc}
+\usepackage{hyperref}
+\hypersetup{
+	unicode,
+	colorlinks,
+	urlcolor=blue,
+	linkcolor=black,
+	citecolor=blue,
+	pdfauthor={Jonathan Becker},
+	pdftitle={The Longshot Bias in Prediction Markets: Evidence from 68 Million Trades},
+	pdfsubject={Prediction Markets, Behavioral Finance, Market Efficiency},
+	pdfkeywords={longshot bias, prediction markets, market efficiency, behavioral finance, Kalshi, probability weighting},
+	pdfproducer={LaTeX},
+	pdfcreator={pdflatex}
+}
+
+% Natbib
+\usepackage[sort&compress,numbers,square]{natbib}
+\bibliographystyle{mplainnat}
+
+% Theorem, Lemma, etc
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{claim}{Claim}[theorem]
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{fact}[theorem]{Fact}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{criterion}[theorem]{Criterion}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{principle}[theorem]{Principle}
+
+\usepackage{graphicx, color}
+\graphicspath{{fig/}}
+
+\usepackage{algorithm, algpseudocode}
+
+\title{The Longshot Bias in Prediction Markets:\\Evidence from 68 Million Trades}
+\author{Jonathan Becker \\\texttt{jonathan@jbecker.dev}}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We analyze 67.8 million trades worth \$8.6 billion from Kalshi, a CFTC-regulated prediction market, to investigate market calibration and the longshot bias. Contracts priced below 10 cents resolve favorably 30--40\% less often than their price-implied probability, confirming a systematic longshot bias at unprecedented scale. This bias diminishes monotonically with price and reverses slightly for near-certain outcomes above 95 cents. We document substantial heterogeneity in calibration: large trades (above \$5,000) achieve positive excess returns, while small trades consistently underperform. Contrarian traders who buy after price declines significantly outperform momentum traders. Market efficiency improves as resolution approaches, with the excess win rate improving from $-1.8\%$ at 3--7 days to $-0.4\%$ within the final hour. Bid-ask spreads follow a U-shaped pattern across probabilities, widest at 50\%. These findings support probability weighting theories from behavioral finance, demonstrate limits to arbitrage in prediction markets, and suggest calibration adjustments for practitioners using market prices as probability forecasts.
+
+\vspace{1em}
+
+\noindent\textbf{Keywords:} longshot bias, prediction markets, market efficiency, behavioral finance, probability weighting, Kalshi
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+% Include sections
+\input{sections/introduction}
+
+\newpage
+\input{sections/data}
+
+\newpage
+\input{sections/calibration}
+
+\newpage
+\input{sections/trader_behavior}
+
+\newpage
+\input{sections/temporal}
+
+\newpage
+\input{sections/discussion}
+
+\newpage
+\begin{thebibliography}{99}
+
+\bibitem{arrow2008promise}
+K.J. Arrow, R. Forsythe, M. Gorham, R. Hahn, R. Hanson, J.O. Ledyard, S. Levmore, R. Litan, P. Milgrom, F.D. Nelson, G.R. Neumann, M. Ottaviani, T.C. Schelling, R.J. Shiller, V.L. Smith, E. Snowberg, C.R. Sunstein, P.C. Tetlock, P.E. Tetlock, H.R. Varian, J. Wolfers, and E. Zitzewitz.
+\textit{The Promise of Prediction Markets}.
+Science, 320(5878):877--878, 2008.
+
+\bibitem{berg2008results}
+J.E. Berg, F.D. Nelson, and T.A. Rietz.
+\textit{Prediction market accuracy in the long run}.
+International Journal of Forecasting, 24(2):285--300, 2008.
+
+\bibitem{camerer1989experimental}
+C.F. Camerer.
+\textit{An experimental test of several generalized utility theories}.
+Journal of Risk and Uncertainty, 2(1):61--104, 1989.
+
+\bibitem{daniel1998investor}
+K. Daniel, D. Hirshleifer, and A. Subrahmanyam.
+\textit{Investor psychology and security market under- and overreactions}.
+Journal of Finance, 53(6):1839--1885, 1998.
+
+\bibitem{deBondt1985}
+W.F.M. De Bondt and R. Thaler.
+\textit{Does the stock market overreact?}
+Journal of Finance, 40(3):793--805, 1985.
+
+\bibitem{easley1996liquidity}
+D. Easley and M. O'Hara.
+\textit{Liquidity, information, and infrequently traded stocks}.
+Journal of Finance, 51(4):1405--1436, 1996.
+
+\bibitem{golec1998bettors}
+J. Golec and M. Tamarkin.
+\textit{Bettors love skewness, not risk, at the horse track}.
+Journal of Political Economy, 106(1):205--225, 1998.
+
+\bibitem{griffith1949}
+R.M. Griffith.
+\textit{Odds adjustments by American horse-race bettors}.
+American Journal of Psychology, 62:290--294, 1949.
+
+\bibitem{harris1991stock}
+L. Harris.
+\textit{Stock price clustering and discreteness}.
+Review of Financial Studies, 4(3):389--415, 1991.
+
+\bibitem{kahneman1979prospect}
+D. Kahneman and A. Tversky.
+\textit{Prospect theory: An analysis of decision under risk}.
+Econometrica, 47(2):263--291, 1979.
+
+\bibitem{kyle1985continuous}
+A.S. Kyle.
+\textit{Continuous auctions and insider trading}.
+Econometrica, 53(6):1315--1335, 1985.
+
+\bibitem{prelec1998probability}
+D. Prelec.
+\textit{The probability weighting function}.
+Econometrica, 66(3):497--527, 1998.
+
+\bibitem{rothschild2009forecasting}
+D.M. Rothschild.
+\textit{Forecasting elections: Comparing prediction markets, polls, and their biases}.
+Public Opinion Quarterly, 73(5):895--916, 2009.
+
+\bibitem{schelling1960strategy}
+T.C. Schelling.
+\textit{The Strategy of Conflict}.
+Harvard University Press, Cambridge, MA, 1960.
+
+\bibitem{shin1991optimal}
+H.S. Shin.
+\textit{Optimal betting odds against insider traders}.
+Economic Journal, 101(408):1179--1185, 1991.
+
+\bibitem{snowberg2010explaining}
+E. Snowberg and J. Wolfers.
+\textit{Explaining the favorite--long shot bias: Is it risk-love or misperceptions?}
+Journal of Political Economy, 118(4):723--746, 2010.
+
+\bibitem{thaler1988anomalies}
+R.H. Thaler and W.T. Ziemba.
+\textit{Anomalies: Parimutuel betting markets: Racetracks and lotteries}.
+Journal of Economic Perspectives, 2(2):161--174, 1988.
+
+\bibitem{tversky1992advances}
+A. Tversky and D. Kahneman.
+\textit{Advances in prospect theory: Cumulative representation of uncertainty}.
+Journal of Risk and Uncertainty, 5(4):297--323, 1992.
+
+\bibitem{wolfers2004prediction}
+J. Wolfers and E. Zitzewitz.
+\textit{Prediction markets}.
+Journal of Economic Perspectives, 18(2):107--126, 2004.
+
+\bibitem{wolfers2006interpreting}
+J. Wolfers and E. Zitzewitz.
+\textit{Interpreting prediction market prices as probabilities}.
+NBER Working Paper No. 12200, 2006.
+
+\bibitem{woodland1994market}
+L.M. Woodland and B.M. Woodland.
+\textit{Market efficiency and the favorite-longshot bias: The baseball betting market}.
+Journal of Finance, 49(1):269--279, 1994.
+
+\end{thebibliography}
+
+\end{document}

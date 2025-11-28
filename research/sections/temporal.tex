@@ -1,0 +1,114 @@
+\section{Temporal Dynamics of Price Formation}
+\label{sec:temporal}
+
+Information revelation and market efficiency evolve over the lifetime of prediction market contracts. In this section, we investigate how calibration, trading volume, and price dynamics vary with time to resolution.
+
+\subsection{Price Convergence to Resolution}
+
+As market resolution approaches, prices must converge to the binary outcomes of 0 or 100 cents. Figure \ref{fig:price_convergence} examines how calibration varies with time remaining until resolution.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{price_convergence_to_resolution.pdf}
+    \caption{Excess win rate by time to resolution. Calibration improves systematically as markets approach resolution, with the excess win rate narrowing from $-1.8\%$ at 3--7 days to approximately $-0.4\%$ in the final hour. This pattern reflects both information revelation and mechanical price convergence.}
+    \label{fig:price_convergence}
+\end{figure}
+
+The pattern reveals systematic improvement in calibration as resolution approaches:
+
+\paragraph{Best calibration near resolution.} Trades placed within the final hour before resolution exhibit an excess win rate of approximately $-0.9\%$, compared to $-1.8\%$ for trades placed 3--7 days before resolution.
+
+\paragraph{Peak miscalibration at intermediate horizons.} The worst calibration occurs at 3--7 days before resolution ($-1.85\%$). At this horizon, substantial uncertainty remains but sufficient trading volume has accumulated to generate mispricing.
+
+\paragraph{Surprisingly good early-market calibration.} Trades placed more than 4 weeks before resolution exhibit relatively good calibration ($-0.4\%$ excess). This may reflect selection effects: very early trades occur in markets with less uncertainty or attract disproportionately sophisticated participants.
+
+\subsection{Early versus Late Trader Returns}
+
+We directly compare returns for traders entering at different points in a market's lifecycle. Figure \ref{fig:early_late} plots excess returns by the percentage of market lifetime elapsed at the time of trade.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{early_vs_late_trader_returns.pdf}
+    \caption{Excess returns by market lifecycle position (deciles). Early traders (first 10--20\% of market lifetime) earn slightly worse returns than late traders, though differences are modest. The pattern suggests limited early-mover advantage in prediction markets.}
+    \label{fig:early_late}
+\end{figure}
+
+The lifecycle analysis reveals modest differences across entry timing. Traders in the first 20\% of a market's life earn slightly worse returns than those entering in the final 20\%, but the gap is only 0.3--0.5 percentage points.
+
+This finding suggests limited early-mover advantage in prediction markets. Unlike traditional financial markets where early informed traders profit at the expense of later noise traders, prediction markets offer relatively consistent (albeit negative) expected returns throughout their lifecycles.
+
+\subsection{Volume Acceleration Before Resolution}
+
+Trading volume accelerates dramatically as resolution approaches. Figure \ref{fig:volume_acceleration} displays volume and trade characteristics by time to resolution.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{volume_acceleration.pdf}
+    \caption{Trading volume and average trade size by time to resolution. Volume peaks in the 2--4 hour window before resolution, with over \$1.7 billion in trading during this period. Average trade size also peaks near resolution, suggesting concentrated activity by sophisticated traders.}
+    \label{fig:volume_acceleration}
+\end{figure}
+
+The concentration of volume near resolution likely reflects multiple factors:
+
+\begin{itemize}
+    \item Information revelation close to the event
+    \item Reduced uncertainty attracting risk-averse traders
+    \item Media attention and retail interest during event periods
+    \item Mechanical unwinding of positions before expiry
+\end{itemize}
+
+Average trade size peaks at \$149 for trades placed 2--4 hours before resolution, compared to \$81--99 for trades placed days or weeks earlier. This suggests that sophisticated traders time their entry to maximize information incorporation.
+
+\subsection{Market Duration Effects}
+
+Do longer-lived markets achieve better calibration? Figure \ref{fig:market_duration} examines how the total duration of a market from first trade to resolution affects pricing quality.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{market_duration_effects.pdf}
+    \caption{Calibration by market duration. Surprisingly, very long-duration markets ($>$ 4 weeks) exhibit the best calibration, while intermediate-duration markets (1--4 weeks) show the worst. This pattern may reflect selection effects or the accumulation of sophisticated trader interest in long-lived markets.}
+    \label{fig:market_duration}
+\end{figure}
+
+Surprisingly, very long-duration markets ($>$ 4 weeks) exhibit the best calibration among all categories ($-0.5\%$ excess), while markets lasting 1--4 weeks show the worst ($-1.5\%$). This pattern may reflect:
+
+\begin{itemize}
+    \item Selection effects: Long-duration markets may cover more predictable events
+    \item Accumulated trader attention: Extended trading periods allow more information incorporation
+    \item Sophisticated trader concentration: Long-lived markets may attract more informed participants
+\end{itemize}
+
+\subsection{Intraday Patterns}
+
+We investigate whether calibration varies by time of day, potentially reflecting variation in trader composition. Figure \ref{fig:intraday} displays excess returns and trading volume by hour of day (Eastern Time).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{intraday_weekday_patterns.pdf}
+    \caption{Excess returns and trading volume by hour (ET). Trading during overnight hours (12--6 AM) exhibits the worst calibration ($-1.5\%$ to $-2.3\%$ excess), while morning trading (8--10 AM) shows the best. Volume peaks in evening hours as retail traders become active after work.}
+    \label{fig:intraday}
+\end{figure}
+
+The intraday pattern reveals substantial variation:
+
+\paragraph{Overnight trading is least efficient.} Trades between 2--5 AM ET exhibit the worst calibration, with excess returns of $-1.8\%$ to $-2.3\%$. This period likely sees minimal institutional participation and disproportionate retail activity.
+
+\paragraph{Morning trading is most efficient.} The 8--10 AM ET window shows the best calibration at approximately $-0.7\%$ excess. This coincides with the start of the U.S. business day when professional traders are most active.
+
+\paragraph{Evening volume surge.} Trading volume peaks between 4--10 PM ET, reflecting retail activity after typical work hours. Despite high volume, calibration during these hours is intermediate, consistent with a mix of sophisticated and unsophisticated participants.
+
+\subsection{Synthesis: The Evolution of Market Efficiency}
+
+Taken together, the temporal patterns reveal a nuanced picture of information aggregation in prediction markets:
+
+\begin{enumerate}
+    \item \textbf{Markets improve over time.} Calibration systematically improves as resolution approaches, consistent with gradual information revelation and price discovery.
+
+    \item \textbf{Trader composition matters.} Periods dominated by retail traders (overnight, weekends) exhibit worse calibration than periods with greater institutional participation (weekday mornings).
+
+    \item \textbf{Long horizons are surprisingly efficient.} Very early trades and very long-duration markets exhibit better calibration than intermediate cases, possibly reflecting selection effects or concentrated sophisticated interest.
+
+    \item \textbf{Volume concentrates near resolution.} The majority of trading occurs in the final hours before resolution, when uncertainty is lowest and information is most complete.
+\end{enumerate}
+
+These findings suggest that prediction market efficiency is not uniform but varies systematically with temporal factors that affect trader composition and information availability.

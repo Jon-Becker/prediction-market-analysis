@@ -1,0 +1,80 @@
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Theoretical Implications}
+
+Our findings provide large-sample evidence on the behavioral origins of prediction market mispricing and the limits of market efficiency.
+
+\paragraph{Probability weighting.} The shape of the calibration curve---severe overpricing of longshots, approximate calibration at intermediate probabilities, and slight underpricing of near-certainties---closely matches the inverse-S-shaped probability weighting function predicted by prospect theory \cite{kahneman1979prospect, tversky1992advances}. Under this framework, individuals overweight small probabilities (leading to overpricing of longshots) and underweight large probabilities (leading to underpricing of favorites).
+
+The magnitude of our documented bias is quantitatively consistent with laboratory estimates of probability weighting. Prelec \cite{prelec1998probability} estimates that individuals treat a 5\% probability as approximately 15\%---a threefold overweighting. Our finding that 5-cent contracts win only 3.5\% of the time (rather than 5\%) suggests market prices reflect probability estimates of roughly 7--8\% for events that actually occur 3.5\% of the time, corresponding to a twofold overweighting. The smaller distortion in markets likely reflects the partial correcting influence of sophisticated traders.
+
+\paragraph{Heterogeneous beliefs and limited arbitrage.} The persistence of the longshot bias despite the documented profitability of large trades raises the question: why don't sophisticated traders fully arbitrage away the mispricing? Several factors may explain this puzzle:
+
+\begin{enumerate}
+    \item \textbf{Capital constraints:} Even if large trades are profitable in expectation, position limits and capital constraints may prevent full arbitrage.
+    \item \textbf{Variance aversion:} Betting against longshots requires accepting many small losses in exchange for occasional large gains---a payoff structure that may be psychologically aversive even when positive in expectation.
+    \item \textbf{Information uncertainty:} Sophisticated traders may be uncertain whether current prices reflect genuine mispricing or private information held by longshot buyers.
+    \item \textbf{Execution costs:} Wide bid-ask spreads at extreme prices may consume much of the theoretical profit from arbitrage.
+\end{enumerate}
+
+\paragraph{Information aggregation.} The improvement in calibration as resolution approaches demonstrates that prediction markets do aggregate information, albeit imperfectly. The final-hour excess return of $-0.94\%$ represents a substantial improvement over the $-1.85\%$ observed at the 3--7 day horizon. Markets process information through trading, with prices converging toward truth as uncertainty resolves.
+
+However, our finding that early trades do not exhibit dramatically worse returns than late trades suggests that the marginal information content of individual trades is limited. Prediction markets may function more through continuous price discovery across many traders than through discrete information events.
+
+\subsection{Practical Implications}
+
+\paragraph{For forecasters.} Practitioners using prediction market prices as probability forecasts should apply calibration adjustments, particularly for low-probability events. A simple linear adjustment based on our empirical calibration curve would improve forecast accuracy:
+\begin{equation}
+    \hat{p}_{\text{adjusted}} = 0.98 \times p_{\text{market}} + 0.006 \times \mathbf{1}_{p < 0.2} \times (0.2 - p_{\text{market}})
+\end{equation}
+where the second term applies an additional correction for contracts priced below 20 cents.
+
+\paragraph{For market designers.} Our finding that trade size predicts calibration suggests that volume-weighted or size-weighted price aggregation may produce better forecasts than simple last-traded prices. Market designers might also consider mechanisms that explicitly elicit assessments from large traders, such as information markets with size-dependent subsidies.
+
+\paragraph{For traders.} The documented profitability of large contrarian trades suggests a viable trading strategy: systematically buying contracts that have recently declined in price, with position sizes scaled to the magnitude of available mispricing. However, the modest size of excess returns (typically 1--2\%) combined with transaction costs implies that only well-capitalized traders with access to low-cost execution can profitably exploit these patterns.
+
+\paragraph{For regulators.} The persistence of systematic miscalibration in a CFTC-regulated market suggests that regulatory oversight alone does not ensure informational efficiency. However, the direction of mispricing---overpricing of low-probability events---is arguably less problematic than underpricing would be, as it implies markets are conservative in assessing tail risks.
+
+\subsection{Limitations}
+
+Several limitations qualify our conclusions:
+
+\paragraph{Single platform.} Our data comes exclusively from Kalshi. While Kalshi is the largest CFTC-regulated prediction market, patterns may differ on other platforms with different trader compositions, fee structures, or contract designs.
+
+\paragraph{Observational design.} We observe trades but not trader identities or intentions. Our inference that large trades reflect sophistication is consistent with the data but not directly testable without account-level information.
+
+\paragraph{Selection effects.} Markets that attract trading activity may differ systematically from markets that fail to generate liquidity. Our findings apply to the subset of events that prediction markets deem worthy of attention.
+
+\paragraph{Changing market structure.} The prediction market industry is evolving rapidly, with new entrants, changing regulations, and growing public awareness. Patterns documented in our sample may not persist as markets mature.
+
+\subsection{Future Research Directions}
+
+Several extensions would advance understanding of prediction market efficiency:
+
+\begin{enumerate}
+    \item \textbf{Trader-level analysis:} With account-level data, researchers could directly measure the relationship between trading history, position sizing, and forecasting accuracy.
+
+    \item \textbf{Cross-platform comparison:} Comparing calibration across platforms with different structures (e.g., Polymarket's decentralized design, PredictIt's academic exemption, sports betting markets) would clarify which institutional features promote efficiency.
+
+    \item \textbf{Event-type heterogeneity:} Our aggregate analysis masks potential variation across event types. Political events, economic indicators, and weather forecasts may exhibit different calibration patterns reflecting domain-specific expertise among traders.
+
+    \item \textbf{Real-time calibration:} Tracking calibration in real-time could enable dynamic probability adjustments and early detection of mispricing.
+
+    \item \textbf{Market manipulation:} Large trades in prediction markets may reflect manipulation attempts rather than information. Identifying and controlling for manipulation would improve understanding of genuine price discovery.
+\end{enumerate}
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+This paper provides large-scale evidence on prediction market calibration using 67.8 million trades worth \$8.6 billion from Kalshi. Our findings contribute to several literatures:
+
+For the study of market efficiency, we document a systematic longshot bias that persists despite the presence of sophisticated traders earning positive risk-adjusted returns. The magnitude of mispricing---1--2 percentage points across most of the probability distribution---is economically meaningful but not large enough to support easy arbitrage after accounting for transaction costs and capital constraints.
+
+For behavioral finance, we provide field evidence consistent with prospect theory's probability weighting function. The shape of the calibration curve matches theoretical predictions, and the partial correction introduced by large traders is consistent with limited arbitrage models.
+
+For forecasting practice, we demonstrate that prediction market prices require adjustment before use as probability forecasts, particularly for low-probability events. We provide empirical calibration curves that practitioners can use to de-bias market-derived probabilities.
+
+For market design, we show that trade characteristics---particularly size and direction---contain substantial information about forecast quality. Markets that weight contributions by these factors may achieve better calibration than those that treat all trades equally.
+
+The prediction market industry continues to grow rapidly, with expanding regulatory approval and increasing public interest. Our findings suggest that these markets, while not perfectly efficient, provide valuable probabilistic forecasts that improve as information accumulates. With appropriate adjustments for known biases, prediction markets offer a useful complement to traditional forecasting methods.

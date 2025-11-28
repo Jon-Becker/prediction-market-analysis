@@ -1,0 +1,122 @@
+\section{Trader Heterogeneity and Trade Characteristics}
+\label{sec:trader_behavior}
+
+The aggregate longshot bias documented in Section \ref{sec:calibration} masks substantial heterogeneity across trade characteristics. In this section, we investigate how calibration varies with trade size, trading strategy, and market liquidity conditions.
+
+\subsection{Trade Size and Forecasting Accuracy}
+
+If sophisticated traders systematically take larger positions, we would expect trade size to predict calibration. Figure \ref{fig:trade_size_calibration} reveals a striking monotonic relationship between trade size and excess returns.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{trade_size_vs_win_rate.pdf}
+    \caption{Excess win rate by trade size (log scale). Positive values indicate trades that outperform their price-implied probability. Small trades consistently underperform, while trades exceeding \$5,000 achieve positive excess returns. The horizontal dashed line indicates perfect calibration (zero excess).}
+    \label{fig:trade_size_calibration}
+\end{figure}
+
+The pattern is unambiguous: small trades exhibit the worst calibration, while large trades are well-calibrated or even profitable. Trades under \$1 underperform by 1.2--1.5 percentage points; trades between \$1 and \$100 underperform by approximately 1.3 percentage points. The excess return crosses zero around \$5,000, and trades above \$10,000 achieve positive excess returns of 0.5--1.0 percentage points.
+
+This pattern has several important implications:
+
+\paragraph{Sophisticated traders exploit mispricing.} The positive excess returns for large trades suggest that well-capitalized traders---likely institutions or experienced individuals---systematically identify and trade against mispriced contracts. Their presence provides partial correction of the longshot bias.
+
+\paragraph{Retail traders are the marginal price-setters.} The persistence of the bias despite sophisticated participation implies that retail flow dominates price formation. Large traders may be capital-constrained or face execution costs that prevent complete arbitrage.
+
+\paragraph{Trade size signals private information.} Our findings align with microstructure models where trade size conveys information \cite{kyle1985continuous}. Traders with superior forecasting ability rationally take larger positions.
+
+\subsection{Trade Size with Interquartile Range}
+
+Figure \ref{fig:trade_size_iqr} presents a more detailed view of the trade size effect using finer bins and showing the interquartile range of outcomes.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{trade_size_vs_win_rate_iqr.pdf}
+    \caption{Excess win rate by trade size with interquartile ranges. The relationship between trade size and calibration is remarkably consistent, with larger trades systematically achieving better outcomes across the entire distribution.}
+    \label{fig:trade_size_iqr}
+\end{figure}
+
+The consistency of this pattern across fine-grained bins suggests it reflects genuine trader heterogeneity rather than statistical noise or outliers.
+
+\subsection{Risk-Adjusted Volume Analysis}
+
+An alternative measure normalizes trade size by the inherent uncertainty of each contract. We define risk-adjusted volume as trade size divided by $\sqrt{p(1-p)}$, accounting for the fact that contracts near 50\% have higher variance.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{risk_adjusted_volume_vs_win_rate.pdf}
+    \caption{Excess win rate by risk-adjusted trade volume. Even after normalizing for contract uncertainty, larger trades exhibit systematically better calibration. The pattern persists across the entire distribution.}
+    \label{fig:risk_adjusted}
+\end{figure}
+
+Figure \ref{fig:risk_adjusted} confirms that the trade size effect is not merely a proxy for price level. Even under risk-adjusted normalization, larger trades outperform smaller ones.
+
+\subsection{Contrarian versus Momentum Trading}
+
+We next investigate whether the direction of recent price movements predicts trade profitability. For each trade, we compute the price change over the preceding hour and classify trades based on whether they align with (momentum) or oppose (contrarian) recent price movement.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{contrarian_vs_momentum.pdf}
+    \caption{Excess returns by recent price change. Trades following large price increases (momentum) dramatically underperform, while trades following price declines (contrarian) exhibit better calibration. The asymmetry suggests systematic overreaction to price movements.}
+    \label{fig:contrarian_momentum}
+\end{figure}
+
+Figure \ref{fig:contrarian_momentum} reveals a striking asymmetry. Trades following large price increases ($>$10 percentage points) underperform by 5.4 percentage points---far worse than any other category. This suggests severe overreaction: traders chase prices upward beyond levels justified by new information.
+
+Conversely, trades following large price declines exhibit better (though still negative) excess returns. The pattern is consistent with mean reversion in prices following overreaction.
+
+\paragraph{Interpretation.} These findings align with the behavioral finance literature on investor overreaction \cite{deBondt1985, daniel1998investor}. In prediction markets, the pattern may be amplified by the binary outcome structure and the attention-grabbing nature of extreme price movements.
+
+\subsection{Round Number Effects}
+
+Behavioral models predict clustering of trading activity at salient ``round'' numbers due to cognitive simplicity and focal point effects \cite{schelling1960strategy, harris1991stock}. Figure \ref{fig:round_numbers} examines whether trading volume clusters at these prices.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{round_number_clustering.pdf}
+    \caption{Trading volume ratio relative to adjacent non-round prices. Key round numbers (10, 25, 50, 75, 90 cents) exhibit elevated volume, though the largest clustering occurs at extreme prices (1--3 and 97--99 cents) rather than round numbers.}
+    \label{fig:round_numbers}
+\end{figure}
+
+We find modest clustering at multiples of 5 and 10 cents, with key psychological thresholds (25, 50, 75 cents) showing 5--10\% elevated volume. However, the most dramatic clustering occurs at extreme prices: contracts at 1 cent and 99 cents exhibit volume 30--40\% higher than adjacent prices, reflecting the strong appeal of lottery-like longshots and near-certain favorites.
+
+\subsection{Bid-Ask Spread Dynamics}
+
+Market maker behavior provides another window into price formation. Figure \ref{fig:spreads} displays average bid-ask spreads across the probability spectrum.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{bid_ask_spread_dynamics.pdf}
+    \caption{Average bid-ask spread by price bin. Spreads follow an inverted U-shape, widest at intermediate probabilities (around 50--60 cents) where uncertainty is maximal. The pattern reflects market maker volatility management rather than adverse selection concerns.}
+    \label{fig:spreads}
+\end{figure}
+
+Spreads are tightest at extreme prices (approximately 3--5 cents at prices near 0 or 100) and widest around 50--60 cents (approaching 100 basis points). This pattern deviates from theoretical predictions based purely on adverse selection, which would predict wider spreads at extreme prices where informed traders can more easily identify edge.
+
+The observed inverted-U shape likely reflects market maker volatility management. Intermediate-probability contracts have the highest price variance (since $\text{Var}(p) = p(1-p)$ is maximized at $p=0.5$), requiring wider spreads to compensate for inventory risk.
+
+\subsection{Average Contracts per Trade}
+
+Figure \ref{fig:avg_contracts} shows how the number of contracts per trade varies across price levels, complementing our earlier analysis of dollar trade values.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{avg_contracts_by_price.pdf}
+    \caption{Average number of contracts per trade by price. Contract quantity peaks at extreme prices, particularly at 0--1 cents where traders purchase large quantities of cheap longshots. The U-shaped pattern contrasts with the monotonically increasing dollar trade values.}
+    \label{fig:avg_contracts}
+\end{figure}
+
+The pattern shows that while dollar trade values increase with price (Figure \ref{fig:avg_trade_value}), contract counts exhibit a U-shape---highest at extreme prices where contracts are cheapest. This reflects traders' desire to obtain large notional exposure to longshots despite limited capital.
+
+\subsection{Median versus Mean Trade Values}
+
+Figure \ref{fig:median_mean} compares median and mean trade values, revealing substantial right-skewness in the trade size distribution.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{median_vs_mean_trade_value_by_price.pdf}
+    \caption{Median versus mean trade value by price. The large gap between median and mean indicates substantial right-skewness in trade sizes, consistent with a market comprising many small retail trades and fewer large institutional trades.}
+    \label{fig:median_mean}
+\end{figure}
+
+Across all price levels, the mean substantially exceeds the median, indicating that a small number of large trades coexist with many smaller ones. This skewness is consistent with our finding that large trades exhibit better calibration: the sophisticated traders placing large orders represent a small fraction of trade count but a substantial fraction of dollar volume.

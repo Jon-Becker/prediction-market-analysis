@@ -1,0 +1,18 @@
+[project]
+name = "prediction-market-data"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "cryptography>=46.0.3",
+    "duckdb>=1.4.2",
+    "httpx>=0.28.1",
+    "kalshi-python>=2.1.4",
+    "matplotlib>=3.9.4",
+    "pandas>=2.3.3",
+    "polymarket-py>=0.1.0",
+    "pyarrow>=18.0.0",
+    "scipy>=1.13.1",
+    "tqdm>=4.67.1",
+]

@@ -1,0 +1,86 @@
+\section{Data and Methodology}
+\label{sec:data}
+
+\subsection{The Kalshi Platform}
+
+Kalshi is a CFTC-regulated exchange for event contracts, operational since July 2021. Unlike earlier prediction markets that operated in legal gray areas (e.g., Intrade, PredictIt), Kalshi functions as a designated contract market under U.S. commodity trading law, subject to position limits, trading surveillance, and financial reporting requirements. This regulatory framework provides some assurance regarding data integrity and market manipulation controls.
+
+The platform offers binary contracts on a diverse range of events spanning politics, economics, weather, sports, and current events. Each contract pays \$1 if its specified outcome occurs and \$0 otherwise. Contracts trade continuously at prices between \$0.01 and \$0.99, with the price interpretable as the market-implied probability of the event. The platform operates a central limit order book with price-time priority, and traders can submit both market and limit orders.
+
+\subsection{Dataset Construction}
+
+We obtained complete transaction records from Kalshi's public API, covering all trades executed on the platform from inception through November 2024. Our dataset comprises:
+
+\begin{itemize}
+    \item \textbf{Trades:} 67,761,406 individual transactions
+    \item \textbf{Total volume:} \$8.59 billion in notional value
+    \item \textbf{Markets:} Approximately 50,000 unique event contracts
+    \item \textbf{Price coverage:} All integer cent prices from 1 to 99
+\end{itemize}
+
+Each trade record includes the ticker symbol, execution timestamp, price, quantity (number of contracts), taker side (yes or no), and the prices for both sides at execution. We merge trade data with market metadata containing resolution outcomes, expiration times, and contract descriptions.
+
+\subsection{Key Variables}
+
+We construct several variables central to our analysis:
+
+\paragraph{Win Rate.} For each trade, we observe whether the taker's position ultimately resolved favorably. Letting $W_i \in \{0,1\}$ indicate whether trade $i$ won, the empirical win rate at price $p$ is:
+\begin{equation}
+    \text{WinRate}(p) = \frac{\sum_{i: p_i = p} W_i}{\sum_{i: p_i = p} 1}
+\end{equation}
+where $p_i$ is the execution price for trade $i$.
+
+\paragraph{Excess Win Rate.} Under perfect calibration, contracts purchased at price $p$ should win $p\%$ of the time. We define the excess win rate as:
+\begin{equation}
+    \text{ExcessWinRate}(p) = \text{WinRate}(p) - p
+\end{equation}
+Positive values indicate underpricing (contracts win more often than their price implies), while negative values indicate overpricing.
+
+\paragraph{Trade Size.} We measure trade size in dollar terms as $\text{Size}_i = p_i \times \text{Contracts}_i$, representing the capital at risk for the taker.
+
+\paragraph{Time to Resolution.} For each trade, we compute the time remaining until market resolution: $\tau_i = t_{\text{resolve}} - t_i$, where $t_i$ is the trade timestamp and $t_{\text{resolve}}$ is the resolution time.
+
+\subsection{Volume Distribution}
+
+Figure \ref{fig:volume_by_price} displays the distribution of trading volume across prices. Volume exhibits a striking asymmetric pattern, with the highest concentration at extreme prices---particularly at 99 cents, which alone accounts for over \$420 million in trading volume. This reflects both the natural supply of contracts at different probability levels and traders' strong demand for near-certain outcomes.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{total_volume_by_price.pdf}
+    \caption{Total trading volume (USD) by contract price. Volume concentrates heavily at extreme prices, with contracts at 99 cents accounting for the highest single-price volume. The asymmetry reflects both contract availability and trader preferences for high-conviction positions.}
+    \label{fig:volume_by_price}
+\end{figure}
+
+Figure \ref{fig:contracts_by_price} shows the number of contracts traded at each price level. While the dollar volume peaks at high prices (where each contract costs more), the raw contract count peaks at low prices, reflecting the lottery-like appeal of cheap longshots.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{contracts_by_price.pdf}
+    \caption{Total contracts traded by price. Contract volume peaks at 1 cent, where over 770 million contracts were traded, reflecting strong demand for cheap longshot positions despite their low expected value.}
+    \label{fig:contracts_by_price}
+\end{figure}
+
+\subsection{Trade Size Distribution}
+
+Figure \ref{fig:avg_trade_value} displays the average trade value across price levels. Trade sizes increase monotonically with price: the average trade at 99 cents is \$406, compared to just \$5.50 at 1 cent. This pattern reflects both mechanical effects (higher-priced contracts cost more per unit) and behavioral factors (traders may size positions based on conviction).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.85\textwidth]{avg_trade_value_by_price.pdf}
+    \caption{Average trade value (USD) by contract price. Trade size increases monotonically with price, reflecting both the higher per-contract cost and potentially greater conviction among traders of high-probability outcomes.}
+    \label{fig:avg_trade_value}
+\end{figure}
+
+\subsection{Statistical Framework}
+
+Our primary specification tests whether win rates deviate systematically from price-implied probabilities. For inference, we compute standard errors accounting for the binary nature of outcomes:
+\begin{equation}
+    \text{SE}(\text{WinRate}) = \sqrt{\frac{p(1-p)}{n}}
+\end{equation}
+where $n$ is the number of trades in the bin. We report $z$-statistics computed as $z = \text{ExcessWinRate} / \text{SE}$ and corresponding $p$-values from the standard normal distribution.
+
+Given our large sample sizes, virtually all deviations from perfect calibration are statistically significant at conventional levels. We therefore focus on economic magnitudes---the size of the calibration errors in percentage points---rather than statistical significance alone.
+
+\subsection{Sample Restrictions}
+
+We restrict our analysis to markets that reached final resolution with a binary yes/no outcome, had at least one trade executed, and were not cancelled or voided by the exchange. These restrictions yield our final sample of 67.8 million trades. We exclude the small number of trades at prices of exactly 0 or 100 cents, as these represent near-certain outcomes where calibration analysis is uninformative.

@@ -1,0 +1,28 @@
+\section{Introduction}
+\label{sec:intro}
+
+Prediction markets aggregate dispersed information through trading, theoretically producing prices that reflect collective beliefs about uncertain future events \cite{arrow2008promise, wolfers2004prediction}. Under the efficient market hypothesis, contract prices should equal the true probability of the underlying event occurring. However, decades of research have documented systematic deviations from this ideal, most notably the \textit{longshot bias}---the tendency for low-probability outcomes to be overpriced relative to their true likelihood \cite{griffith1949, thaler1988anomalies, snowberg2010explaining}.
+
+First documented in horse-race betting by Griffith \cite{griffith1949}, the longshot bias has been replicated across sports betting markets \cite{woodland1994market}, laboratory experiments \cite{camerer1989experimental}, and prediction markets \cite{wolfers2006interpreting}. Multiple theoretical explanations have been proposed, including risk-seeking preferences in the loss domain \cite{kahneman1979prospect}, probability weighting that overweights small probabilities \cite{prelec1998probability}, heterogeneous beliefs with limited arbitrage \cite{shin1991optimal}, and the skewness preference of gamblers seeking high-variance payoffs \cite{golec1998bettors}.
+
+Despite extensive theoretical work, empirical studies of prediction market calibration have been limited by data availability. Prior research has relied on relatively small samples---hundreds to thousands of markets---often from platforms with thin liquidity and significant trading frictions \cite{berg2008results, rothschild2009forecasting}. The recent growth of regulated prediction markets, particularly in the United States following the expansion of CFTC-authorized platforms, provides an unprecedented opportunity to study these phenomena at scale.
+
+In this paper, we analyze 67.8 million trades worth \$8.6 billion from Kalshi, a CFTC-regulated prediction market operating since 2021. This dataset represents, to our knowledge, the largest systematic analysis of individual trades in prediction markets to date. Our granular transaction-level data allows us to investigate not only aggregate market calibration but also the behavior of individual traders, the dynamics of price formation over market lifetimes, and the relationship between trade characteristics and forecasting accuracy.
+
+Our analysis yields several novel findings:
+
+\begin{enumerate}
+    \item \textbf{Confirmation of longshot bias at scale:} We document systematic overpricing of low-probability contracts across nearly 68 million trades. Contracts priced at 5 cents (implying 5\% probability) resolve favorably only 3.5\% of the time---a 30\% underperformance relative to their price-implied probability. This bias diminishes monotonically with price, with contracts above 85 cents slightly outperforming their implied probabilities.
+
+    \item \textbf{Trade size predicts calibration:} Larger trades exhibit significantly better calibration than smaller trades. Trades exceeding \$5,000 achieve positive excess returns, while trades under \$100 consistently underperform. This pattern suggests sophisticated traders systematically exploit the mispricing introduced by smaller, less-informed participants.
+
+    \item \textbf{Temporal dynamics of information aggregation:} Markets become more efficient as resolution approaches. The excess win rate (actual minus expected) improves from $-1.8\%$ in trades placed 3--7 days before resolution to $-0.4\%$ in trades placed within the final hour. This pattern reflects both information revelation and the mechanical convergence of prices to binary outcomes.
+
+    \item \textbf{Contrarian traders outperform:} Traders who buy contracts that have recently declined in price significantly outperform those who chase momentum. Trades following price drops exceeding 10\% yield excess returns of $+5.4\%$, while trades following similar increases yield $-2.7\%$.
+
+    \item \textbf{Liquidity-driven spread dynamics:} Bid-ask spreads follow a U-shaped pattern across the probability spectrum, widest at intermediate probabilities (around 50\%) where uncertainty is maximal. This pattern deviates from theoretical predictions and suggests market maker behavior responsive to volatility rather than edge.
+\end{enumerate}
+
+These findings contribute to several literatures. For prediction market design, our results suggest that market calibration varies systematically with trade size and timing, implying that liquidity provision and trader composition affect informational efficiency. For behavioral finance, we provide large-sample evidence consistent with prospect theory's probability weighting function while documenting heterogeneity across trader sophistication levels. For forecasters using prediction market prices, our findings suggest that raw prices systematically overstate the likelihood of low-probability events and that adjustments based on trade-weighted prices may improve calibration.
+
+The remainder of this paper proceeds as follows. Section \ref{sec:data} describes our dataset and methodology. Section \ref{sec:calibration} presents our main results on market calibration and the longshot bias. Section \ref{sec:trader_behavior} analyzes heterogeneity across traders and trade characteristics. Section \ref{sec:temporal} examines temporal dynamics in price formation. Section \ref{sec:discussion} discusses implications and limitations, and Section \ref{sec:conclusion} concludes.
