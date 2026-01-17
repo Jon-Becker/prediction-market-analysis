@@ -1,0 +1,1726 @@
+[
+  {
+    "name": "Sports",
+    "value": 13181352943,
+    "children": [
+      {
+        "name": "NFL",
+        "value": 3790985589,
+        "children": [
+          {
+            "name": "Games",
+            "value": 3017237118
+          },
+          {
+            "name": "Spreads",
+            "value": 247733494
+          },
+          {
+            "name": "Totals",
+            "value": 138285716
+          },
+          {
+            "name": "Multi-Game Props",
+            "value": 124661080
+          },
+          {
+            "name": "Super Bowl",
+            "value": 76188662
+          },
+          {
+            "name": "Single-Game Props",
+            "value": 64963059
+          }
+        ]
+      },
+      {
+        "name": "NCAA Football",
+        "value": 2950704048,
+        "children": [
+          {
+            "name": "Games",
+            "value": 2799948915
+          },
+          {
+            "name": "Spreads",
+            "value": 62447730
+          },
+          {
+            "name": "Totals",
+            "value": 40371510
+          }
+        ]
+      },
+      {
+        "name": "NBA",
+        "value": 2140808179,
+        "children": [
+          {
+            "name": "Games",
+            "value": 1769701524
+          },
+          {
+            "name": "Other NBA",
+            "value": 146284983
+          },
+          {
+            "name": "Series",
+            "value": 109347734
+          },
+          {
+            "name": "Totals",
+            "value": 26017335
+          },
+          {
+            "name": "Eastern Conf",
+            "value": 23943942
+          },
+          {
+            "name": "Western Conf",
+            "value": 22623848
+          }
+        ]
+      },
+      {
+        "name": "MLB",
+        "value": 1106021157,
+        "children": [
+          {
+            "name": "Games",
+            "value": 865058318
+          },
+          {
+            "name": "Other MLB",
+            "value": 90597476
+          },
+          {
+            "name": "Series",
+            "value": 66572894
+          },
+          {
+            "name": "American League",
+            "value": 29165417
+          },
+          {
+            "name": "HR Derby",
+            "value": 15967466
+          },
+          {
+            "name": "National League",
+            "value": 14230740
+          },
+          {
+            "name": "All-Star Game",
+            "value": 11380418
+          }
+        ]
+      },
+      {
+        "name": "Tennis",
+        "value": 1005843484,
+        "children": [
+          {
+            "name": "ATP Matches",
+            "value": 450159413
+          },
+          {
+            "name": "WTA Matches",
+            "value": 338563928
+          },
+          {
+            "name": "Wimbledon M",
+            "value": 47419000
+          },
+          {
+            "name": "US Open M",
+            "value": 35458687
+          },
+          {
+            "name": "French Open M",
+            "value": 31816184
+          },
+          {
+            "name": "French Open W",
+            "value": 22598170
+          },
+          {
+            "name": "French Open",
+            "value": 21123935
+          },
+          {
+            "name": "US Open W",
+            "value": 20050935
+          },
+          {
+            "name": "Wimbledon W",
+            "value": 19616103
+          }
+        ]
+      },
+      {
+        "name": "NCAA Basketball",
+        "value": 705272887,
+        "children": [
+          {
+            "name": "March Madness M",
+            "value": 507406745
+          },
+          {
+            "name": "Games",
+            "value": 176873783
+          },
+          {
+            "name": "Totals",
+            "value": 7616389
+          },
+          {
+            "name": "Spreads",
+            "value": 7101186
+          }
+        ]
+      },
+      {
+        "name": "Golf",
+        "value": 519943873,
+        "children": [
+          {
+            "name": "PGA Tour",
+            "value": 231000998
+          },
+          {
+            "name": "Masters",
+            "value": 86876354
+          },
+          {
+            "name": "US Open",
+            "value": 71009638
+          },
+          {
+            "name": "The Open",
+            "value": 45869851
+          },
+          {
+            "name": "Other PGA",
+            "value": 38815969
+          },
+          {
+            "name": "Ryder Cup",
+            "value": 22566406
+          },
+          {
+            "name": "Ryder Cup Match",
+            "value": 21750933
+          }
+        ]
+      },
+      {
+        "name": "NHL",
+        "value": 394541367,
+        "children": [
+          {
+            "name": "Games",
+            "value": 344058272
+          },
+          {
+            "name": "Series",
+            "value": 19426429
+          },
+          {
+            "name": "Other NHL",
+            "value": 16680955
+          },
+          {
+            "name": "Totals",
+            "value": 6035454
+          }
+        ]
+      },
+      {
+        "name": "Soccer",
+        "value": 361466071,
+        "children": [
+          {
+            "name": "EPL Games",
+            "value": 133683762
+          },
+          {
+            "name": "UCL Games",
+            "value": 78565663
+          },
+          {
+            "name": "FIFA Games",
+            "value": 23211654
+          },
+          {
+            "name": "La Liga Games",
+            "value": 19959835
+          },
+          {
+            "name": "MLS Games",
+            "value": 19478116
+          },
+          {
+            "name": "Club WC Games",
+            "value": 16123943
+          },
+          {
+            "name": "Serie A Games",
+            "value": 13517280
+          },
+          {
+            "name": "Ligue 1 Games",
+            "value": 9960954
+          },
+          {
+            "name": "Bundesliga Games",
+            "value": 9449715
+          },
+          {
+            "name": "UEFA CL",
+            "value": 6763050
+          },
+          {
+            "name": "Premier League",
+            "value": 5741358
+          },
+          {
+            "name": "Euroleague",
+            "value": 4647294
+          },
+          {
+            "name": "Brasileirao",
+            "value": 3903991
+          }
+        ]
+      },
+      {
+        "name": "UFC/Boxing",
+        "value": 132261954,
+        "children": [
+          {
+            "name": "UFC Fights",
+            "value": 103744086
+          },
+          {
+            "name": "Boxing",
+            "value": 26365329
+          },
+          {
+            "name": "Other UFC",
+            "value": 2152539
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Politics",
+    "value": 2447937404,
+    "children": [
+      {
+        "name": "Presidential",
+        "value": 789917299,
+        "children": [
+          {
+            "name": "General",
+            "value": 789917299
+          }
+        ]
+      },
+      {
+        "name": "Electoral College",
+        "value": 578139403,
+        "children": [
+          {
+            "name": "Other",
+            "value": 449930058
+          },
+          {
+            "name": "Margin",
+            "value": 86308117
+          },
+          {
+            "name": "Closest State",
+            "value": 25934826
+          },
+          {
+            "name": "Swing States DJT",
+            "value": 10231804
+          }
+        ]
+      },
+      {
+        "name": "Popular Vote",
+        "value": 383443392,
+        "children": [
+          {
+            "name": "Margin",
+            "value": 294162474
+          },
+          {
+            "name": "Winner",
+            "value": 83762785
+          },
+          {
+            "name": "KH Margin",
+            "value": 5518133
+          }
+        ]
+      },
+      {
+        "name": "NYC Mayor",
+        "value": 147296546,
+        "children": [
+          {
+            "name": "Party",
+            "value": 121642553
+          },
+          {
+            "name": "Nominations",
+            "value": 16963803
+          },
+          {
+            "name": "2nd Round",
+            "value": 4967665
+          },
+          {
+            "name": "D Round",
+            "value": 2125738
+          },
+          {
+            "name": "Debate Mentions",
+            "value": 1578656
+          }
+        ]
+      },
+      {
+        "name": "Other Politics",
+        "value": 103681834,
+        "children": [
+          {
+            "name": "Power",
+            "value": 28568811
+          },
+          {
+            "name": "EO Count Day 1",
+            "value": 11701421
+          },
+          {
+            "name": "Inauguration",
+            "value": 6650681
+          },
+          {
+            "name": "State Deep DJT",
+            "value": 6143975
+          },
+          {
+            "name": "Cuomo Dropout",
+            "value": 6128407
+          },
+          {
+            "name": "Dem Sweep",
+            "value": 3999435
+          },
+          {
+            "name": "TikTok Ban",
+            "value": 3907027
+          },
+          {
+            "name": "EO Count Day 2",
+            "value": 3896884
+          },
+          {
+            "name": "WI SCOTUS",
+            "value": 3571663
+          },
+          {
+            "name": "Speaker",
+            "value": 3007371
+          },
+          {
+            "name": "World Leader",
+            "value": 2656694
+          },
+          {
+            "name": "EO Week",
+            "value": 2503837
+          },
+          {
+            "name": "Leave Admin",
+            "value": 2356242
+          },
+          {
+            "name": "Debates 2024",
+            "value": 2352425
+          },
+          {
+            "name": "Gabbard Count",
+            "value": 2036501
+          },
+          {
+            "name": "Greenland",
+            "value": 1989254
+          },
+          {
+            "name": "WI Court Margin",
+            "value": 1757073
+          },
+          {
+            "name": "Rubio",
+            "value": 1668217
+          },
+          {
+            "name": "RFK Count",
+            "value": 1471989
+          },
+          {
+            "name": "EO Count Day 3",
+            "value": 1447919
+          },
+          {
+            "name": "Leader Out",
+            "value": 1438858
+          },
+          {
+            "name": "Mamdani Mentions",
+            "value": 1212810
+          },
+          {
+            "name": "Patel Count",
+            "value": 1171428
+          },
+          {
+            "name": "Jan 6 Pardon Day 1",
+            "value": 1044957
+          }
+        ]
+      },
+      {
+        "name": "Government",
+        "value": 101373311,
+        "children": [
+          {
+            "name": "Shutdown Length",
+            "value": 83205234
+          },
+          {
+            "name": "Shutdown",
+            "value": 8370121
+          },
+          {
+            "name": "Cuts",
+            "value": 5592207
+          },
+          {
+            "name": "Reopen 2025",
+            "value": 4205749
+          }
+        ]
+      },
+      {
+        "name": "Senate",
+        "value": 84205131,
+        "children": [
+          {
+            "name": "Arizona",
+            "value": 35499031
+          },
+          {
+            "name": "Margin",
+            "value": 9085904
+          },
+          {
+            "name": "Majority",
+            "value": 6603809
+          },
+          {
+            "name": "R Seats",
+            "value": 6205451
+          },
+          {
+            "name": "Nevada",
+            "value": 5434688
+          },
+          {
+            "name": "Texas",
+            "value": 4936503
+          },
+          {
+            "name": "Pennsylvania",
+            "value": 3917206
+          },
+          {
+            "name": "Other",
+            "value": 2965652
+          },
+          {
+            "name": "Ohio",
+            "value": 2820514
+          },
+          {
+            "name": "Nebraska",
+            "value": 1487626
+          },
+          {
+            "name": "Wisconsin",
+            "value": 1476144
+          },
+          {
+            "name": "Florida",
+            "value": 1427473
+          },
+          {
+            "name": "Michigan",
+            "value": 1340222
+          },
+          {
+            "name": "Medicare",
+            "value": 1004908
+          }
+        ]
+      },
+      {
+        "name": "Trump Admin",
+        "value": 78287893,
+        "children": [
+          {
+            "name": "Mentions",
+            "value": 28522480
+          },
+          {
+            "name": "Joint Session",
+            "value": 13744260
+          },
+          {
+            "name": "Pardons",
+            "value": 8664486
+          },
+          {
+            "name": "Out",
+            "value": 8491229
+          },
+          {
+            "name": "Statements",
+            "value": 4895542
+          },
+          {
+            "name": "Officials",
+            "value": 4125812
+          },
+          {
+            "name": "Other",
+            "value": 4118244
+          },
+          {
+            "name": "Putin",
+            "value": 1693899
+          },
+          {
+            "name": "Meetings",
+            "value": 1518357
+          },
+          {
+            "name": "Attendance",
+            "value": 1257249
+          },
+          {
+            "name": "Tariffs Vote",
+            "value": 1256335
+          }
+        ]
+      },
+      {
+        "name": "Other Elections",
+        "value": 43979487,
+        "children": [
+          {
+            "name": "Other",
+            "value": 13438136
+          },
+          {
+            "name": "RFK",
+            "value": 6485808
+          },
+          {
+            "name": "Mamdani %",
+            "value": 5393529
+          },
+          {
+            "name": "Patel",
+            "value": 3034138
+          },
+          {
+            "name": "VA Attorney General",
+            "value": 2847040
+          },
+          {
+            "name": "Seattle Mayor",
+            "value": 2600292
+          },
+          {
+            "name": "Hegseth",
+            "value": 2417398
+          },
+          {
+            "name": "Cuomo %",
+            "value": 1831385
+          },
+          {
+            "name": "Sliwa %",
+            "value": 1718346
+          },
+          {
+            "name": "Other Mayor",
+            "value": 1624019
+          },
+          {
+            "name": "Minneapolis Mayor",
+            "value": 1504148
+          },
+          {
+            "name": "Jersey Mayor",
+            "value": 1085248
+          }
+        ]
+      },
+      {
+        "name": "House",
+        "value": 37061283,
+        "children": [
+          {
+            "name": "Margin",
+            "value": 16252923
+          },
+          {
+            "name": "R Seats",
+            "value": 9824620
+          },
+          {
+            "name": "Control House",
+            "value": 4668201
+          },
+          {
+            "name": "Other",
+            "value": 4006035
+          },
+          {
+            "name": "Control Senate",
+            "value": 2309504
+          }
+        ]
+      },
+      {
+        "name": "Governor",
+        "value": 32773196,
+        "children": [
+          {
+            "name": "New Jersey",
+            "value": 21640003
+          },
+          {
+            "name": "Virginia",
+            "value": 5610201
+          },
+          {
+            "name": "Other",
+            "value": 5522992
+          }
+        ]
+      },
+      {
+        "name": "Cabinet",
+        "value": 30024566,
+        "children": [
+          {
+            "name": "Musk",
+            "value": 6808311
+          },
+          {
+            "name": "DNI",
+            "value": 5775465
+          },
+          {
+            "name": "Dept of Education",
+            "value": 3934156
+          },
+          {
+            "name": "FBI",
+            "value": 3925710
+          },
+          {
+            "name": "RFK",
+            "value": 3492893
+          },
+          {
+            "name": "Out",
+            "value": 2497081
+          },
+          {
+            "name": "Count",
+            "value": 1856470
+          },
+          {
+            "name": "Tulsi",
+            "value": 1390634
+          },
+          {
+            "name": "Other",
+            "value": 343846
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Crypto",
+    "value": 835368307,
+    "children": [
+      {
+        "name": "Bitcoin",
+        "value": 694145149,
+        "children": [
+          {
+            "name": "Daily",
+            "value": 469794193
+          },
+          {
+            "name": "Price",
+            "value": 147757318
+          },
+          {
+            "name": "Max Yearly",
+            "value": 26646742
+          },
+          {
+            "name": "Max 150K",
+            "value": 15008499
+          },
+          {
+            "name": "Max 125K",
+            "value": 14561675
+          },
+          {
+            "name": "Min Yearly",
+            "value": 12798089
+          }
+        ]
+      },
+      {
+        "name": "Ethereum",
+        "value": 131898218,
+        "children": [
+          {
+            "name": "Daily",
+            "value": 63574089
+          },
+          {
+            "name": "Price",
+            "value": 46156119
+          },
+          {
+            "name": "Max Yearly",
+            "value": 16018255
+          },
+          {
+            "name": "Min Yearly",
+            "value": 6149755
+          }
+        ]
+      },
+      {
+        "name": "Other Crypto",
+        "value": 9324940,
+        "children": [
+          {
+            "name": "Doge",
+            "value": 4725116
+          },
+          {
+            "name": "Doge Daily",
+            "value": 1746164
+          },
+          {
+            "name": "XRP",
+            "value": 1310395
+          },
+          {
+            "name": "Shiba",
+            "value": 1027954
+          },
+          {
+            "name": "Coinbase",
+            "value": 280703
+          },
+          {
+            "name": "Solana",
+            "value": 234608
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Finance",
+    "value": 756455223,
+    "children": [
+      {
+        "name": "S&P 500",
+        "value": 292295200,
+        "children": [
+          {
+            "name": "Up",
+            "value": 119602091
+          },
+          {
+            "name": "Daily",
+            "value": 70659400
+          },
+          {
+            "name": "Other",
+            "value": 65373904
+          },
+          {
+            "name": "Yearly",
+            "value": 24449465
+          },
+          {
+            "name": "Weekly",
+            "value": 12210340
+          }
+        ]
+      },
+      {
+        "name": "NASDAQ",
+        "value": 204643448,
+        "children": [
+          {
+            "name": "Up",
+            "value": 67351021
+          },
+          {
+            "name": "Daily",
+            "value": 56913855
+          },
+          {
+            "name": "Other",
+            "value": 39489801
+          },
+          {
+            "name": "Yearly",
+            "value": 30293259
+          },
+          {
+            "name": "Weekly",
+            "value": 10595512
+          }
+        ]
+      },
+      {
+        "name": "Economic Indicators",
+        "value": 78124445,
+        "children": [
+          {
+            "name": "CPI YoY",
+            "value": 24088773
+          },
+          {
+            "name": "CPI",
+            "value": 19064341
+          },
+          {
+            "name": "Payrolls",
+            "value": 11918552
+          },
+          {
+            "name": "GDP",
+            "value": 10618882
+          },
+          {
+            "name": "Unemployment",
+            "value": 6326345
+          },
+          {
+            "name": "CPI Core",
+            "value": 4337572
+          },
+          {
+            "name": "CPI Core YoY",
+            "value": 1769980
+          }
+        ]
+      },
+      {
+        "name": "Fed",
+        "value": 63210989,
+        "children": [
+          {
+            "name": "Other",
+            "value": 42984343
+          },
+          {
+            "name": "Leave Powell",
+            "value": 7654168
+          },
+          {
+            "name": "Mentions",
+            "value": 5243591
+          },
+          {
+            "name": "Chair Nomination",
+            "value": 3232237
+          },
+          {
+            "name": "Powell Mentions",
+            "value": 1680603
+          },
+          {
+            "name": "Employees",
+            "value": 1412742
+          },
+          {
+            "name": "Terminal Rate",
+            "value": 1003305
+          }
+        ]
+      },
+      {
+        "name": "Commodities",
+        "value": 46024181,
+        "children": [
+          {
+            "name": "Gas Monthly",
+            "value": 37169443
+          },
+          {
+            "name": "WTI Oil",
+            "value": 2971923
+          },
+          {
+            "name": "Gas Weekly",
+            "value": 2202304
+          },
+          {
+            "name": "Gas",
+            "value": 1930363
+          },
+          {
+            "name": "Eggs",
+            "value": 1748450
+          }
+        ]
+      },
+      {
+        "name": "Other Finance",
+        "value": 27464464,
+        "children": [
+          {
+            "name": "Shutdown By",
+            "value": 8479330
+          },
+          {
+            "name": "IPOs",
+            "value": 3569828
+          },
+          {
+            "name": "Tesla",
+            "value": 2653173
+          },
+          {
+            "name": "Debt Shrink",
+            "value": 2351449
+          },
+          {
+            "name": "Gold Cards",
+            "value": 2194868
+          },
+          {
+            "name": "Gambling Repeal",
+            "value": 2060682
+          },
+          {
+            "name": "Musk Party",
+            "value": 1570847
+          },
+          {
+            "name": "TSLA Earnings",
+            "value": 1303691
+          },
+          {
+            "name": "Expand",
+            "value": 1203259
+          },
+          {
+            "name": "Deport Count",
+            "value": 1075643
+          },
+          {
+            "name": "Waymo Cities",
+            "value": 1001694
+          }
+        ]
+      },
+      {
+        "name": "Bonds",
+        "value": 18373895,
+        "children": [
+          {
+            "name": "T-Note Weekly",
+            "value": 10354717
+          },
+          {
+            "name": "T-Note Daily",
+            "value": 6031413
+          },
+          {
+            "name": "Debt Ceiling",
+            "value": 1836102
+          }
+        ]
+      },
+      {
+        "name": "Forex",
+        "value": 17880330,
+        "children": [
+          {
+            "name": "USD/JPY",
+            "value": 9255196
+          },
+          {
+            "name": "EUR/USD",
+            "value": 4270146
+          },
+          {
+            "name": "EUR/USD Hourly",
+            "value": 2679473
+          },
+          {
+            "name": "USD/JPY Hourly",
+            "value": 1675515
+          }
+        ]
+      },
+      {
+        "name": "Tariffs",
+        "value": 8438271,
+        "children": [
+          {
+            "name": "General",
+            "value": 6656201
+          },
+          {
+            "name": "FTA Countries",
+            "value": 1782070
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Weather",
+    "value": 282861151,
+    "children": [
+      {
+        "name": "High Temp",
+        "value": 267231240,
+        "children": [
+          {
+            "name": "New York",
+            "value": 61839543
+          },
+          {
+            "name": "Chicago",
+            "value": 48669278
+          },
+          {
+            "name": "Austin",
+            "value": 42890293
+          },
+          {
+            "name": "Miami",
+            "value": 32641356
+          },
+          {
+            "name": "Los Angeles",
+            "value": 27033427
+          },
+          {
+            "name": "Denver",
+            "value": 26219521
+          },
+          {
+            "name": "Philadelphia",
+            "value": 17290446
+          },
+          {
+            "name": "Houston",
+            "value": 6416018
+          },
+          {
+            "name": "Monthly",
+            "value": 3163360
+          }
+        ]
+      },
+      {
+        "name": "Precipitation",
+        "value": 11298482,
+        "children": [
+          {
+            "name": "NYC Rain",
+            "value": 4847836
+          },
+          {
+            "name": "Other Snow",
+            "value": 2487801
+          },
+          {
+            "name": "Other Rain",
+            "value": 2100461
+          },
+          {
+            "name": "NYC Snow Monthly",
+            "value": 1862384
+          }
+        ]
+      },
+      {
+        "name": "Severe Weather",
+        "value": 3743493,
+        "children": [
+          {
+            "name": "Tornado",
+            "value": 2235882
+          },
+          {
+            "name": "Hurricane",
+            "value": 1507611
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Entertainment",
+    "value": 209057565,
+    "children": [
+      {
+        "name": "Movies",
+        "value": 86331404,
+        "children": [
+          {
+            "name": "Rotten Tomatoes",
+            "value": 63351048
+          },
+          {
+            "name": "Captain America",
+            "value": 2405348
+          },
+          {
+            "name": "Moana 2",
+            "value": 2230769
+          },
+          {
+            "name": "Mickey 17",
+            "value": 2077029
+          },
+          {
+            "name": "Mufasa",
+            "value": 1881390
+          },
+          {
+            "name": "The Monkey",
+            "value": 1752423
+          },
+          {
+            "name": "Wicked",
+            "value": 1639156
+          },
+          {
+            "name": "Novocaine",
+            "value": 1626469
+          },
+          {
+            "name": "Fantastic Four",
+            "value": 1588271
+          },
+          {
+            "name": "Wicked For Good",
+            "value": 1567449
+          },
+          {
+            "name": "Nosferatu",
+            "value": 1499085
+          },
+          {
+            "name": "Superman",
+            "value": 1327939
+          },
+          {
+            "name": "Dog Man",
+            "value": 1258789
+          },
+          {
+            "name": "Last Breath",
+            "value": 1102894
+          },
+          {
+            "name": "Jurassic World",
+            "value": 1023345
+          }
+        ]
+      },
+      {
+        "name": "Awards",
+        "value": 42273624,
+        "children": [
+          {
+            "name": "Other Oscar",
+            "value": 10390361
+          },
+          {
+            "name": "Oscar Best Picture",
+            "value": 7286303
+          },
+          {
+            "name": "Oscar Nom Picture",
+            "value": 3394728
+          },
+          {
+            "name": "Other Emmy",
+            "value": 3339482
+          },
+          {
+            "name": "Game Awards",
+            "value": 3293585
+          },
+          {
+            "name": "Emmy Drama",
+            "value": 3207909
+          },
+          {
+            "name": "Oscar Actor",
+            "value": 1974451
+          },
+          {
+            "name": "Other Grammy",
+            "value": 1968128
+          },
+          {
+            "name": "Grammy SOTY",
+            "value": 1830729
+          },
+          {
+            "name": "Oscar Actress",
+            "value": 1792288
+          },
+          {
+            "name": "Grammy AOTY",
+            "value": 1728804
+          },
+          {
+            "name": "Oscar Nom Actress",
+            "value": 1573802
+          },
+          {
+            "name": "BAFTA",
+            "value": 493054
+          }
+        ]
+      },
+      {
+        "name": "Spotify",
+        "value": 28957608,
+        "children": [
+          {
+            "name": "Daily",
+            "value": 19125418
+          },
+          {
+            "name": "Other",
+            "value": 4803752
+          },
+          {
+            "name": "Songs Opalite",
+            "value": 2219860
+          },
+          {
+            "name": "2-Day",
+            "value": 1536893
+          },
+          {
+            "name": "Global Daily",
+            "value": 1271685
+          }
+        ]
+      },
+      {
+        "name": "TV/Media",
+        "value": 17660135,
+        "children": [
+          {
+            "name": "Super Bowl Headlines",
+            "value": 4813533
+          },
+          {
+            "name": "SNF Mentions",
+            "value": 4090383
+          },
+          {
+            "name": "TNF Mentions",
+            "value": 3402902
+          },
+          {
+            "name": "South Park Mentions",
+            "value": 2290076
+          },
+          {
+            "name": "Kimmel Mentions",
+            "value": 1594302
+          },
+          {
+            "name": "MrBeast Mentions",
+            "value": 1468939
+          }
+        ]
+      },
+      {
+        "name": "Other Entertainment",
+        "value": 14899957,
+        "children": [
+          {
+            "name": "Time",
+            "value": 5644324
+          },
+          {
+            "name": "App Rank Free",
+            "value": 4855665
+          },
+          {
+            "name": "Top Model",
+            "value": 3086258
+          },
+          {
+            "name": "GTA 6",
+            "value": 1200534
+          }
+        ]
+      },
+      {
+        "name": "Music",
+        "value": 13493536,
+        "children": [
+          {
+            "name": "Billboard Top 10 TS",
+            "value": 3634317
+          },
+          {
+            "name": "Top Album",
+            "value": 3102357
+          },
+          {
+            "name": "Taylor Swift Mentions",
+            "value": 2936480
+          },
+          {
+            "name": "Top Song",
+            "value": 1583276
+          },
+          {
+            "name": "Most Streamed TS",
+            "value": 1241951
+          },
+          {
+            "name": "Billboard",
+            "value": 995155
+          }
+        ]
+      },
+      {
+        "name": "Netflix",
+        "value": 5441301,
+        "children": [
+          {
+            "name": "Movie Rank",
+            "value": 3014507
+          },
+          {
+            "name": "Show Rank",
+            "value": 2352854
+          },
+          {
+            "name": "Other",
+            "value": 73940
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Other",
+    "value": 156229518,
+    "children": [
+      {
+        "name": "Other",
+        "value": 156229518,
+        "children": [
+          {
+            "name": "KXLSUCOACH",
+            "value": 1683420
+          },
+          {
+            "name": "KXFLACOACH",
+            "value": 1665334
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Media",
+    "value": 50031659,
+    "children": [
+      {
+        "name": "Mentions",
+        "value": 23108221,
+        "children": [
+          {
+            "name": "General",
+            "value": 21778876
+          },
+          {
+            "name": "Vance",
+            "value": 1329345
+          }
+        ]
+      },
+      {
+        "name": "Search Trends",
+        "value": 9617205,
+        "children": [
+          {
+            "name": "Google Search",
+            "value": 8623692
+          },
+          {
+            "name": "Song Thriller",
+            "value": 993513
+          }
+        ]
+      },
+      {
+        "name": "Other Media",
+        "value": 8935779,
+        "children": [
+          {
+            "name": "TSAW",
+            "value": 5113053
+          },
+          {
+            "name": "UFSD",
+            "value": 1798253
+          },
+          {
+            "name": "Case M",
+            "value": 1030488
+          },
+          {
+            "name": "Case D",
+            "value": 993985
+          }
+        ]
+      },
+      {
+        "name": "Polls",
+        "value": 8368970,
+        "children": [
+          {
+            "name": "538 Approve",
+            "value": 5008176
+          },
+          {
+            "name": "Approve POTUS",
+            "value": 3360794
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "World Events",
+    "value": 42483274,
+    "children": [
+      {
+        "name": "Other Events",
+        "value": 19067711,
+        "children": [
+          {
+            "name": "Epstein",
+            "value": 7478102
+          },
+          {
+            "name": "Epstein Bill",
+            "value": 3079100
+          },
+          {
+            "name": "Epstein List",
+            "value": 2441839
+          },
+          {
+            "name": "Arrests",
+            "value": 2342424
+          },
+          {
+            "name": "Lagos Days",
+            "value": 1462656
+          },
+          {
+            "name": "OTE Epstein",
+            "value": 1250350
+          },
+          {
+            "name": "Zelensky Putin Meet",
+            "value": 1013240
+          }
+        ]
+      },
+      {
+        "name": "Nobel Prize",
+        "value": 12123979,
+        "children": [
+          {
+            "name": "Peace",
+            "value": 12076482
+          }
+        ]
+      },
+      {
+        "name": "Religion",
+        "value": 11291584,
+        "children": [
+          {
+            "name": "Next Pope",
+            "value": 10618819
+          },
+          {
+            "name": "Pope",
+            "value": 672765
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Esports",
+    "value": 42066035,
+    "children": [
+      {
+        "name": "Multi-Game",
+        "value": 24973879,
+        "children": [
+          {
+            "name": "Extended Props",
+            "value": 24973879
+          }
+        ]
+      },
+      {
+        "name": "League of Legends",
+        "value": 12410533,
+        "children": [
+          {
+            "name": "Games",
+            "value": 5492191
+          },
+          {
+            "name": "Worlds",
+            "value": 5046794
+          },
+          {
+            "name": "Maps",
+            "value": 1871548
+          }
+        ]
+      },
+      {
+        "name": "CS:GO",
+        "value": 3277412,
+        "children": [
+          {
+            "name": "Games",
+            "value": 3277412
+          }
+        ]
+      },
+      {
+        "name": "Other Esports",
+        "value": 1404211,
+        "children": [
+          {
+            "name": "Internet Invitational",
+            "value": 1404211
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Science/Tech",
+    "value": 35169395,
+    "children": [
+      {
+        "name": "AI",
+        "value": 24623502,
+        "children": [
+          {
+            "name": "LLM Benchmark",
+            "value": 17256618
+          },
+          {
+            "name": "Other AI",
+            "value": 6891566
+          },
+          {
+            "name": "LLM",
+            "value": 475318
+          }
+        ]
+      },
+      {
+        "name": "Tech",
+        "value": 5451653,
+        "children": [
+          {
+            "name": "CEO Astronomer",
+            "value": 2415264
+          },
+          {
+            "name": "Leave Lisa Cook",
+            "value": 2197383
+          },
+          {
+            "name": "Apple",
+            "value": 839006
+          }
+        ]
+      },
+      {
+        "name": "Space",
+        "value": 5094240,
+        "children": [
+          {
+            "name": "SpaceX Starship",
+            "value": 2542790
+          },
+          {
+            "name": "Aliens",
+            "value": 1886612
+          },
+          {
+            "name": "SpaceX",
+            "value": 664838
+          }
+        ]
+      }
+    ]
+  }
+]

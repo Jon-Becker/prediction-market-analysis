@@ -1,0 +1,661 @@
+"""Category grouping utilities for market analysis with hierarchical structure."""
+
+# Hierarchical category structure:
+# Group -> Category -> Subcategory
+# e.g., Sports -> NFL -> Games, Spreads, Totals, Props
+
+# Subcategory patterns: maps regex-like patterns to (group, category, subcategory)
+# Order matters - more specific patterns should come first
+SUBCATEGORY_PATTERNS = [
+    # === SPORTS: NFL ===
+    ("MVENFLMULTIGAME", "Sports", "NFL", "Multi-Game Props"),
+    ("MVENFLSINGLEGAME", "Sports", "NFL", "Single-Game Props"),
+    ("NFLGAME", "Sports", "NFL", "Games"),
+    ("NFLSPREAD", "Sports", "NFL", "Spreads"),
+    ("NFLTOTAL", "Sports", "NFL", "Totals"),
+    ("NFLANYTD", "Sports", "NFL", "Any TD Props"),
+    ("NFL2TD", "Sports", "NFL", "2+ TD Props"),
+    ("NFLFIRSTTD", "Sports", "NFL", "First TD Props"),
+    ("NFLMVP", "Sports", "NFL", "MVP"),
+    ("NFLRSHYDS", "Sports", "NFL", "Rushing Yards"),
+    ("NFLRECYDS", "Sports", "NFL", "Receiving Yards"),
+    ("NFLPASSYDS", "Sports", "NFL", "Passing Yards"),
+    ("NFLOROTY", "Sports", "NFL", "OROTY"),
+    ("NFLOPOTY", "Sports", "NFL", "OPOTY"),
+    ("NFLCOTY", "Sports", "NFL", "COTY"),
+    ("NFLWINS", "Sports", "NFL", "Win Totals"),
+    ("NFLPLAYOFF", "Sports", "NFL", "Playoffs"),
+    ("NFLNFCCHAMP", "Sports", "NFL", "NFC Championship"),
+    ("NFLAFCCHAMP", "Sports", "NFL", "AFC Championship"),
+    ("NFLNFCWEST", "Sports", "NFL", "NFC West"),
+    ("NFLNFCEAST", "Sports", "NFL", "NFC East"),
+    ("NFLNFCNORTH", "Sports", "NFL", "NFC North"),
+    ("NFLAFCWEST", "Sports", "NFL", "AFC West"),
+    ("NFLAFCNORTH", "Sports", "NFL", "AFC North"),
+    ("NFLAFCSOUTH", "Sports", "NFL", "AFC South"),
+    ("NFL", "Sports", "NFL", "Other NFL"),
+    ("NFC", "Sports", "NFL", "NFC"),
+    ("AFC", "Sports", "NFL", "AFC"),
+    ("SB", "Sports", "NFL", "Super Bowl"),
+
+    # === SPORTS: NBA ===
+    ("MVENBASINGLEGAME", "Sports", "NBA", "Single-Game Props"),
+    ("NBAGAME", "Sports", "NBA", "Games"),
+    ("NBASERIES", "Sports", "NBA", "Series"),
+    ("NBATOTAL", "Sports", "NBA", "Totals"),
+    ("NBASPREAD", "Sports", "NBA", "Spreads"),
+    ("NBAEAST", "Sports", "NBA", "Eastern Conf"),
+    ("NBAWEST", "Sports", "NBA", "Western Conf"),
+    ("NBAFINALSMVP", "Sports", "NBA", "Finals MVP"),
+    ("NBAFINALSEXACT", "Sports", "NBA", "Finals Exact"),
+    ("NBAMVP", "Sports", "NBA", "MVP"),
+    ("NBAWINS", "Sports", "NBA", "Win Totals"),
+    ("NBA", "Sports", "NBA", "Other NBA"),
+
+    # === SPORTS: MLB ===
+    ("MLBGAME", "Sports", "MLB", "Games"),
+    ("MLBSERIES", "Sports", "MLB", "Series"),
+    ("MLBSERIESEXACT", "Sports", "MLB", "Series Exact"),
+    ("MLBTOTAL", "Sports", "MLB", "Totals"),
+    ("MLBSPREAD", "Sports", "MLB", "Spreads"),
+    ("MLBHRDERBY", "Sports", "MLB", "HR Derby"),
+    ("MLBASGAME", "Sports", "MLB", "All-Star Game"),
+    ("MLBAL", "Sports", "MLB", "American League"),
+    ("MLBNL", "Sports", "MLB", "National League"),
+    ("MLBALEAST", "Sports", "MLB", "AL East"),
+    ("MLBALMVP", "Sports", "MLB", "AL MVP"),
+    ("MLBNLROTY", "Sports", "MLB", "NL ROTY"),
+    ("MLB", "Sports", "MLB", "Other MLB"),
+
+    # === SPORTS: NCAA Football ===
+    ("NCAAFGAME", "Sports", "NCAA Football", "Games"),
+    ("NCAAFSPREAD", "Sports", "NCAA Football", "Spreads"),
+    ("NCAAFTOTAL", "Sports", "NCAA Football", "Totals"),
+    ("NCAAFPLAYOFF", "Sports", "NCAA Football", "Playoff"),
+    ("NCAAFB12", "Sports", "NCAA Football", "Big 12"),
+    ("NCAAFB10", "Sports", "NCAA Football", "Big 10"),
+    ("NCAAFACC", "Sports", "NCAA Football", "ACC"),
+    ("NCAAFSEC", "Sports", "NCAA Football", "SEC"),
+    ("NCAAF", "Sports", "NCAA Football", "Other NCAAF"),
+    ("HEISMAN", "Sports", "NCAA Football", "Heisman"),
+
+    # === SPORTS: NCAA Basketball ===
+    ("NCAAMBGAME", "Sports", "NCAA Basketball", "Games"),
+    ("NCAAMBTOTAL", "Sports", "NCAA Basketball", "Totals"),
+    ("NCAAMBSPREAD", "Sports", "NCAA Basketball", "Spreads"),
+    ("NCAAMBACHAMP", "Sports", "NCAA Basketball", "Championship"),
+    ("NCAAMB", "Sports", "NCAA Basketball", "Other NCAAMB"),
+    ("MARMAD", "Sports", "NCAA Basketball", "March Madness M"),
+    ("WMARMAD", "Sports", "NCAA Basketball", "March Madness W"),
+
+    # === SPORTS: NHL ===
+    ("NHLGAME", "Sports", "NHL", "Games"),
+    ("NHLSERIES", "Sports", "NHL", "Series"),
+    ("NHLTOTAL", "Sports", "NHL", "Totals"),
+    ("NHLSPREAD", "Sports", "NHL", "Spreads"),
+    ("NHLEAST", "Sports", "NHL", "Eastern Conf"),
+    ("NHLWEST", "Sports", "NHL", "Western Conf"),
+    ("NHL4NATIONS", "Sports", "NHL", "4 Nations"),
+    ("NHL", "Sports", "NHL", "Other NHL"),
+
+    # === SPORTS: WNBA ===
+    ("WNBAGAME", "Sports", "WNBA", "Games"),
+    ("WNBA", "Sports", "WNBA", "Other WNBA"),
+
+    # === SPORTS: Tennis ===
+    ("ATPMATCH", "Sports", "Tennis", "ATP Matches"),
+    ("WTAMATCH", "Sports", "Tennis", "WTA Matches"),
+    ("ATPFINALS", "Sports", "Tennis", "ATP Finals"),
+    ("ATPDOUBLES", "Sports", "Tennis", "ATP Doubles"),
+    ("ATPIT", "Sports", "Tennis", "ATP Italy"),
+    ("ATP", "Sports", "Tennis", "Other ATP"),
+    ("WTAIT", "Sports", "Tennis", "WTA Italy"),
+    ("WTA", "Sports", "Tennis", "Other WTA"),
+    ("WMENSINGLES", "Sports", "Tennis", "Wimbledon M"),
+    ("WWOMENSINGLES", "Sports", "Tennis", "Wimbledon W"),
+    ("USOMENSINGLES", "Sports", "Tennis", "US Open M"),
+    ("USOWOMENSINGLES", "Sports", "Tennis", "US Open W"),
+    ("FOMENSINGLES", "Sports", "Tennis", "French Open M"),
+    ("FOWOMENSINGLES", "Sports", "Tennis", "French Open W"),
+    ("FOMEN", "Sports", "Tennis", "French Open"),
+    ("FOWOMEN", "Sports", "Tennis", "French Open W"),
+    ("DAVISCUPMATCH", "Sports", "Tennis", "Davis Cup"),
+
+    # === SPORTS: Golf ===
+    ("PGATOUR", "Sports", "Golf", "PGA Tour"),
+    ("PGARYDERMATCH", "Sports", "Golf", "Ryder Cup Match"),
+    ("PGARYDER", "Sports", "Golf", "Ryder Cup"),
+    ("PGARYDERCUPD1", "Sports", "Golf", "Ryder Cup Day 1"),
+    ("PGARYDERTOP", "Sports", "Golf", "Ryder Cup Top"),
+    ("PGA", "Sports", "Golf", "Other PGA"),
+    ("MASTERS", "Sports", "Golf", "Masters"),
+    ("USOPEN", "Sports", "Golf", "US Open"),
+    ("THEOPEN", "Sports", "Golf", "The Open"),
+    ("GENESISINVITATIONAL", "Sports", "Golf", "Genesis Invitational"),
+    ("LIVTOUR", "Sports", "Golf", "LIV Tour"),
+
+    # === SPORTS: Soccer ===
+    ("EPLGAME", "Sports", "Soccer", "EPL Games"),
+    ("EPLTOP4", "Sports", "Soccer", "EPL Top 4"),
+    ("EPL", "Sports", "Soccer", "Other EPL"),
+    ("PREMIERLEAGUE", "Sports", "Soccer", "Premier League"),
+    ("UCLGAME", "Sports", "Soccer", "UCL Games"),
+    ("UCLROUND", "Sports", "Soccer", "UCL Rounds"),
+    ("UCL", "Sports", "Soccer", "Other UCL"),
+    ("UEFACL", "Sports", "Soccer", "UEFA CL"),
+    ("LALIGAGAME", "Sports", "Soccer", "La Liga Games"),
+    ("SERIEAGAME", "Sports", "Soccer", "Serie A Games"),
+    ("BUNDESLIGAGAME", "Sports", "Soccer", "Bundesliga Games"),
+    ("LIGUE1GAME", "Sports", "Soccer", "Ligue 1 Games"),
+    ("MLSGAME", "Sports", "Soccer", "MLS Games"),
+    ("FIFAGAME", "Sports", "Soccer", "FIFA Games"),
+    ("CLUBWCGAME", "Sports", "Soccer", "Club WC Games"),
+    ("CLUBWC", "Sports", "Soccer", "Club World Cup"),
+    ("EFLCHAMPIONSHIPGAME", "Sports", "Soccer", "EFL Championship"),
+    ("EFLCUPGAME", "Sports", "Soccer", "EFL Cup"),
+    ("UELGAME", "Sports", "Soccer", "Europa League"),
+    ("EUROLEAGUEGAME", "Sports", "Soccer", "Euroleague"),
+    ("SUPERLIGGAME", "Sports", "Soccer", "Super Lig"),
+    ("EREDIVISIEGAME", "Sports", "Soccer", "Eredivisie"),
+    ("LIGAPORTUGALGAME", "Sports", "Soccer", "Liga Portugal"),
+    ("BRASILEIROGAME", "Sports", "Soccer", "Brasileirao"),
+    ("MENWORLDCUP", "Sports", "Soccer", "Men's World Cup"),
+    ("BALLONDOR", "Sports", "Soccer", "Ballon d'Or"),
+
+    # === SPORTS: UFC/Boxing ===
+    ("UFCFIGHT", "Sports", "UFC/Boxing", "UFC Fights"),
+    ("UFC", "Sports", "UFC/Boxing", "Other UFC"),
+    ("BOXING", "Sports", "UFC/Boxing", "Boxing"),
+
+    # === SPORTS: Racing ===
+    ("F1RACE", "Sports", "Racing", "F1 Races"),
+    ("F1RACEPODIUM", "Sports", "Racing", "F1 Podiums"),
+    ("F1", "Sports", "Racing", "Other F1"),
+    ("NASCARRACE", "Sports", "Racing", "NASCAR Races"),
+    ("NASCAR", "Sports", "Racing", "Other NASCAR"),
+    ("INDY500", "Sports", "Racing", "Indy 500"),
+
+    # === SPORTS: Other ===
+    ("NATHANSHD", "Sports", "Other Sports", "Nathan's Hot Dogs"),
+    ("NATHANDOGS", "Sports", "Other Sports", "Nathan's Hot Dogs"),
+    ("NCAAWBGAME", "Sports", "Other Sports", "NCAA Women's BB"),
+
+    # === ESPORTS ===
+    ("MVESPORTSMULTIGAMEEXTENDED", "Esports", "Multi-Game", "Extended Props"),
+    ("LOLGAMES", "Esports", "League of Legends", "Games"),
+    ("LOLMAP", "Esports", "League of Legends", "Maps"),
+    ("LEAGUEWORLDS", "Esports", "League of Legends", "Worlds"),
+    ("CSGOGAME", "Esports", "CS:GO", "Games"),
+    ("INTERNETINVITATIONAL", "Esports", "Other Esports", "Internet Invitational"),
+
+    # === POLITICS: Presidential ===
+    ("PRES", "Politics", "Presidential", "General"),
+    ("PRESNOMD", "Politics", "Presidential", "Nominations D"),
+    ("PRESNOMR", "Politics", "Presidential", "Nominations R"),
+    ("PRESPERSON", "Politics", "Presidential", "Person"),
+    ("PRESVISIT", "Politics", "Presidential", "Visits"),
+    ("PRESPARTYFULL", "Politics", "Presidential", "Party Full"),
+    ("PRESPARTYGA", "Politics", "Presidential", "Georgia"),
+    ("PRESPARTYPA", "Politics", "Presidential", "Pennsylvania"),
+    ("PRESPARTYMI", "Politics", "Presidential", "Michigan"),
+    ("PRESPARTYNC", "Politics", "Presidential", "North Carolina"),
+    ("PRESPARTYNV", "Politics", "Presidential", "Nevada"),
+    ("PRESPARTYAZ", "Politics", "Presidential", "Arizona"),
+    ("PRESPARTYWI", "Politics", "Presidential", "Wisconsin"),
+    ("PRESPARTYVA", "Politics", "Presidential", "Virginia"),
+    ("PRESPARTYNY", "Politics", "Presidential", "New York"),
+    ("PRESPARTYFL", "Politics", "Presidential", "Florida"),
+    ("PRESPARTYTX", "Politics", "Presidential", "Texas"),
+    ("PRESPARTYNH", "Politics", "Presidential", "New Hampshire"),
+    ("PRESPARTYNJ", "Politics", "Presidential", "New Jersey"),
+    ("PRESPARTYME", "Politics", "Presidential", "Maine"),
+    ("PRESPARTYMN", "Politics", "Presidential", "Minnesota"),
+    ("PRESPARTYCA", "Politics", "Presidential", "California"),
+    ("PRESPARTYIA", "Politics", "Presidential", "Iowa"),
+    ("PRESPARTYNM", "Politics", "Presidential", "New Mexico"),
+    ("PRESROMANIA24", "Politics", "Presidential", "Romania"),
+    ("PRESCHILE", "Politics", "Presidential", "Chile"),
+    ("PRESPOLAND", "Politics", "Presidential", "Poland"),
+    ("PRESLEAVESK", "Politics", "Presidential", "South Korea"),
+
+    # === POLITICS: Popular Vote ===
+    ("POPVOTEMOV", "Politics", "Popular Vote", "Margin"),
+    ("POPVOTEKHNM", "Politics", "Popular Vote", "KH Margin"),
+    ("POPVOTE", "Politics", "Popular Vote", "Winner"),
+
+    # === POLITICS: Electoral College ===
+    ("ECMOV", "Politics", "Electoral College", "Margin"),
+    ("ECDJTBLOWOUT", "Politics", "Electoral College", "DJT Blowout"),
+    ("EC", "Politics", "Electoral College", "Other"),
+    ("CLOSESTSTATE", "Politics", "Electoral College", "Closest State"),
+    ("SWINGSTATES24DJT", "Politics", "Electoral College", "Swing States DJT"),
+    ("TIPPINGPOINT", "Politics", "Electoral College", "Tipping Point"),
+    ("LASTSTATECALL24", "Politics", "Electoral College", "Last State Call"),
+    ("STATESHIFTRIGHT", "Politics", "Electoral College", "State Shift Right"),
+
+    # === POLITICS: Senate ===
+    ("SENATEAZ", "Politics", "Senate", "Arizona"),
+    ("SENATENV", "Politics", "Senate", "Nevada"),
+    ("SENATETX", "Politics", "Senate", "Texas"),
+    ("SENATEPA", "Politics", "Senate", "Pennsylvania"),
+    ("SENATEOH", "Politics", "Senate", "Ohio"),
+    ("SENATENE", "Politics", "Senate", "Nebraska"),
+    ("SENATEWI", "Politics", "Senate", "Wisconsin"),
+    ("SENATEFL", "Politics", "Senate", "Florida"),
+    ("SENATEMI", "Politics", "Senate", "Michigan"),
+    ("SENATEMOV", "Politics", "Senate", "Margin"),
+    ("SENATEMED", "Politics", "Senate", "Medicare"),
+    ("SENMAJORITY", "Politics", "Senate", "Majority"),
+    ("RSENATESEATS", "Politics", "Senate", "R Seats"),
+    ("SENATE", "Politics", "Senate", "Other"),
+
+    # === POLITICS: House ===
+    ("HOUSEMOV", "Politics", "House", "Margin"),
+    ("HOUSECA13", "Politics", "House", "CA-13"),
+    ("HOUSECA45", "Politics", "House", "CA-45"),
+    ("RHOUSESEATS", "Politics", "House", "R Seats"),
+    ("CONTROLS", "Politics", "House", "Control Senate"),
+    ("CONTROLH", "Politics", "House", "Control House"),
+    ("HOUSE", "Politics", "House", "Other"),
+
+    # === POLITICS: Governor ===
+    ("GOVPARTYNJ", "Politics", "Governor", "New Jersey"),
+    ("GOVPARTYVA", "Politics", "Governor", "Virginia"),
+    ("GOVSHUTLENGTH", "Politics", "Government", "Shutdown Length"),
+    ("GOVSHUT", "Politics", "Government", "Shutdown"),
+    ("GOVREOPEN2025", "Politics", "Government", "Reopen 2025"),
+    ("GOVTCUTS", "Politics", "Government", "Cuts"),
+    ("GOV", "Politics", "Governor", "Other"),
+
+    # === POLITICS: Trump Admin ===
+    ("TRUMPMENTION", "Politics", "Trump Admin", "Mentions"),
+    ("TRUMPMENTIONB", "Politics", "Trump Admin", "Mentions B"),
+    ("TRUMPPARDON", "Politics", "Trump Admin", "Pardons"),
+    ("TRUMPOUT", "Politics", "Trump Admin", "Out"),
+    ("TRUMPOFFICIAL", "Politics", "Trump Admin", "Officials"),
+    ("TRUMPSAY", "Politics", "Trump Admin", "Statements"),
+    ("TRUMPATTEND", "Politics", "Trump Admin", "Attendance"),
+    ("TRUMPMEET", "Politics", "Trump Admin", "Meetings"),
+    ("TRUMPPUTIN", "Politics", "Trump Admin", "Putin"),
+    ("TRUMP", "Politics", "Trump Admin", "Other"),
+    ("DJTJOINTSESSION", "Politics", "Trump Admin", "Joint Session"),
+    ("DJTVOSTARIFFS", "Politics", "Trump Admin", "Tariffs Vote"),
+
+    # === POLITICS: Biden Admin ===
+    ("BIDENPARDON", "Politics", "Biden Admin", "Pardons"),
+    ("BIDEN", "Politics", "Biden Admin", "Other"),
+
+    # === POLITICS: Cabinet ===
+    ("CABINETMUSK", "Politics", "Cabinet", "Musk"),
+    ("CABINETRFK", "Politics", "Cabinet", "RFK"),
+    ("CABINETTULSI", "Politics", "Cabinet", "Tulsi"),
+    ("CABOUT", "Politics", "Cabinet", "Out"),
+    ("CABCOUNT", "Politics", "Cabinet", "Count"),
+    ("CABINET", "Politics", "Cabinet", "Other"),
+    ("SECAG", "Politics", "Cabinet", "Sec Agriculture"),
+    ("SECDEF", "Politics", "Cabinet", "Sec Defense"),
+    ("SECHHS", "Politics", "Cabinet", "Sec HHS"),
+    ("SECTREASURY", "Politics", "Cabinet", "Sec Treasury"),
+    ("SECSTATE", "Politics", "Cabinet", "Sec State"),
+    ("SECPRESSMENTION", "Politics", "Cabinet", "Press Mentions"),
+    ("DNI", "Politics", "Cabinet", "DNI"),
+    ("FBI", "Politics", "Cabinet", "FBI"),
+    ("DOED", "Politics", "Cabinet", "Dept of Education"),
+
+    # === POLITICS: NYC Mayor ===
+    ("MAYORNYCPARTY", "Politics", "NYC Mayor", "Party"),
+    ("MAYORNYCNOMD", "Politics", "NYC Mayor", "Nominations"),
+    ("NYCMAYOR2ND", "Politics", "NYC Mayor", "2nd Round"),
+    ("NYCMAYORDROUND", "Politics", "NYC Mayor", "D Round"),
+    ("NYCMAYORDEBATEMENTION", "Politics", "NYC Mayor", "Debate Mentions"),
+    ("MAYORNYC", "Politics", "NYC Mayor", "General"),
+
+    # === POLITICS: Other Elections ===
+    ("ELECTIONMOVZOHRAN", "Politics", "Other Elections", "Zohran"),
+    ("ELECTIONMOVNJGOV", "Politics", "NYC Mayor", "NJ Governor"),
+    ("ELECTIONMOVVAGOV", "Politics", "Other Elections", "VA Governor"),
+    ("ELECTIONDAYS", "Politics", "Other Elections", "Days"),
+    ("ELECTION", "Politics", "Other Elections", "Other"),
+    ("MAYORSEATTLE", "Politics", "Other Elections", "Seattle Mayor"),
+    ("MAYORJERSEY", "Politics", "Other Elections", "Jersey Mayor"),
+    ("MAYORMINN", "Politics", "Other Elections", "Minneapolis Mayor"),
+    ("MAYOR", "Politics", "Other Elections", "Other Mayor"),
+    ("VOTEPERCENTMAMDANI", "Politics", "Other Elections", "Mamdani %"),
+    ("VOTEPERCENTSLIWA", "Politics", "Other Elections", "Sliwa %"),
+    ("VOTEPERCENTCUOMO", "Politics", "Other Elections", "Cuomo %"),
+    ("VOTERTULSI", "Politics", "Other Elections", "Tulsi"),
+    ("VOTERFK", "Politics", "Other Elections", "RFK"),
+    ("VOTEHEGSETH", "Politics", "Other Elections", "Hegseth"),
+    ("VOTEPATEL", "Politics", "Other Elections", "Patel"),
+    ("VOTE", "Politics", "Other Elections", "Other"),
+    ("PCTVOTEMAM", "Politics", "Other Elections", "Mamdani Pct"),
+    ("ATTYGENVA", "Politics", "Other Elections", "VA Attorney General"),
+
+    # === POLITICS: Canada ===
+    ("CANADAPM", "Politics", "Canada", "PM"),
+    ("NEXTCANADAPM", "Politics", "Canada", "Next PM"),
+    ("CANCOALITION", "Politics", "Canada", "Coalition"),
+    ("CANLIBSEATS", "Politics", "Canada", "Liberal Seats"),
+    ("PARTYWINNL", "Politics", "Canada", "NL Party"),
+
+    # === POLITICS: Misc ===
+    ("POWER", "Politics", "Other Politics", "Power"),
+    ("INAUG", "Politics", "Other Politics", "Inauguration"),
+    ("EOCOUNTDAY1", "Politics", "Other Politics", "EO Count Day 1"),
+    ("EOCOUNTDAY1B", "Politics", "Other Politics", "EO Count Day 1B"),
+    ("EOCOUNTDAY2", "Politics", "Other Politics", "EO Count Day 2"),
+    ("EOCOUNTDAY3", "Politics", "Other Politics", "EO Count Day 3"),
+    ("EOWEEK", "Politics", "Other Politics", "EO Week"),
+    ("STATEDEEPDJT", "Politics", "Other Politics", "State Deep DJT"),
+    ("JAN6PARDONDAY1", "Politics", "Other Politics", "Jan 6 Pardon Day 1"),
+    ("DEMSWEEP", "Politics", "Other Politics", "Dem Sweep"),
+    ("DEBATES24", "Politics", "Other Politics", "Debates 2024"),
+    ("SPEAKER", "Politics", "Other Politics", "Speaker"),
+    ("WISCOTUS", "Politics", "Other Politics", "WI SCOTUS"),
+    ("WICOURTMOV", "Politics", "Other Politics", "WI Court Margin"),
+    ("CUOMODROPOUT", "Politics", "Other Politics", "Cuomo Dropout"),
+    ("ENDORSECUOMO", "Politics", "Other Politics", "Endorse Cuomo"),
+    ("MAMDANIMENTION", "Politics", "Other Politics", "Mamdani Mentions"),
+    ("GABBARDCOUNT", "Politics", "Other Politics", "Gabbard Count"),
+    ("RFKCOUNT", "Politics", "Other Politics", "RFK Count"),
+    ("PATELCOUNT", "Politics", "Other Politics", "Patel Count"),
+    ("HEGSETHCOUNT", "Politics", "Other Politics", "Hegseth Count"),
+    ("RUBIO", "Politics", "Other Politics", "Rubio"),
+    ("LEAVEADMIN", "Politics", "Other Politics", "Leave Admin"),
+    ("LEADEROUT", "Politics", "Other Politics", "Leader Out"),
+    ("WLEADER", "Politics", "Other Politics", "World Leader"),
+    ("GREENLAND", "Politics", "Other Politics", "Greenland"),
+    ("TIKTOKBAN", "Politics", "Other Politics", "TikTok Ban"),
+
+    # === CRYPTO: Bitcoin ===
+    ("BTCD", "Crypto", "Bitcoin", "Daily"),
+    ("BTCMAXY", "Crypto", "Bitcoin", "Max Yearly"),
+    ("BTCMAX150", "Crypto", "Bitcoin", "Max 150K"),
+    ("BTCMAX125", "Crypto", "Bitcoin", "Max 125K"),
+    ("BTCMAX100", "Crypto", "Bitcoin", "Max 100K"),
+    ("BTCMAXM", "Crypto", "Bitcoin", "Max Monthly"),
+    ("BTCMINY", "Crypto", "Bitcoin", "Min Yearly"),
+    ("BTCRESERVE", "Crypto", "Bitcoin", "Reserve"),
+    ("BTC", "Crypto", "Bitcoin", "Price"),
+
+    # === CRYPTO: Ethereum ===
+    ("ETHD", "Crypto", "Ethereum", "Daily"),
+    ("ETHMAXY", "Crypto", "Ethereum", "Max Yearly"),
+    ("ETHMINY", "Crypto", "Ethereum", "Min Yearly"),
+    ("ETH", "Crypto", "Ethereum", "Price"),
+
+    # === CRYPTO: Other ===
+    ("DOGED", "Crypto", "Other Crypto", "Doge Daily"),
+    ("DOGE", "Crypto", "Other Crypto", "Doge"),
+    ("SOL", "Crypto", "Other Crypto", "Solana"),
+    ("XRP", "Crypto", "Other Crypto", "XRP"),
+    ("SHIBA", "Crypto", "Other Crypto", "Shiba"),
+    ("COIN", "Crypto", "Other Crypto", "Coinbase"),
+
+    # === FINANCE: Fed ===
+    ("FEDDECISION", "Finance", "Fed", "Decisions"),
+    ("FEDMENTION", "Finance", "Fed", "Mentions"),
+    ("FEDCHAIRNOM", "Finance", "Fed", "Chair Nomination"),
+    ("FEDEMPLOYEES", "Finance", "Fed", "Employees"),
+    ("FED", "Finance", "Fed", "Other"),
+    ("RATECUTCOUNT", "Finance", "Fed", "Rate Cut Count"),
+    ("RATECUT", "Finance", "Fed", "Rate Cut"),
+    ("TERMINALRATE", "Finance", "Fed", "Terminal Rate"),
+    ("LEAVEPOWELL", "Finance", "Fed", "Leave Powell"),
+    ("POWELLMENTION", "Finance", "Fed", "Powell Mentions"),
+
+    # === FINANCE: S&P 500 ===
+    ("INXU", "Finance", "S&P 500", "Up"),
+    ("INXD", "Finance", "S&P 500", "Daily"),
+    ("INXY", "Finance", "S&P 500", "Yearly"),
+    ("INXW", "Finance", "S&P 500", "Weekly"),
+    ("INXDU", "Finance", "S&P 500", "Daily Up"),
+    ("INX", "Finance", "S&P 500", "Other"),
+
+    # === FINANCE: NASDAQ ===
+    ("NASDAQ100U", "Finance", "NASDAQ", "Up"),
+    ("NASDAQ100D", "Finance", "NASDAQ", "Daily"),
+    ("NASDAQ100Y", "Finance", "NASDAQ", "Yearly"),
+    ("NASDAQ100W", "Finance", "NASDAQ", "Weekly"),
+    ("NASDAQ100DU", "Finance", "NASDAQ", "Daily Up"),
+    ("NASDAQ100", "Finance", "NASDAQ", "Other"),
+    ("NASDAQ", "Finance", "NASDAQ", "General"),
+
+    # === FINANCE: Bonds ===
+    ("TNOTEW", "Finance", "Bonds", "T-Note Weekly"),
+    ("TNOTED", "Finance", "Bonds", "T-Note Daily"),
+    ("TNOTE", "Finance", "Bonds", "T-Note"),
+    ("DCEIL", "Finance", "Bonds", "Debt Ceiling"),
+
+    # === FINANCE: Forex ===
+    ("USDJPYH", "Finance", "Forex", "USD/JPY Hourly"),
+    ("USDJPY", "Finance", "Forex", "USD/JPY"),
+    ("EURUSDH", "Finance", "Forex", "EUR/USD Hourly"),
+    ("EURUSD", "Finance", "Forex", "EUR/USD"),
+
+    # === FINANCE: Commodities ===
+    ("AAAGASM", "Finance", "Commodities", "Gas Monthly"),
+    ("AAAGASW", "Finance", "Commodities", "Gas Weekly"),
+    ("AAGAS", "Finance", "Commodities", "Gas AAA"),
+    ("GAS", "Finance", "Commodities", "Gas"),
+    ("WTI", "Finance", "Commodities", "WTI Oil"),
+    ("EGGS", "Finance", "Commodities", "Eggs"),
+
+    # === FINANCE: Economic Indicators ===
+    ("CPIYOY", "Finance", "Economic Indicators", "CPI YoY"),
+    ("CPICOREYOY", "Finance", "Economic Indicators", "CPI Core YoY"),
+    ("CPICORE", "Finance", "Economic Indicators", "CPI Core"),
+    ("CPI", "Finance", "Economic Indicators", "CPI"),
+    ("ACPI", "Finance", "Economic Indicators", "Adj CPI"),
+    ("GDP", "Finance", "Economic Indicators", "GDP"),
+    ("PAYROLLS", "Finance", "Economic Indicators", "Payrolls"),
+    ("U3", "Finance", "Economic Indicators", "Unemployment"),
+    ("RECSSNBER", "Finance", "Economic Indicators", "NBER Recession"),
+
+    # === FINANCE: Other ===
+    ("IPO", "Finance", "Other Finance", "IPOs"),
+    ("EARNINGSMENTIONTSLA", "Finance", "Other Finance", "TSLA Earnings"),
+    ("TESLA", "Finance", "Other Finance", "Tesla"),
+    ("MUSKPACKAGEVOTE", "Finance", "Other Finance", "Musk Package Vote"),
+    ("MUSKDOGE", "Finance", "Other Finance", "Musk DOGE"),
+    ("NEWPARTYMUSK", "Finance", "Other Finance", "Musk Party"),
+    ("TARIFF", "Finance", "Tariffs", "General"),
+    ("LARGETARIFF", "Finance", "Tariffs", "Large"),
+    ("TARIFFSC", "Finance", "Tariffs", "C"),
+    ("FTACOUNTRIES", "Finance", "Tariffs", "FTA Countries"),
+    ("DEBTSH", "Finance", "Other Finance", "Debt Shrink"),
+    ("GAMBLINGREPEAL", "Finance", "Other Finance", "Gambling Repeal"),
+    ("RECNCBILL", "Finance", "Other Finance", "Reconciliation Bill"),
+    ("SHUTDOWNBY", "Finance", "Other Finance", "Shutdown By"),
+    ("SHUTDOWNBYDATE", "Finance", "Other Finance", "Shutdown By Date"),
+    ("EXPAND", "Finance", "Other Finance", "Expand"),
+    ("DEPORTCOUNT", "Finance", "Other Finance", "Deport Count"),
+    ("WAYMOCITIES", "Finance", "Other Finance", "Waymo Cities"),
+    ("GOLDCARDS", "Finance", "Other Finance", "Gold Cards"),
+
+    # === WEATHER ===
+    ("HIGHNY", "Weather", "High Temp", "New York"),
+    ("HIGHCHI", "Weather", "High Temp", "Chicago"),
+    ("HIGHAUS", "Weather", "High Temp", "Austin"),
+    ("HIGHMIA", "Weather", "High Temp", "Miami"),
+    ("HIGHLAX", "Weather", "High Temp", "Los Angeles"),
+    ("HIGHDEN", "Weather", "High Temp", "Denver"),
+    ("HIGHPHIL", "Weather", "High Temp", "Philadelphia"),
+    ("HIGHHOU", "Weather", "High Temp", "Houston"),
+    ("HIGH", "Weather", "High Temp", "Other"),
+    ("HMONTH", "Weather", "High Temp", "Monthly"),
+    ("RAINNYC", "Weather", "Precipitation", "NYC Rain"),
+    ("RAINNYCM", "Weather", "Precipitation", "NYC Rain Monthly"),
+    ("RAIN", "Weather", "Precipitation", "Other Rain"),
+    ("SNOWNYM", "Weather", "Precipitation", "NYC Snow Monthly"),
+    ("SNOW", "Weather", "Precipitation", "Other Snow"),
+    ("TORNADO", "Weather", "Severe Weather", "Tornado"),
+    ("HURCAT", "Weather", "Severe Weather", "Hurricane"),
+    ("ARCTICICE", "Weather", "Climate", "Arctic Ice"),
+    ("WEATHER", "Weather", "Other Weather", "Other"),
+
+    # === ENTERTAINMENT: Spotify ===
+    ("SPOTIFYD", "Entertainment", "Spotify", "Daily"),
+    ("SPOTIFY2D", "Entertainment", "Spotify", "2-Day"),
+    ("SPOTIFYGLOBALD", "Entertainment", "Spotify", "Global Daily"),
+    ("SPOTIFYSONGSOPALITE", "Entertainment", "Spotify", "Songs Opalite"),
+    ("SPOTIFY", "Entertainment", "Spotify", "Other"),
+
+    # === ENTERTAINMENT: Movies ===
+    ("RTCAPTAINAMERICA", "Entertainment", "Movies", "Captain America"),
+    ("RTMOANA2", "Entertainment", "Movies", "Moana 2"),
+    ("RTMICKEY17", "Entertainment", "Movies", "Mickey 17"),
+    ("RTWICKEDFORGOOD", "Entertainment", "Movies", "Wicked For Good"),
+    ("RTWICKED", "Entertainment", "Movies", "Wicked"),
+    ("RTNOSFERATU", "Entertainment", "Movies", "Nosferatu"),
+    ("RTMUFASA", "Entertainment", "Movies", "Mufasa"),
+    ("RTMINECRAFT", "Entertainment", "Movies", "Minecraft"),
+    ("RTSNOWWHITE", "Entertainment", "Movies", "Snow White"),
+    ("RTSUPERMAN", "Entertainment", "Movies", "Superman"),
+    ("RTDOGMAN", "Entertainment", "Movies", "Dog Man"),
+    ("RTLASTBREATH", "Entertainment", "Movies", "Last Breath"),
+    ("RTTHEMONKEY", "Entertainment", "Movies", "The Monkey"),
+    ("RTNOVOCAINE", "Entertainment", "Movies", "Novocaine"),
+    ("RTFANTASTICFOUR", "Entertainment", "Movies", "Fantastic Four"),
+    ("RTJURASSICWORLDREBIRTH", "Entertainment", "Movies", "Jurassic World"),
+    ("RT", "Entertainment", "Movies", "Rotten Tomatoes"),
+
+    # === ENTERTAINMENT: Awards ===
+    ("OSCARPIC", "Entertainment", "Awards", "Oscar Best Picture"),
+    ("OSCARNOMPIC", "Entertainment", "Awards", "Oscar Nom Picture"),
+    ("OSCARACTR", "Entertainment", "Awards", "Oscar Actor"),
+    ("OSCARACTO", "Entertainment", "Awards", "Oscar Actress"),
+    ("OSCARNOMACTO", "Entertainment", "Awards", "Oscar Nom Actress"),
+    ("OSCAR", "Entertainment", "Awards", "Other Oscar"),
+    ("GRAMSOTY", "Entertainment", "Awards", "Grammy SOTY"),
+    ("GRAMAOTY", "Entertainment", "Awards", "Grammy AOTY"),
+    ("GRAMMY", "Entertainment", "Awards", "Other Grammy"),
+    ("EMMYDSERIES", "Entertainment", "Awards", "Emmy Drama"),
+    ("EMMY", "Entertainment", "Awards", "Other Emmy"),
+    ("GAMEAWARDS", "Entertainment", "Awards", "Game Awards"),
+    ("BAFTA", "Entertainment", "Awards", "BAFTA"),
+
+    # === ENTERTAINMENT: Netflix ===
+    ("NETFLIXRANKMOVIE", "Entertainment", "Netflix", "Movie Rank"),
+    ("NETFLIXRANKSHOW", "Entertainment", "Netflix", "Show Rank"),
+    ("NETFLIX", "Entertainment", "Netflix", "Other"),
+
+    # === ENTERTAINMENT: Music ===
+    ("TOPARTIST", "Entertainment", "Music", "Top Artist"),
+    ("TOPSONG", "Entertainment", "Music", "Top Song"),
+    ("TOPALBUM", "Entertainment", "Music", "Top Album"),
+    ("SONGSONCHARTTSWIFT", "Entertainment", "Music", "Taylor Swift Songs"),
+    ("SONGSONCHARTTSWIFT2", "Entertainment", "Music", "Taylor Swift Songs 2"),
+    ("SONGSONCHARTTSWIFT6", "Entertainment", "Music", "Taylor Swift Songs 6"),
+    ("ALBUUMSALESSWIFT", "Entertainment", "Music", "Taylor Swift Album Sales"),
+    ("SWIFTMENTION", "Entertainment", "Music", "Taylor Swift Mentions"),
+    ("TOP10BILLBOARDSPOTSTS", "Entertainment", "Music", "Billboard Top 10 TS"),
+    ("MOSTSTREAMESTSTLOASG", "Entertainment", "Music", "Most Streamed TS"),
+    ("BILLBOARD", "Entertainment", "Music", "Billboard"),
+
+    # === ENTERTAINMENT: TV/Media ===
+    ("KIMMELMENTION", "Entertainment", "TV/Media", "Kimmel Mentions"),
+    ("SOUTHPARKMENTION", "Entertainment", "TV/Media", "South Park Mentions"),
+    ("MRBEASTMENTION", "Entertainment", "TV/Media", "MrBeast Mentions"),
+    ("SNFMENTION", "Entertainment", "TV/Media", "SNF Mentions"),
+    ("TNFMENTION", "Entertainment", "TV/Media", "TNF Mentions"),
+    ("SUPERBOWLHEADLINE", "Entertainment", "TV/Media", "Super Bowl Headlines"),
+    ("SBADS", "Entertainment", "TV/Media", "Super Bowl Ads"),
+    ("SBSETLISTS", "Entertainment", "TV/Media", "Super Bowl Setlists"),
+    ("SBPERFORM", "Entertainment", "TV/Media", "Super Bowl Performance"),
+
+    # === ENTERTAINMENT: Other ===
+    ("TOPMODEL", "Entertainment", "Other Entertainment", "Top Model"),
+    ("APPRANKFREE", "Entertainment", "Other Entertainment", "App Rank Free"),
+    ("APPRANK", "Entertainment", "Other Entertainment", "App Rank"),
+    ("TIME", "Entertainment", "Other Entertainment", "Time"),
+    ("GTA6", "Entertainment", "Other Entertainment", "GTA 6"),
+    ("ANIME", "Entertainment", "Other Entertainment", "Anime"),
+    ("MANTISFREETHROW", "Entertainment", "Other Entertainment", "Mantis Free Throw"),
+
+    # === SCIENCE/TECH ===
+    ("LLM1", "Science/Tech", "AI", "LLM Benchmark"),
+    ("LLM", "Science/Tech", "AI", "LLM"),
+    ("AI", "Science/Tech", "AI", "Other AI"),
+    ("SPACEXSTARSHIP", "Science/Tech", "Space", "SpaceX Starship"),
+    ("SPACEX", "Science/Tech", "Space", "SpaceX"),
+    ("ALIENS", "Science/Tech", "Space", "Aliens"),
+    ("APPLE", "Science/Tech", "Tech", "Apple"),
+    ("CEOASTRONOMER", "Science/Tech", "Tech", "CEO Astronomer"),
+    ("LEAVELISACOOK", "Science/Tech", "Tech", "Leave Lisa Cook"),
+
+    # === WORLD EVENTS ===
+    ("NOBELPEACE", "World Events", "Nobel Prize", "Peace"),
+    ("NOBEL", "World Events", "Nobel Prize", "Other"),
+    ("NEXTPOPE", "World Events", "Religion", "Next Pope"),
+    ("POPE", "World Events", "Religion", "Pope"),
+    ("EPSTEINBILL", "World Events", "Other Events", "Epstein Bill"),
+    ("EPSTEINLIST", "World Events", "Other Events", "Epstein List"),
+    ("OTEEPSTEIN", "World Events", "Other Events", "OTE Epstein"),
+    ("EPSTEIN", "World Events", "Other Events", "Epstein"),
+    ("ZELENSKYYPUTINMEET", "World Events", "Other Events", "Zelensky Putin Meet"),
+    ("BOLIVIAPRES", "World Events", "Other Events", "Bolivia President"),
+    ("SKPRES", "World Events", "Other Events", "South Korea President"),
+    ("LAGODAYS", "World Events", "Other Events", "Lagos Days"),
+    ("ARREST", "World Events", "Other Events", "Arrests"),
+
+    # === MEDIA ===
+    ("MENTION", "Media", "Mentions", "General"),
+    ("GOOGLESEARCH", "Media", "Search Trends", "Google Search"),
+    ("RANKLISTGOOGLESEARCH", "Media", "Search Trends", "Google Search Rank"),
+    ("RANKLISTGOOGLESEARCHTOP5", "Media", "Search Trends", "Google Search Top 5"),
+    ("RANKLISTSONGTHRILLER", "Media", "Search Trends", "Song Thriller"),
+    ("HEADLINE", "Media", "Headlines", "Headlines"),
+    ("VANCE", "Media", "Mentions", "Vance"),
+    ("UFSD", "Media", "Other Media", "UFSD"),
+    ("TSAW", "Media", "Other Media", "TSAW"),
+    ("CASEM", "Media", "Other Media", "Case M"),
+    ("CASED", "Media", "Other Media", "Case D"),
+    ("538APPROVE", "Media", "Polls", "538 Approve"),
+    ("APRPOTUS", "Media", "Polls", "Approve POTUS"),
+]
+
+
+def get_hierarchy(category: str) -> tuple[str, str, str]:
+    """Map a category to its (group, category, subcategory) tuple."""
+    cat_upper = category.upper()
+    for pattern, group, cat, subcat in SUBCATEGORY_PATTERNS:
+        if pattern in cat_upper:
+            return (group, cat, subcat)
+    return ("Other", "Other", category)
+
+
+def get_group(category: str) -> str:
+    """Map a category to its high-level group (for backwards compatibility)."""
+    group, _, _ = get_hierarchy(category)
+    return group
+
+
+# Legacy mappings for backwards compatibility
+CATEGORY_GROUPS = {
+    pattern: group for pattern, group, _, _ in SUBCATEGORY_PATTERNS
+}
+
+GROUP_COLORS = {
+    "Sports": "#1f77b4",
+    "Politics": "#d62728",
+    "Crypto": "#ff7f0e",
+    "Finance": "#2ca02c",
+    "Science/Tech": "#9467bd",
+    "Weather": "#17becf",
+    "Entertainment": "#e377c2",
+    "Media": "#bcbd22",
+    "World Events": "#8c564b",
+    "Esports": "#7f7f7f",
+    "Other": "#aaaaaa",
+}
+
+
+# SQL expression to extract category from event_ticker
+CATEGORY_SQL = """
+CASE
+    WHEN event_ticker IS NULL OR event_ticker = '' THEN 'independent'
+    WHEN regexp_extract(event_ticker, '^([A-Z0-9]+)', 1) = '' THEN 'independent'
+    ELSE regexp_extract(event_ticker, '^([A-Z0-9]+)', 1)
+END
+"""
