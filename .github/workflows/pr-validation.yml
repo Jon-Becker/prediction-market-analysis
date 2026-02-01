@@ -1,0 +1,78 @@
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  pr-title:
+    name: Code Quality (PR Title)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR Title
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.pull_request.title;
+            const pattern = /^(feat|fix|perf|chore|refactor|deps|docs|test|ci|build|style|revert)(\(.+\))?: .+$/;
+
+            if (!pattern.test(title)) {
+              core.setFailed(`PR title "${title}" does not follow conventional commit format.\n\nExpected format: <type>(<scope>): <description> or <type>: <description>\n\nValid types: feat, fix, perf, chore, refactor, deps, docs, test, ci, build, style, revert\n\nExamples:\n  feat(analysis): add new feature\n  feat: some change\n  deps: bump dependency`);
+            }
+
+  pr-description:
+    name: Code Quality (PR Description)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate PR Description
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const body = context.payload.pull_request.body || '';
+            const trimmed = body.trim();
+
+            if (!trimmed || trimmed.length < 10) {
+              core.setFailed('PR description is required and must be at least 10 characters long. Please provide a meaningful description of your changes.');
+              return;
+            }
+
+            // Read the PR template
+            const templatePath = '.github/PULL_REQUEST_TEMPLATE.md';
+            let template = '';
+            try {
+              template = fs.readFileSync(templatePath, 'utf8');
+            } catch (e) {
+              // No template found, skip template validation
+              return;
+            }
+
+            // Extract section headers from template
+            const sectionPattern = /^## (.+)$/gm;
+            const sections = [...template.matchAll(sectionPattern)].map(m => m[1]);
+
+            // Check each section has content beyond the template comments
+            const errors = [];
+            for (const section of sections) {
+              const escapedSection = section.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+              const sectionRegex = new RegExp(`## ${escapedSection}\\s*\\n([\\s\\S]*?)(?=\\n## |$)`, 'm');
+              const match = body.match(sectionRegex);
+
+              if (!match) {
+                errors.push(`Missing required section: "${section}"`);
+                continue;
+              }
+
+              // Remove HTML comments and whitespace to check for actual content
+              const content = match[1].replace(/<!--[\s\S]*?-->/g, '').trim();
+              if (!content || content.length < 5) {
+                errors.push(`Section "${section}" must have meaningful content (not just the template placeholder)`);
+              }
+            }
+
+            if (errors.length > 0) {
+              core.setFailed(`PR description validation failed:\n\n${errors.join('\n')}\n\nPlease fill in all sections of the PR template.`);
+            }

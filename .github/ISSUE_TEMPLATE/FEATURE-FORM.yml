@@ -1,0 +1,28 @@
+name: Feature request
+description: Request a new feature
+labels: ["T-feature"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Please ensure that this feature has not already been requested in the issue tracker.
+
+              Thanks for taking the time to help improve this project!
+    - type: dropdown
+      attributes:
+          label: Component
+          description: What component is the feature request for?
+          multiple: true
+          options:
+              - Data Collection
+              - Analysis
+              - Visualization
+              - Other (please specify)
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: Describe the feature you would like
+          description: Please also describe what the feature is aiming to solve, if relevant.
+      validations:
+          required: true

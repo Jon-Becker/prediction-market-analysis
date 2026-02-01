@@ -1,0 +1,30 @@
+name: Bug report
+description: File a bug report
+labels: ["T-bug"]
+assignees:
+    - jon-becker
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Please ensure that the bug has not already been filed in the issue tracker.
+
+              Thanks for taking the time to report this bug!
+    - type: dropdown
+      attributes:
+          label: Component
+          description: What component is the bug in?
+          multiple: true
+          options:
+              - Data Collection
+              - Analysis
+              - Visualization
+              - Other (please specify)
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: Describe the bug
+          description: Please include as much detail as possible, including steps to reproduce the bug.
+      validations:
+          required: true

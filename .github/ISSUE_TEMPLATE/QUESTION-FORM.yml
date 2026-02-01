@@ -1,0 +1,26 @@
+name: Question
+description: Ask a general question about this project
+labels: ["T-question"]
+body:
+    - type: markdown
+      attributes:
+          value: |
+              Please ensure that the question has not already been asked in the issue tracker.
+    - type: dropdown
+      attributes:
+          label: Component
+          description: What component is the question about?
+          multiple: true
+          options:
+              - Data Collection
+              - Analysis
+              - Visualization
+              - Other (please specify)
+      validations:
+          required: true
+    - type: textarea
+      attributes:
+          label: Question
+          description: Please ask your question here.
+      validations:
+          required: true
