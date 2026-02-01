@@ -9,6 +9,7 @@ dependencies = [
     "cryptography>=46.0.3",
     "duckdb>=1.4.2",
     "httpx>=0.28.1",
+    "imageio>=2.36.0",
     "kalshi-python>=2.1.4",
     "matplotlib>=3.9.4",
     "pandas>=2.3.3",
@@ -16,5 +17,9 @@ dependencies = [
     "pyarrow>=18.0.0",
     "scipy>=1.13.1",
     "squarify>=0.4.4",
+    "tenacity>=8.0.0",
     "tqdm>=4.67.1",
+    "web3>=6.0.0",
+    "simple-term-menu>=1.6.0",
+    "python-dotenv>=1.2.1",
 ]
