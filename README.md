@@ -1,10 +1,10 @@
 # Prediction Market Analysis
 
-A framework for analyzing prediction market data, including a large dataset of Polymarket and Kalshi market and trade data. Provides tools for data collection, storage, and running analysis scripts that generate figures and statistics.
+A framework for analyzing prediction market data, including the largest publicly available dataset of Polymarket and Kalshi market and trade data. Provides tools for data collection, storage, and running analysis scripts that generate figures and statistics.
 
 ## Overview
 
-This project enables research and analysis of prediction market microstructure by providing:
+This project enables research and analysis of prediction markets by providing:
 - Pre-collected datasets from Polymarket and Kalshi
 - Data collection indexers for gathering new data
 - Analysis framework for generating figures and statistics
@@ -23,7 +23,7 @@ Requires Python 3.9+. Install dependencies with [uv](https://github.com/astral-s
 uv sync
 ```
 
-Download and extract the pre-collected dataset:
+Download and extract the pre-collected dataset (33.3GiB compressed):
 
 ```bash
 make setup
@@ -106,4 +106,4 @@ If you've found an issue or have a question, please open an issue [here](https:/
 
 - Becker, J. (2026). _The Microstructure of Wealth Transfer in Prediction Markets_. Jbecker. https://jbecker.dev/research/prediction-market-microstructure
 
-If you have used or plan to use this dataset in your research, please reach out via [email](mailto:jonathan@jbecker.dev) or [Twitter](https://x.com/BeckerrJon) -- i'd love to chat with you! Additionally, feel free to open a PR and update this section.
+If you have used or plan to use this dataset in your research, please reach out via [email](mailto:jonathan@jbecker.dev) or [Twitter](https://x.com/BeckerrJon) -- i'd love to hear about what you're using the data for! Additionally, feel free to open a PR and update this section with a link to your paper.
