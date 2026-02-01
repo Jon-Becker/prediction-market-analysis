@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime, timedelta
 from pathlib import Path
 
 import duckdb
@@ -11,23 +10,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from src.analysis.polymarket.util import block_to_date
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 
 # Polygon block time is ~2 seconds, so ~43,200 blocks per day
 BLOCKS_PER_DAY = 43200
 BLOCKS_PER_WEEK = BLOCKS_PER_DAY * 7
-# Polymarket start block (mid 2023)
-POLYMARKET_START_BLOCK = 40000000
-# Approximate start date for block 40M
-POLYMARKET_START_DATE = datetime(2023, 6, 15)
-
-
-def _block_to_date(block_number: int) -> datetime:
-    """Estimate date from block number using ~2s block time."""
-    blocks_since_start = block_number - POLYMARKET_START_BLOCK
-    seconds_since_start = blocks_since_start * 2
-    return POLYMARKET_START_DATE + timedelta(seconds=seconds_since_start)
 
 
 class PolymarketCalibrationDeviationOverTimeAnalysis(Analysis):
@@ -161,7 +150,7 @@ class PolymarketCalibrationDeviationOverTimeAnalysis(Analysis):
             absolute_deviations = np.abs(win_rates - prices)
             mean_deviation = np.mean(absolute_deviations)
 
-            current_date = _block_to_date(end_block)
+            current_date = block_to_date(end_block)
             dates.append(current_date)
             deviations.append(mean_deviation)
 

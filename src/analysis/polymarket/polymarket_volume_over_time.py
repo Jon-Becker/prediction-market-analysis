@@ -8,17 +8,9 @@ import duckdb
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from src.analysis.polymarket.util.blocks import BLOCKS_DIR, FALLBACK_ANCHORS
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, ScaleType, UnitType
-
-# Polygon block number -> unix timestamp anchor points (from RPC)
-BLOCK_ANCHORS = [
-    (40_000_176, 1_678_036_019),
-    (50_000_000, 1_700_108_689),
-    (60_000_000, 1_722_368_382),
-    (70_000_000, 1_744_013_119),
-    (78_756_659, 1_762_618_199),
-]
 
 
 class PolymarketVolumeOverTimeAnalysis(Analysis):
@@ -35,24 +27,57 @@ class PolymarketVolumeOverTimeAnalysis(Analysis):
         base_dir = Path(__file__).parent.parent.parent.parent
         self.trades_dir = Path(trades_dir or base_dir / "data" / "polymarket" / "trades")
 
+    def _register_block_to_timestamp_macro(self, con: duckdb.DuckDBPyConnection) -> None:
+        """Register a DuckDB macro for block-to-timestamp interpolation."""
+        # Try to load blocks from parquet files
+        parquet_files = list(BLOCKS_DIR.glob("*.parquet")) if BLOCKS_DIR.exists() else []
+
+        if parquet_files:
+            con.execute(
+                f"""
+                CREATE TABLE blocks AS
+                SELECT block_number, timestamp
+                FROM '{BLOCKS_DIR}/*.parquet'
+                ORDER BY block_number
+                """
+            )
+            con.execute(
+                """
+                CREATE MACRO block_to_timestamp(block_num) AS (
+                    SELECT CAST(
+                        b1.timestamp + (block_num - b1.block_number) *
+                        (b2.timestamp - b1.timestamp)::DOUBLE /
+                        (b2.block_number - b1.block_number)::DOUBLE
+                    AS BIGINT)
+                    FROM blocks b1, blocks b2
+                    WHERE b1.block_number <= block_num
+                      AND b2.block_number >= block_num
+                      AND b1.block_number = (SELECT MAX(block_number) FROM blocks WHERE block_number <= block_num)
+                      AND b2.block_number = (SELECT MIN(block_number) FROM blocks WHERE block_number >= block_num)
+                )
+                """
+            )
+        else:
+            # Fallback to hardcoded anchors with simple linear interpolation
+            anchor_blocks = [b for b, _ in FALLBACK_ANCHORS]
+            anchor_timestamps = [t for _, t in FALLBACK_ANCHORS]
+            con.execute(
+                f"""
+                CREATE MACRO block_to_timestamp(block_num) AS (
+                    CAST(
+                        {anchor_timestamps[0]} + (block_num - {anchor_blocks[0]}) *
+                        ({anchor_timestamps[-1]} - {anchor_timestamps[0]})::DOUBLE /
+                        ({anchor_blocks[-1]} - {anchor_blocks[0]})::DOUBLE
+                    AS BIGINT)
+                )
+                """
+            )
+
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
         con = duckdb.connect()
 
-        # Register a macro to convert block numbers to timestamps via linear interpolation
-        anchor_blocks = [b for b, _ in BLOCK_ANCHORS]
-        anchor_timestamps = [t for _, t in BLOCK_ANCHORS]
-        con.execute(
-            f"""
-            CREATE MACRO block_to_timestamp(block_num) AS (
-                CAST(
-                    {anchor_timestamps[0]} + (block_num - {anchor_blocks[0]}) *
-                    ({anchor_timestamps[-1]} - {anchor_timestamps[0]})::DOUBLE /
-                    ({anchor_blocks[-1]} - {anchor_blocks[0]})::DOUBLE
-                AS BIGINT)
-            )
-            """
-        )
+        self._register_block_to_timestamp_macro(con)
 
         # Volume is the USDC side of each trade:
         # - When maker_asset_id = '0', maker provides USDC (maker_amount)
