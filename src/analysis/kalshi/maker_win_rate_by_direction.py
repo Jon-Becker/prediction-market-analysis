@@ -89,20 +89,24 @@ class MakerWinRateByDirectionAnalysis(Analysis):
 
         # Pivot for comparison
         df_yes = df[df["maker_side"] == "YES"][["price", "win_rate", "mispricing", "n_trades", "contracts"]].copy()
-        df_yes = df_yes.rename(columns={
-            "win_rate": "yes_win_rate",
-            "mispricing": "yes_mispricing",
-            "n_trades": "yes_n",
-            "contracts": "yes_contracts",
-        })
+        df_yes = df_yes.rename(
+            columns={
+                "win_rate": "yes_win_rate",
+                "mispricing": "yes_mispricing",
+                "n_trades": "yes_n",
+                "contracts": "yes_contracts",
+            }
+        )
 
         df_no = df[df["maker_side"] == "NO"][["price", "win_rate", "mispricing", "n_trades", "contracts"]].copy()
-        df_no = df_no.rename(columns={
-            "win_rate": "no_win_rate",
-            "mispricing": "no_mispricing",
-            "n_trades": "no_n",
-            "contracts": "no_contracts",
-        })
+        df_no = df_no.rename(
+            columns={
+                "win_rate": "no_win_rate",
+                "mispricing": "no_mispricing",
+                "n_trades": "no_n",
+                "contracts": "no_contracts",
+            }
+        )
 
         comparison = pd.merge(df_yes, df_no, on="price", how="outer")
         comparison["implied_prob"] = comparison["price"] / 100.0

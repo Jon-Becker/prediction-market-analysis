@@ -1,7 +1,7 @@
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
-from typing import List, Union
+from typing import Union
 
 import pandas as pd
 
@@ -13,7 +13,7 @@ class ParquetStorage:
         self.data_dir = Path(data_dir)
         self.data_dir.mkdir(parents=True, exist_ok=True)
 
-    def _get_market_chunks(self) -> List[Path]:
+    def _get_market_chunks(self) -> list[Path]:
         """Get all market chunk files sorted by start index."""
         chunks = list(self.data_dir.glob("markets_*_*.parquet"))
         chunks.sort(key=lambda p: int(p.stem.split("_")[1]))
@@ -55,7 +55,5 @@ class ParquetStorage:
             new_chunk_path = self._chunk_path(new_start, new_start + self.CHUNK_SIZE)
             remaining.to_parquet(new_chunk_path)
 
-        total = sum(
-            len(pd.read_parquet(c, columns=["ticker"])) for c in self._get_market_chunks()
-        )
+        total = sum(len(pd.read_parquet(c, columns=["ticker"])) for c in self._get_market_chunks())
         return total

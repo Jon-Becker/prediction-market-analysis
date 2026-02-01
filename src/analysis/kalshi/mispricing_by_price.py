@@ -110,27 +110,19 @@ class MispricingByPriceAnalysis(Analysis):
         # Price is in cents (1-99), so implied probability = price
         df["implied_probability"] = df["price"].astype(float)
         df["taker_mispricing_pct"] = (
-            (df["taker_win_rate"] - df["implied_probability"])
-            / df["implied_probability"]
-            * 100
+            (df["taker_win_rate"] - df["implied_probability"]) / df["implied_probability"] * 100
         )
         df["maker_mispricing_pct"] = (
-            (df["maker_win_rate"] - df["implied_probability"])
-            / df["implied_probability"]
-            * 100
+            (df["maker_win_rate"] - df["implied_probability"]) / df["implied_probability"] * 100
         )
         df["combined_mispricing_pct"] = (
-            (df["combined_win_rate"] - df["implied_probability"])
-            / df["implied_probability"]
-            * 100
+            (df["combined_win_rate"] - df["implied_probability"]) / df["implied_probability"] * 100
         )
 
         # Calculate mispricing in percentage points (pp) for chart
         df["taker_mispricing_pp"] = df["taker_win_rate"] - df["implied_probability"]
         df["maker_mispricing_pp"] = df["maker_win_rate"] - df["implied_probability"]
-        df["combined_mispricing_pp"] = (
-            df["combined_win_rate"] - df["implied_probability"]
-        )
+        df["combined_mispricing_pp"] = df["combined_win_rate"] - df["implied_probability"]
 
         fig = self._create_figure(df)
         chart = self._create_chart(df)
@@ -169,9 +161,7 @@ class MispricingByPriceAnalysis(Analysis):
             label="Combined",
         )
 
-        ax.axhline(
-            y=0, linestyle="--", color="gray", linewidth=1.5, label="Perfect calibration"
-        )
+        ax.axhline(y=0, linestyle="--", color="gray", linewidth=1.5, label="Perfect calibration")
         ax.set_xlabel("Contract Price (cents)")
         ax.set_ylabel("Mispricing (%)")
         ax.set_title("Mispricing by Contract Price")

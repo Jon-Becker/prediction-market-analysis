@@ -31,9 +31,7 @@ class PolymarketBlocksIndexer(Indexer):
             description="Fetches block timestamps sampled every 4 times daily",
         )
 
-    def _fetch_timestamp(
-        self, client: PolygonClient, block_number: int
-    ) -> Optional[dict]:
+    def _fetch_timestamp(self, client: PolygonClient, block_number: int) -> Optional[dict]:
         """Fetch timestamp for a single block."""
         try:
             timestamp = client.get_block_timestamp(block_number)
@@ -98,10 +96,7 @@ class PolymarketBlocksIndexer(Indexer):
         records = []
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            futures = {
-                executor.submit(self._fetch_timestamp, client, block): block
-                for block in blocks_to_fetch
-            }
+            futures = {executor.submit(self._fetch_timestamp, client, block): block for block in blocks_to_fetch}
 
             for future in tqdm(
                 concurrent.futures.as_completed(futures),
@@ -126,9 +121,7 @@ class PolymarketBlocksIndexer(Indexer):
         parquet_files = list(BLOCKS_DIR.glob("*.parquet"))
         if parquet_files:
             parquet_pattern = str(BLOCKS_DIR / "*.parquet")
-            df_existing = duckdb.execute(
-                f"SELECT * FROM read_parquet('{parquet_pattern}')"
-            ).df()
+            df_existing = duckdb.execute(f"SELECT * FROM read_parquet('{parquet_pattern}')").df()
             df_new = pd.concat([df_existing, df_new], ignore_index=True)
             df_new = df_new.drop_duplicates(subset=["block_number"])
 

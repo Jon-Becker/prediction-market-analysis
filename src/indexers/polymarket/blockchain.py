@@ -1,9 +1,10 @@
 """Fetch Polymarket trades directly from the Polygon blockchain."""
 
-import os
 import concurrent.futures
+import os
+from collections.abc import Generator
 from dataclasses import dataclass
-from typing import Generator, List, Optional, Tuple
+from typing import Optional
 
 from dotenv import load_dotenv
 from web3 import Web3
@@ -107,9 +108,7 @@ class PolygonClient:
         self.w3.middleware_onion.inject(ExtraDataToPOAMiddleware, layer=0)
 
         # Create contract instances for decoding
-        self.ctf_exchange = self.w3.eth.contract(
-            address=Web3.to_checksum_address(CTF_EXCHANGE), abi=[ORDER_FILLED_ABI]
-        )
+        self.ctf_exchange = self.w3.eth.contract(address=Web3.to_checksum_address(CTF_EXCHANGE), abi=[ORDER_FILLED_ABI])
         self.negrisk_exchange = self.w3.eth.contract(
             address=Web3.to_checksum_address(NEGRISK_CTF_EXCHANGE),
             abi=[ORDER_FILLED_ABI],
@@ -148,13 +147,9 @@ class PolygonClient:
         from_block: int,
         to_block: int,
         contract_address: str = CTF_EXCHANGE,
-    ) -> List[BlockchainTrade]:
+    ) -> list[BlockchainTrade]:
         """Fetch OrderFilled events from a block range."""
-        contract = (
-            self.ctf_exchange
-            if contract_address.lower() == CTF_EXCHANGE.lower()
-            else self.negrisk_exchange
-        )
+        contract = self.ctf_exchange if contract_address.lower() == CTF_EXCHANGE.lower() else self.negrisk_exchange
 
         logs = self.w3.eth.get_logs(
             {
@@ -175,9 +170,7 @@ class PolygonClient:
 
         return trades
 
-    def _fetch_chunk(
-        self, start: int, end: int, contract_address: str
-    ) -> Tuple[List[BlockchainTrade], int, int]:
+    def _fetch_chunk(self, start: int, end: int, contract_address: str) -> tuple[list[BlockchainTrade], int, int]:
         """Fetch a single chunk of trades. Used by thread pool."""
         try:
             trades = self.get_trades(start, end, contract_address)
@@ -200,7 +193,7 @@ class PolygonClient:
         chunk_size: int = 1000,
         contract_address: str = CTF_EXCHANGE,
         max_workers: int = 5,
-    ) -> Generator[Tuple[List[BlockchainTrade], int, int], None, None]:
+    ) -> Generator[tuple[list[BlockchainTrade], int, int], None, None]:
         """Iterate through trades in chunks of blocks using parallel fetching.
 
         Args:
@@ -229,9 +222,7 @@ class PolygonClient:
             for batch_start in range(0, len(ranges), max_workers):
                 batch = ranges[batch_start : batch_start + max_workers]
                 futures = {
-                    executor.submit(
-                        self._fetch_chunk, start, end, contract_address
-                    ): (start, end)
+                    executor.submit(self._fetch_chunk, start, end, contract_address): (start, end)
                     for start, end in batch
                 }
 
@@ -243,6 +234,7 @@ class PolygonClient:
 
                 for start, end in batch:
                     yield results[(start, end)], start, end
+
 
 # Polymarket CTF Exchange created at block 33605403
 POLYMARKET_START_BLOCK = int(os.getenv("POLYMARKET_START_BLOCK", "33605403"))

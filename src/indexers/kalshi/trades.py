@@ -33,9 +33,7 @@ class KalshiTradesIndexer(Indexer):
         existing_tickers = set()
         for f in DATA_DIR.glob("trades_*.parquet"):
             try:
-                tickers_in_file = duckdb.sql(
-                    f"SELECT DISTINCT ticker FROM '{f}'"
-                ).fetchall()
+                tickers_in_file = duckdb.sql(f"SELECT DISTINCT ticker FROM '{f}'").fetchall()
                 existing_tickers.update(row[0] for row in tickers_in_file)
             except Exception:
                 pass
@@ -107,16 +105,12 @@ class KalshiTradesIndexer(Indexer):
                         t["_fetched_at"] = fetched_at
                     all_trades.extend(trades_data)
 
-                pbar.set_postfix(
-                    buffer=len(all_trades), saved=total_trades_saved, last=ticker[-20:]
-                )
+                pbar.set_postfix(buffer=len(all_trades), saved=total_trades_saved, last=ticker[-20:])
 
                 while len(all_trades) >= BATCH_SIZE:
                     save_batch(all_trades[:BATCH_SIZE])
                     all_trades = all_trades[BATCH_SIZE:]
-                    pbar.set_postfix(
-                        buffer=len(all_trades), saved=total_trades_saved, last=ticker[-20:]
-                    )
+                    pbar.set_postfix(buffer=len(all_trades), saved=total_trades_saved, last=ticker[-20:])
 
                 CURSOR_FILE.write_text(ticker)
             except Exception as e:

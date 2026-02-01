@@ -63,7 +63,7 @@ class PolymarketWinRateByPriceAnalysis(Analysis):
                 continue
 
         # Step 2: Register the token mapping as a DuckDB table for efficient joining
-        token_data = [(tid, won) for tid, won in token_won.items()]
+        token_data = list(token_won.items())
         con.execute("CREATE TABLE token_resolution (token_id VARCHAR, won BOOLEAN)")
         con.executemany("INSERT INTO token_resolution VALUES (?, ?)", token_data)
 

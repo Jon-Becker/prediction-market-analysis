@@ -138,12 +138,8 @@ class TradeSizeByRoleAnalysis(Analysis):
                 [median_sizes["taker"], median_sizes["maker"]],
             )
         ):
-            ax.annotate(
-                f"${mean:.0f}", (i - width / 2, mean), ha="center", va="bottom", fontsize=9
-            )
-            ax.annotate(
-                f"${median:.0f}", (i + width / 2, median), ha="center", va="bottom", fontsize=9
-            )
+            ax.annotate(f"${mean:.0f}", (i - width / 2, mean), ha="center", va="bottom", fontsize=9)
+            ax.annotate(f"${median:.0f}", (i + width / 2, median), ha="center", va="bottom", fontsize=9)
 
         plt.tight_layout()
         return fig

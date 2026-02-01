@@ -22,7 +22,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Optional
+from typing import Any
 
 
 class ChartType(str, Enum):
@@ -95,25 +95,25 @@ class ChartConfig:
 
     type: ChartType
     data: list[dict[str, Any]]
-    series: Optional[list[Series]] = None
-    xKey: Optional[str] = None
-    yKeys: Optional[list[str]] = None
-    yKey: Optional[str] = None
-    zKey: Optional[str] = None
-    title: Optional[str] = None
-    height: Optional[int] = None
-    stacked: Optional[bool] = None
-    nameKey: Optional[str] = None
-    valueKey: Optional[str] = None
-    childrenKey: Optional[str] = None
-    xScale: Optional[ScaleType] = None
-    yScale: Optional[ScaleType] = None
-    yUnit: Optional[UnitType] = None
-    strokeDasharrays: Optional[list[Optional[str]]] = None
-    caption: Optional[str] = None
-    colors: Optional[dict[str, str]] = None
-    xLabel: Optional[str] = None
-    yLabel: Optional[str] = None
+    series: list[Series] | None = None
+    xKey: str | None = None
+    yKeys: list[str] | None = None
+    yKey: str | None = None
+    zKey: str | None = None
+    title: str | None = None
+    height: int | None = None
+    stacked: bool | None = None
+    nameKey: str | None = None
+    valueKey: str | None = None
+    childrenKey: str | None = None
+    xScale: ScaleType | None = None
+    yScale: ScaleType | None = None
+    yUnit: UnitType | None = None
+    strokeDasharrays: list[str | None] | None = None
+    caption: str | None = None
+    colors: dict[str, str] | None = None
+    xLabel: str | None = None
+    yLabel: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         """Convert to dict for JSON serialization, omitting None values."""
@@ -198,9 +198,7 @@ def area_chart(
 ) -> ChartConfig:
     """Create an area chart configuration."""
     yKeys = [y] if isinstance(y, str) else y
-    return ChartConfig(
-        type=ChartType.AREA, data=data, xKey=x, yKeys=yKeys, stacked=stacked, **kwargs
-    )
+    return ChartConfig(type=ChartType.AREA, data=data, xKey=x, yKeys=yKeys, stacked=stacked, **kwargs)
 
 
 def pie_chart(
@@ -210,17 +208,15 @@ def pie_chart(
     **kwargs: Any,
 ) -> ChartConfig:
     """Create a pie chart configuration."""
-    return ChartConfig(
-        type=ChartType.PIE, data=data, nameKey=name, valueKey=value, **kwargs
-    )
+    return ChartConfig(type=ChartType.PIE, data=data, nameKey=name, valueKey=value, **kwargs)
 
 
 def scatter_chart(
     data: list[dict[str, Any]],
     x: str = "x",
     y: str = "y",
-    z: Optional[str] = None,
-    series: Optional[list[Series]] = None,
+    z: str | None = None,
+    series: list[Series] | None = None,
     **kwargs: Any,
 ) -> ChartConfig:
     """Create a scatter chart configuration."""
@@ -243,9 +239,7 @@ def heatmap(
     **kwargs: Any,
 ) -> ChartConfig:
     """Create a heatmap configuration."""
-    return ChartConfig(
-        type=ChartType.HEATMAP, data=data, xKey=x, yKey=y, valueKey=value, **kwargs
-    )
+    return ChartConfig(type=ChartType.HEATMAP, data=data, xKey=x, yKey=y, valueKey=value, **kwargs)
 
 
 def treemap(

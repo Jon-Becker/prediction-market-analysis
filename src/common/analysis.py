@@ -28,7 +28,7 @@ import inspect
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, List, Optional, Type, Union
+from typing import TYPE_CHECKING
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -43,9 +43,9 @@ if TYPE_CHECKING:
 class AnalysisOutput:
     """Output from an analysis run."""
 
-    figure: Optional[Union[Figure, FuncAnimation]] = None
-    data: Optional[pd.DataFrame] = None
-    chart: Optional["ChartConfig"] = None
+    figure: Figure | FuncAnimation | None = None
+    data: pd.DataFrame | None = None
+    chart: ChartConfig | None = None
 
 
 class Analysis(ABC):
@@ -70,10 +70,10 @@ class Analysis(ABC):
 
     def save(
         self,
-        output_dir: Union[Path, str],
-        formats: Optional[List[str]] = None,
+        output_dir: Path | str,
+        formats: list[str] | None = None,
         dpi: int = 300,
-    ) -> Dict[str, Path]:
+    ) -> dict[str, Path]:
         """Run the analysis and save outputs to the specified directory.
 
         Args:
@@ -92,7 +92,7 @@ class Analysis(ABC):
         output_dir.mkdir(parents=True, exist_ok=True)
 
         output = self.run()
-        saved: Dict[str, Path] = {}
+        saved: dict[str, Path] = {}
 
         # Save figure formats
         if output.figure is not None:
@@ -124,7 +124,7 @@ class Analysis(ABC):
         return saved
 
     @classmethod
-    def load(cls, analysis_dir: Union[Path, str] = "src/analysis") -> List[Type["Analysis"]]:
+    def load(cls, analysis_dir: Path | str = "src/analysis") -> list[type[Analysis]]:
         """Scan directory for Analysis subclass implementations.
 
         Args:
@@ -137,7 +137,7 @@ class Analysis(ABC):
         if not analysis_dir.exists():
             return []
 
-        analyses: List[Type["Analysis"]] = []
+        analyses: list[type[Analysis]] = []
 
         for py_file in analysis_dir.glob("**/*.py"):
             if py_file.name.startswith("_"):
@@ -152,11 +152,7 @@ class Analysis(ABC):
                 continue
 
             for _, obj in inspect.getmembers(module, inspect.isclass):
-                if (
-                    issubclass(obj, cls)
-                    and obj is not cls
-                    and not inspect.isabstract(obj)
-                ):
+                if issubclass(obj, cls) and obj is not cls and not inspect.isabstract(obj):
                     analyses.append(obj)
 
         return analyses

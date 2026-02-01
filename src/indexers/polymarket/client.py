@@ -1,4 +1,5 @@
-from typing import Generator, List, Optional, Tuple, Union
+from collections.abc import Generator
+from typing import Optional, Union
 
 import httpx
 
@@ -35,9 +36,7 @@ class PolymarketClient:
         response.raise_for_status()
         return response.json()
 
-    def get_markets(
-        self, limit: int = 500, offset: int = 0, **kwargs
-    ) -> List[Market]:
+    def get_markets(self, limit: int = 500, offset: int = 0, **kwargs) -> list[Market]:
         """Fetch markets from Gamma API."""
         params = {"limit": limit, "offset": offset, **kwargs}
         data = self._get(f"{self.gamma_url}/markets", params=params)
@@ -45,9 +44,7 @@ class PolymarketClient:
             return [Market.from_dict(m) for m in data]
         return [Market.from_dict(m) for m in data.get("markets", data)]
 
-    def iter_markets(
-        self, limit: int = 500, offset: int = 0
-    ) -> Generator[Tuple[List[Market], int], None, None]:
+    def iter_markets(self, limit: int = 500, offset: int = 0) -> Generator[tuple[list[Market], int], None, None]:
         """Iterate through all markets using offset pagination.
 
         Yields:
@@ -70,7 +67,7 @@ class PolymarketClient:
 
             current_offset = next_offset
 
-    def get_trades(self, limit: int = 500, offset: int = 0) -> List[Trade]:
+    def get_trades(self, limit: int = 500, offset: int = 0) -> list[Trade]:
         """Fetch trades from Data API.
 
         Note: The Polymarket data API does not support filtering by market.
@@ -86,9 +83,7 @@ class PolymarketClient:
             return [Trade.from_dict(t) for t in data]
         return [Trade.from_dict(t) for t in data.get("trades", data)]
 
-    def iter_trades(
-        self, limit: int = 500, offset: int = 0
-    ) -> Generator[Tuple[List[Trade], int], None, None]:
+    def iter_trades(self, limit: int = 500, offset: int = 0) -> Generator[tuple[list[Trade], int], None, None]:
         """Iterate through all trades using offset pagination.
 
         Note: The Polymarket data API does not support filtering by market.

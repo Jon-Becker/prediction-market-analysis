@@ -132,9 +132,9 @@ class MakerVsTakerReturnsAnalysis(Analysis):
     def _create_figure(self, df: pd.DataFrame) -> plt.Figure:
         """Create the matplotlib figure."""
         df_sorted = df.sort_values("price")
-        maker_counterparty = df_sorted.set_index("price")["maker_excess"].reindex(
-            100 - df_sorted["price"].values
-        ).values
+        maker_counterparty = (
+            df_sorted.set_index("price")["maker_excess"].reindex(100 - df_sorted["price"].values).values
+        )
 
         fig, ax = plt.subplots(figsize=(10, 6))
         ax.plot(

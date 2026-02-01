@@ -1,4 +1,5 @@
-from typing import Generator, Optional
+from collections.abc import Generator
+from typing import Optional
 
 import httpx
 
@@ -33,9 +34,7 @@ class KalshiClient:
         data = self._get(f"/markets/{ticker}")
         return Market.from_dict(data["market"])
 
-    def get_market_trades(
-        self, ticker: str, limit: int = 1000, verbose: bool = True
-    ) -> list[Trade]:
+    def get_market_trades(self, ticker: str, limit: int = 1000, verbose: bool = True) -> list[Trade]:
         all_trades = []
         cursor = None
 

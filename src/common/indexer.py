@@ -19,7 +19,6 @@ import importlib
 import inspect
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import List, Type, Union
 
 
 class Indexer(ABC):
@@ -38,7 +37,7 @@ class Indexer(ABC):
         pass
 
     @classmethod
-    def load(cls, indexer_dir: Union[Path, str] = "src/indexers") -> List[Type["Indexer"]]:
+    def load(cls, indexer_dir: Path | str = "src/indexers") -> list[type[Indexer]]:
         """Scan directory for Indexer subclass implementations.
 
         Args:
@@ -51,7 +50,7 @@ class Indexer(ABC):
         if not indexer_dir.exists():
             return []
 
-        indexers: List[Type["Indexer"]] = []
+        indexers: list[type[Indexer]] = []
 
         for py_file in indexer_dir.glob("**/*.py"):
             if py_file.name.startswith("_"):
@@ -66,11 +65,7 @@ class Indexer(ABC):
                 continue
 
             for _, obj in inspect.getmembers(module, inspect.isclass):
-                if (
-                    issubclass(obj, cls)
-                    and obj is not cls
-                    and not inspect.isabstract(obj)
-                ):
+                if issubclass(obj, cls) and obj is not cls and not inspect.isabstract(obj):
                     indexers.append(obj)
 
         return indexers

@@ -52,10 +52,7 @@ class VolumeOverTimeAnalysis(Analysis):
         bars = ax.bar(df["quarter"], df["volume_usd"] / 1e6, width=80, color="#4C72B0")
         bars[-1].set_hatch("//")
         bars[-1].set_edgecolor((1, 1, 1, 0.3))
-        labels = [
-            f"${v/1e3:.2f}B" if v > 999 else f"${v:.2f}M"
-            for v in df["volume_usd"] / 1e6
-        ]
+        labels = [f"${v / 1e3:.2f}B" if v > 999 else f"${v:.2f}M" for v in df["volume_usd"] / 1e6]
         ax.bar_label(
             bars,
             labels=labels,

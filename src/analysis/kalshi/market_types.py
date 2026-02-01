@@ -75,9 +75,7 @@ class MarketTypesAnalysis(Analysis):
 
         return AnalysisOutput(figure=fig, data=df_grouped, chart=chart)
 
-    def _build_hierarchy_json(
-        self, df_raw: pd.DataFrame, min_pct: float = 0.01
-    ) -> list[dict[str, Any]]:
+    def _build_hierarchy_json(self, df_raw: pd.DataFrame, min_pct: float = 0.01) -> list[dict[str, Any]]:
         """Build hierarchical JSON structure for treemap.
 
         Args:
@@ -99,19 +97,13 @@ class MarketTypesAnalysis(Analysis):
         result = []
 
         # Get groups sorted by volume
-        group_totals = (
-            df_raw.groupby("group")["total_volume"].sum().sort_values(ascending=False)
-        )
+        group_totals = df_raw.groupby("group")["total_volume"].sum().sort_values(ascending=False)
 
         for group_name, group_vol in group_totals.items():
             df_group = df_raw[df_raw["group"] == group_name]
 
             # Get mid-categories for this group
-            mid_totals = (
-                df_group.groupby("mid_category")["total_volume"]
-                .sum()
-                .sort_values(ascending=False)
-            )
+            mid_totals = df_group.groupby("mid_category")["total_volume"].sum().sort_values(ascending=False)
 
             children = []
             for mid_name, mid_vol in mid_totals.items():
@@ -122,11 +114,7 @@ class MarketTypesAnalysis(Analysis):
                 df_mid = df_group[df_group["mid_category"] == mid_name]
 
                 # Get subcategories for this mid-category
-                sub_totals = (
-                    df_mid.groupby("subcategory")["total_volume"]
-                    .sum()
-                    .sort_values(ascending=False)
-                )
+                sub_totals = df_mid.groupby("subcategory")["total_volume"].sum().sort_values(ascending=False)
 
                 sub_children = []
                 for sub_name, sub_vol in sub_totals.items():
@@ -138,9 +126,7 @@ class MarketTypesAnalysis(Analysis):
                 if sub_children:
                     # Only add children if there's more than one, or if the single child
                     # is meaningfully different from the parent
-                    if len(sub_children) > 1 or (
-                        len(sub_children) == 1 and sub_children[0]["name"] != mid_name
-                    ):
+                    if len(sub_children) > 1 or (len(sub_children) == 1 and sub_children[0]["name"] != mid_name):
                         children.append(
                             {
                                 "name": mid_name,
@@ -166,9 +152,7 @@ class MarketTypesAnalysis(Analysis):
 
         return result
 
-    def _create_figure(
-        self, df_raw: pd.DataFrame, df_grouped: pd.DataFrame
-    ) -> plt.Figure:
+    def _create_figure(self, df_raw: pd.DataFrame, df_grouped: pd.DataFrame) -> plt.Figure:
         """Create the matplotlib treemap figure."""
         top_n_per_group = 8
 
@@ -268,9 +252,7 @@ class MarketTypesAnalysis(Analysis):
 
         # Add legend for groups
         legend_elements = [
-            Patch(facecolor=GROUP_COLORS[g], label=g)
-            for g in df_grouped["group"].tolist()
-            if g in GROUP_COLORS
+            Patch(facecolor=GROUP_COLORS[g], label=g) for g in df_grouped["group"].tolist() if g in GROUP_COLORS
         ]
         ax.legend(
             handles=legend_elements,

@@ -102,9 +102,7 @@ class VwapByHourAnalysis(Analysis):
             markersize=6,
             label="VWAP",
         )
-        ax1.axhline(
-            y=50, color="gray", linestyle="--", linewidth=0.8, alpha=0.7, label="Fair odds (50c)"
-        )
+        ax1.axhline(y=50, color="gray", linestyle="--", linewidth=0.8, alpha=0.7, label="Fair odds (50c)")
 
         ax1.set_xlabel("Hour of Day (ET)")
         ax1.set_ylabel("Volume-Weighted Avg Price (cents)")

@@ -37,7 +37,6 @@ SUBCATEGORY_PATTERNS = [
     ("NFC", "Sports", "NFL", "NFC"),
     ("AFC", "Sports", "NFL", "AFC"),
     ("SB", "Sports", "NFL", "Super Bowl"),
-
     # === SPORTS: NBA ===
     ("MVENBASINGLEGAME", "Sports", "NBA", "Single-Game Props"),
     ("NBAGAME", "Sports", "NBA", "Games"),
@@ -51,7 +50,6 @@ SUBCATEGORY_PATTERNS = [
     ("NBAMVP", "Sports", "NBA", "MVP"),
     ("NBAWINS", "Sports", "NBA", "Win Totals"),
     ("NBA", "Sports", "NBA", "Other NBA"),
-
     # === SPORTS: MLB ===
     ("MLBGAME", "Sports", "MLB", "Games"),
     ("MLBSERIES", "Sports", "MLB", "Series"),
@@ -66,7 +64,6 @@ SUBCATEGORY_PATTERNS = [
     ("MLBALMVP", "Sports", "MLB", "AL MVP"),
     ("MLBNLROTY", "Sports", "MLB", "NL ROTY"),
     ("MLB", "Sports", "MLB", "Other MLB"),
-
     # === SPORTS: NCAA Football ===
     ("NCAAFGAME", "Sports", "NCAA Football", "Games"),
     ("NCAAFSPREAD", "Sports", "NCAA Football", "Spreads"),
@@ -78,7 +75,6 @@ SUBCATEGORY_PATTERNS = [
     ("NCAAFSEC", "Sports", "NCAA Football", "SEC"),
     ("NCAAF", "Sports", "NCAA Football", "Other NCAAF"),
     ("HEISMAN", "Sports", "NCAA Football", "Heisman"),
-
     # === SPORTS: NCAA Basketball ===
     ("NCAAMBGAME", "Sports", "NCAA Basketball", "Games"),
     ("NCAAMBTOTAL", "Sports", "NCAA Basketball", "Totals"),
@@ -87,7 +83,6 @@ SUBCATEGORY_PATTERNS = [
     ("NCAAMB", "Sports", "NCAA Basketball", "Other NCAAMB"),
     ("MARMAD", "Sports", "NCAA Basketball", "March Madness M"),
     ("WMARMAD", "Sports", "NCAA Basketball", "March Madness W"),
-
     # === SPORTS: NHL ===
     ("NHLGAME", "Sports", "NHL", "Games"),
     ("NHLSERIES", "Sports", "NHL", "Series"),
@@ -97,11 +92,9 @@ SUBCATEGORY_PATTERNS = [
     ("NHLWEST", "Sports", "NHL", "Western Conf"),
     ("NHL4NATIONS", "Sports", "NHL", "4 Nations"),
     ("NHL", "Sports", "NHL", "Other NHL"),
-
     # === SPORTS: WNBA ===
     ("WNBAGAME", "Sports", "WNBA", "Games"),
     ("WNBA", "Sports", "WNBA", "Other WNBA"),
-
     # === SPORTS: Tennis ===
     ("ATPMATCH", "Sports", "Tennis", "ATP Matches"),
     ("WTAMATCH", "Sports", "Tennis", "WTA Matches"),
@@ -120,7 +113,6 @@ SUBCATEGORY_PATTERNS = [
     ("FOMEN", "Sports", "Tennis", "French Open"),
     ("FOWOMEN", "Sports", "Tennis", "French Open W"),
     ("DAVISCUPMATCH", "Sports", "Tennis", "Davis Cup"),
-
     # === SPORTS: Golf ===
     ("PGATOUR", "Sports", "Golf", "PGA Tour"),
     ("PGARYDERMATCH", "Sports", "Golf", "Ryder Cup Match"),
@@ -133,7 +125,6 @@ SUBCATEGORY_PATTERNS = [
     ("THEOPEN", "Sports", "Golf", "The Open"),
     ("GENESISINVITATIONAL", "Sports", "Golf", "Genesis Invitational"),
     ("LIVTOUR", "Sports", "Golf", "LIV Tour"),
-
     # === SPORTS: Soccer ===
     ("EPLGAME", "Sports", "Soccer", "EPL Games"),
     ("EPLTOP4", "Sports", "Soccer", "EPL Top 4"),
@@ -161,12 +152,10 @@ SUBCATEGORY_PATTERNS = [
     ("BRASILEIROGAME", "Sports", "Soccer", "Brasileirao"),
     ("MENWORLDCUP", "Sports", "Soccer", "Men's World Cup"),
     ("BALLONDOR", "Sports", "Soccer", "Ballon d'Or"),
-
     # === SPORTS: UFC/Boxing ===
     ("UFCFIGHT", "Sports", "UFC/Boxing", "UFC Fights"),
     ("UFC", "Sports", "UFC/Boxing", "Other UFC"),
     ("BOXING", "Sports", "UFC/Boxing", "Boxing"),
-
     # === SPORTS: Racing ===
     ("F1RACE", "Sports", "Racing", "F1 Races"),
     ("F1RACEPODIUM", "Sports", "Racing", "F1 Podiums"),
@@ -174,12 +163,10 @@ SUBCATEGORY_PATTERNS = [
     ("NASCARRACE", "Sports", "Racing", "NASCAR Races"),
     ("NASCAR", "Sports", "Racing", "Other NASCAR"),
     ("INDY500", "Sports", "Racing", "Indy 500"),
-
     # === SPORTS: Other ===
     ("NATHANSHD", "Sports", "Other Sports", "Nathan's Hot Dogs"),
     ("NATHANDOGS", "Sports", "Other Sports", "Nathan's Hot Dogs"),
     ("NCAAWBGAME", "Sports", "Other Sports", "NCAA Women's BB"),
-
     # === ESPORTS ===
     ("MVESPORTSMULTIGAMEEXTENDED", "Esports", "Multi-Game", "Extended Props"),
     ("LOLGAMES", "Esports", "League of Legends", "Games"),
@@ -187,7 +174,6 @@ SUBCATEGORY_PATTERNS = [
     ("LEAGUEWORLDS", "Esports", "League of Legends", "Worlds"),
     ("CSGOGAME", "Esports", "CS:GO", "Games"),
     ("INTERNETINVITATIONAL", "Esports", "Other Esports", "Internet Invitational"),
-
     # === POLITICS: Presidential ===
     ("PRES", "Politics", "Presidential", "General"),
     ("PRESNOMD", "Politics", "Presidential", "Nominations D"),
@@ -217,12 +203,10 @@ SUBCATEGORY_PATTERNS = [
     ("PRESCHILE", "Politics", "Presidential", "Chile"),
     ("PRESPOLAND", "Politics", "Presidential", "Poland"),
     ("PRESLEAVESK", "Politics", "Presidential", "South Korea"),
-
     # === POLITICS: Popular Vote ===
     ("POPVOTEMOV", "Politics", "Popular Vote", "Margin"),
     ("POPVOTEKHNM", "Politics", "Popular Vote", "KH Margin"),
     ("POPVOTE", "Politics", "Popular Vote", "Winner"),
-
     # === POLITICS: Electoral College ===
     ("ECMOV", "Politics", "Electoral College", "Margin"),
     ("ECDJTBLOWOUT", "Politics", "Electoral College", "DJT Blowout"),
@@ -232,7 +216,6 @@ SUBCATEGORY_PATTERNS = [
     ("TIPPINGPOINT", "Politics", "Electoral College", "Tipping Point"),
     ("LASTSTATECALL24", "Politics", "Electoral College", "Last State Call"),
     ("STATESHIFTRIGHT", "Politics", "Electoral College", "State Shift Right"),
-
     # === POLITICS: Senate ===
     ("SENATEAZ", "Politics", "Senate", "Arizona"),
     ("SENATENV", "Politics", "Senate", "Nevada"),
@@ -248,7 +231,6 @@ SUBCATEGORY_PATTERNS = [
     ("SENMAJORITY", "Politics", "Senate", "Majority"),
     ("RSENATESEATS", "Politics", "Senate", "R Seats"),
     ("SENATE", "Politics", "Senate", "Other"),
-
     # === POLITICS: House ===
     ("HOUSEMOV", "Politics", "House", "Margin"),
     ("HOUSECA13", "Politics", "House", "CA-13"),
@@ -257,7 +239,6 @@ SUBCATEGORY_PATTERNS = [
     ("CONTROLS", "Politics", "House", "Control Senate"),
     ("CONTROLH", "Politics", "House", "Control House"),
     ("HOUSE", "Politics", "House", "Other"),
-
     # === POLITICS: Governor ===
     ("GOVPARTYNJ", "Politics", "Governor", "New Jersey"),
     ("GOVPARTYVA", "Politics", "Governor", "Virginia"),
@@ -266,7 +247,6 @@ SUBCATEGORY_PATTERNS = [
     ("GOVREOPEN2025", "Politics", "Government", "Reopen 2025"),
     ("GOVTCUTS", "Politics", "Government", "Cuts"),
     ("GOV", "Politics", "Governor", "Other"),
-
     # === POLITICS: Trump Admin ===
     ("TRUMPMENTION", "Politics", "Trump Admin", "Mentions"),
     ("TRUMPMENTIONB", "Politics", "Trump Admin", "Mentions B"),
@@ -280,11 +260,9 @@ SUBCATEGORY_PATTERNS = [
     ("TRUMP", "Politics", "Trump Admin", "Other"),
     ("DJTJOINTSESSION", "Politics", "Trump Admin", "Joint Session"),
     ("DJTVOSTARIFFS", "Politics", "Trump Admin", "Tariffs Vote"),
-
     # === POLITICS: Biden Admin ===
     ("BIDENPARDON", "Politics", "Biden Admin", "Pardons"),
     ("BIDEN", "Politics", "Biden Admin", "Other"),
-
     # === POLITICS: Cabinet ===
     ("CABINETMUSK", "Politics", "Cabinet", "Musk"),
     ("CABINETRFK", "Politics", "Cabinet", "RFK"),
@@ -301,7 +279,6 @@ SUBCATEGORY_PATTERNS = [
     ("DNI", "Politics", "Cabinet", "DNI"),
     ("FBI", "Politics", "Cabinet", "FBI"),
     ("DOED", "Politics", "Cabinet", "Dept of Education"),
-
     # === POLITICS: NYC Mayor ===
     ("MAYORNYCPARTY", "Politics", "NYC Mayor", "Party"),
     ("MAYORNYCNOMD", "Politics", "NYC Mayor", "Nominations"),
@@ -309,7 +286,6 @@ SUBCATEGORY_PATTERNS = [
     ("NYCMAYORDROUND", "Politics", "NYC Mayor", "D Round"),
     ("NYCMAYORDEBATEMENTION", "Politics", "NYC Mayor", "Debate Mentions"),
     ("MAYORNYC", "Politics", "NYC Mayor", "General"),
-
     # === POLITICS: Other Elections ===
     ("ELECTIONMOVZOHRAN", "Politics", "Other Elections", "Zohran"),
     ("ELECTIONMOVNJGOV", "Politics", "NYC Mayor", "NJ Governor"),
@@ -330,14 +306,12 @@ SUBCATEGORY_PATTERNS = [
     ("VOTE", "Politics", "Other Elections", "Other"),
     ("PCTVOTEMAM", "Politics", "Other Elections", "Mamdani Pct"),
     ("ATTYGENVA", "Politics", "Other Elections", "VA Attorney General"),
-
     # === POLITICS: Canada ===
     ("CANADAPM", "Politics", "Canada", "PM"),
     ("NEXTCANADAPM", "Politics", "Canada", "Next PM"),
     ("CANCOALITION", "Politics", "Canada", "Coalition"),
     ("CANLIBSEATS", "Politics", "Canada", "Liberal Seats"),
     ("PARTYWINNL", "Politics", "Canada", "NL Party"),
-
     # === POLITICS: Misc ===
     ("POWER", "Politics", "Other Politics", "Power"),
     ("INAUG", "Politics", "Other Politics", "Inauguration"),
@@ -366,7 +340,6 @@ SUBCATEGORY_PATTERNS = [
     ("WLEADER", "Politics", "Other Politics", "World Leader"),
     ("GREENLAND", "Politics", "Other Politics", "Greenland"),
     ("TIKTOKBAN", "Politics", "Other Politics", "TikTok Ban"),
-
     # === CRYPTO: Bitcoin ===
     ("BTCD", "Crypto", "Bitcoin", "Daily"),
     ("BTCMAXY", "Crypto", "Bitcoin", "Max Yearly"),
@@ -377,13 +350,11 @@ SUBCATEGORY_PATTERNS = [
     ("BTCMINY", "Crypto", "Bitcoin", "Min Yearly"),
     ("BTCRESERVE", "Crypto", "Bitcoin", "Reserve"),
     ("BTC", "Crypto", "Bitcoin", "Price"),
-
     # === CRYPTO: Ethereum ===
     ("ETHD", "Crypto", "Ethereum", "Daily"),
     ("ETHMAXY", "Crypto", "Ethereum", "Max Yearly"),
     ("ETHMINY", "Crypto", "Ethereum", "Min Yearly"),
     ("ETH", "Crypto", "Ethereum", "Price"),
-
     # === CRYPTO: Other ===
     ("DOGED", "Crypto", "Other Crypto", "Doge Daily"),
     ("DOGE", "Crypto", "Other Crypto", "Doge"),
@@ -391,7 +362,6 @@ SUBCATEGORY_PATTERNS = [
     ("XRP", "Crypto", "Other Crypto", "XRP"),
     ("SHIBA", "Crypto", "Other Crypto", "Shiba"),
     ("COIN", "Crypto", "Other Crypto", "Coinbase"),
-
     # === FINANCE: Fed ===
     ("FEDDECISION", "Finance", "Fed", "Decisions"),
     ("FEDMENTION", "Finance", "Fed", "Mentions"),
@@ -403,7 +373,6 @@ SUBCATEGORY_PATTERNS = [
     ("TERMINALRATE", "Finance", "Fed", "Terminal Rate"),
     ("LEAVEPOWELL", "Finance", "Fed", "Leave Powell"),
     ("POWELLMENTION", "Finance", "Fed", "Powell Mentions"),
-
     # === FINANCE: S&P 500 ===
     ("INXU", "Finance", "S&P 500", "Up"),
     ("INXD", "Finance", "S&P 500", "Daily"),
@@ -411,7 +380,6 @@ SUBCATEGORY_PATTERNS = [
     ("INXW", "Finance", "S&P 500", "Weekly"),
     ("INXDU", "Finance", "S&P 500", "Daily Up"),
     ("INX", "Finance", "S&P 500", "Other"),
-
     # === FINANCE: NASDAQ ===
     ("NASDAQ100U", "Finance", "NASDAQ", "Up"),
     ("NASDAQ100D", "Finance", "NASDAQ", "Daily"),
@@ -420,19 +388,16 @@ SUBCATEGORY_PATTERNS = [
     ("NASDAQ100DU", "Finance", "NASDAQ", "Daily Up"),
     ("NASDAQ100", "Finance", "NASDAQ", "Other"),
     ("NASDAQ", "Finance", "NASDAQ", "General"),
-
     # === FINANCE: Bonds ===
     ("TNOTEW", "Finance", "Bonds", "T-Note Weekly"),
     ("TNOTED", "Finance", "Bonds", "T-Note Daily"),
     ("TNOTE", "Finance", "Bonds", "T-Note"),
     ("DCEIL", "Finance", "Bonds", "Debt Ceiling"),
-
     # === FINANCE: Forex ===
     ("USDJPYH", "Finance", "Forex", "USD/JPY Hourly"),
     ("USDJPY", "Finance", "Forex", "USD/JPY"),
     ("EURUSDH", "Finance", "Forex", "EUR/USD Hourly"),
     ("EURUSD", "Finance", "Forex", "EUR/USD"),
-
     # === FINANCE: Commodities ===
     ("AAAGASM", "Finance", "Commodities", "Gas Monthly"),
     ("AAAGASW", "Finance", "Commodities", "Gas Weekly"),
@@ -440,7 +405,6 @@ SUBCATEGORY_PATTERNS = [
     ("GAS", "Finance", "Commodities", "Gas"),
     ("WTI", "Finance", "Commodities", "WTI Oil"),
     ("EGGS", "Finance", "Commodities", "Eggs"),
-
     # === FINANCE: Economic Indicators ===
     ("CPIYOY", "Finance", "Economic Indicators", "CPI YoY"),
     ("CPICOREYOY", "Finance", "Economic Indicators", "CPI Core YoY"),
@@ -451,7 +415,6 @@ SUBCATEGORY_PATTERNS = [
     ("PAYROLLS", "Finance", "Economic Indicators", "Payrolls"),
     ("U3", "Finance", "Economic Indicators", "Unemployment"),
     ("RECSSNBER", "Finance", "Economic Indicators", "NBER Recession"),
-
     # === FINANCE: Other ===
     ("IPO", "Finance", "Other Finance", "IPOs"),
     ("EARNINGSMENTIONTSLA", "Finance", "Other Finance", "TSLA Earnings"),
@@ -472,7 +435,6 @@ SUBCATEGORY_PATTERNS = [
     ("DEPORTCOUNT", "Finance", "Other Finance", "Deport Count"),
     ("WAYMOCITIES", "Finance", "Other Finance", "Waymo Cities"),
     ("GOLDCARDS", "Finance", "Other Finance", "Gold Cards"),
-
     # === WEATHER ===
     ("HIGHNY", "Weather", "High Temp", "New York"),
     ("HIGHCHI", "Weather", "High Temp", "Chicago"),
@@ -493,14 +455,12 @@ SUBCATEGORY_PATTERNS = [
     ("HURCAT", "Weather", "Severe Weather", "Hurricane"),
     ("ARCTICICE", "Weather", "Climate", "Arctic Ice"),
     ("WEATHER", "Weather", "Other Weather", "Other"),
-
     # === ENTERTAINMENT: Spotify ===
     ("SPOTIFYD", "Entertainment", "Spotify", "Daily"),
     ("SPOTIFY2D", "Entertainment", "Spotify", "2-Day"),
     ("SPOTIFYGLOBALD", "Entertainment", "Spotify", "Global Daily"),
     ("SPOTIFYSONGSOPALITE", "Entertainment", "Spotify", "Songs Opalite"),
     ("SPOTIFY", "Entertainment", "Spotify", "Other"),
-
     # === ENTERTAINMENT: Movies ===
     ("RTCAPTAINAMERICA", "Entertainment", "Movies", "Captain America"),
     ("RTMOANA2", "Entertainment", "Movies", "Moana 2"),
@@ -519,7 +479,6 @@ SUBCATEGORY_PATTERNS = [
     ("RTFANTASTICFOUR", "Entertainment", "Movies", "Fantastic Four"),
     ("RTJURASSICWORLDREBIRTH", "Entertainment", "Movies", "Jurassic World"),
     ("RT", "Entertainment", "Movies", "Rotten Tomatoes"),
-
     # === ENTERTAINMENT: Awards ===
     ("OSCARPIC", "Entertainment", "Awards", "Oscar Best Picture"),
     ("OSCARNOMPIC", "Entertainment", "Awards", "Oscar Nom Picture"),
@@ -534,12 +493,10 @@ SUBCATEGORY_PATTERNS = [
     ("EMMY", "Entertainment", "Awards", "Other Emmy"),
     ("GAMEAWARDS", "Entertainment", "Awards", "Game Awards"),
     ("BAFTA", "Entertainment", "Awards", "BAFTA"),
-
     # === ENTERTAINMENT: Netflix ===
     ("NETFLIXRANKMOVIE", "Entertainment", "Netflix", "Movie Rank"),
     ("NETFLIXRANKSHOW", "Entertainment", "Netflix", "Show Rank"),
     ("NETFLIX", "Entertainment", "Netflix", "Other"),
-
     # === ENTERTAINMENT: Music ===
     ("TOPARTIST", "Entertainment", "Music", "Top Artist"),
     ("TOPSONG", "Entertainment", "Music", "Top Song"),
@@ -552,7 +509,6 @@ SUBCATEGORY_PATTERNS = [
     ("TOP10BILLBOARDSPOTSTS", "Entertainment", "Music", "Billboard Top 10 TS"),
     ("MOSTSTREAMESTSTLOASG", "Entertainment", "Music", "Most Streamed TS"),
     ("BILLBOARD", "Entertainment", "Music", "Billboard"),
-
     # === ENTERTAINMENT: TV/Media ===
     ("KIMMELMENTION", "Entertainment", "TV/Media", "Kimmel Mentions"),
     ("SOUTHPARKMENTION", "Entertainment", "TV/Media", "South Park Mentions"),
@@ -563,7 +519,6 @@ SUBCATEGORY_PATTERNS = [
     ("SBADS", "Entertainment", "TV/Media", "Super Bowl Ads"),
     ("SBSETLISTS", "Entertainment", "TV/Media", "Super Bowl Setlists"),
     ("SBPERFORM", "Entertainment", "TV/Media", "Super Bowl Performance"),
-
     # === ENTERTAINMENT: Other ===
     ("TOPMODEL", "Entertainment", "Other Entertainment", "Top Model"),
     ("APPRANKFREE", "Entertainment", "Other Entertainment", "App Rank Free"),
@@ -572,7 +527,6 @@ SUBCATEGORY_PATTERNS = [
     ("GTA6", "Entertainment", "Other Entertainment", "GTA 6"),
     ("ANIME", "Entertainment", "Other Entertainment", "Anime"),
     ("MANTISFREETHROW", "Entertainment", "Other Entertainment", "Mantis Free Throw"),
-
     # === SCIENCE/TECH ===
     ("LLM1", "Science/Tech", "AI", "LLM Benchmark"),
     ("LLM", "Science/Tech", "AI", "LLM"),
@@ -583,7 +537,6 @@ SUBCATEGORY_PATTERNS = [
     ("APPLE", "Science/Tech", "Tech", "Apple"),
     ("CEOASTRONOMER", "Science/Tech", "Tech", "CEO Astronomer"),
     ("LEAVELISACOOK", "Science/Tech", "Tech", "Leave Lisa Cook"),
-
     # === WORLD EVENTS ===
     ("NOBELPEACE", "World Events", "Nobel Prize", "Peace"),
     ("NOBEL", "World Events", "Nobel Prize", "Other"),
@@ -598,7 +551,6 @@ SUBCATEGORY_PATTERNS = [
     ("SKPRES", "World Events", "Other Events", "South Korea President"),
     ("LAGODAYS", "World Events", "Other Events", "Lagos Days"),
     ("ARREST", "World Events", "Other Events", "Arrests"),
-
     # === MEDIA ===
     ("MENTION", "Media", "Mentions", "General"),
     ("GOOGLESEARCH", "Media", "Search Trends", "Google Search"),
@@ -632,9 +584,7 @@ def get_group(category: str) -> str:
 
 
 # Legacy mappings for backwards compatibility
-CATEGORY_GROUPS = {
-    pattern: group for pattern, group, _, _ in SUBCATEGORY_PATTERNS
-}
+CATEGORY_GROUPS = {pattern: group for pattern, group, _, _ in SUBCATEGORY_PATTERNS}
 
 GROUP_COLORS = {
     "Sports": "#1f77b4",

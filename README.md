@@ -1,7 +1,5 @@
 # Prediction Market Analysis
 
-> This dataset was collected for and supports the analysis in [The Microstructure of Wealth Transfer in Prediction Markets](https://jbecker.dev/research/prediction-market-microstructure).
-
 A framework for analyzing prediction market data from Kalshi and Polymarket. Includes tools for data collection, storage, and running analysis scripts that generate figures and statistics.
 
 ## Setup
@@ -85,3 +83,7 @@ See [docs/ANALYSIS.md](docs/ANALYSIS.md) for writing custom analysis scripts.
 - [Contributing](CONTRIBUTING.md) - Guidelines for contributors
 - [Data Schemas](docs/SCHEMAS.md) - Parquet file schemas for markets and trades
 - [Writing Analyses](docs/ANALYSIS.md) - Guide for writing custom analysis scripts
+
+## Research & Citations
+
+- Becker, J. (2026). _The Microstructure of Wealth Transfer in Prediction Markets_. Jbecker. https://jbecker.dev/research/prediction-market-microstructure

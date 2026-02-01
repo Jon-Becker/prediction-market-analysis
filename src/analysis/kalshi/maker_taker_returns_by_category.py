@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from src.analysis.util.categories import CATEGORY_SQL, GROUP_COLORS, get_group
+from src.analysis.util.categories import CATEGORY_SQL, get_group
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 
@@ -50,7 +50,7 @@ class MakerTakerReturnsByCategoryAnalysis(Analysis):
             ),
             taker_positions AS (
                 SELECT
-                    {CATEGORY_SQL.replace('event_ticker', 'm.event_ticker')} AS category,
+                    {CATEGORY_SQL.replace("event_ticker", "m.event_ticker")} AS category,
                     CASE WHEN t.taker_side = 'yes' THEN t.yes_price ELSE t.no_price END AS price,
                     CASE WHEN t.taker_side = m.result THEN 1.0 ELSE 0.0 END AS won,
                     t.count AS contracts,
@@ -60,7 +60,7 @@ class MakerTakerReturnsByCategoryAnalysis(Analysis):
             ),
             maker_positions AS (
                 SELECT
-                    {CATEGORY_SQL.replace('event_ticker', 'm.event_ticker')} AS category,
+                    {CATEGORY_SQL.replace("event_ticker", "m.event_ticker")} AS category,
                     CASE WHEN t.taker_side = 'yes' THEN t.no_price ELSE t.yes_price END AS price,
                     CASE WHEN t.taker_side != m.result THEN 1.0 ELSE 0.0 END AS won,
                     t.count AS contracts,
@@ -129,14 +129,12 @@ class MakerTakerReturnsByCategoryAnalysis(Analysis):
             group_data = df[df["group"] == group]
 
             # Volume-weighted excess returns
-            taker_vol_weighted = (
-                (group_data["taker_excess"] * group_data["taker_contracts"]).sum()
-                / group_data["taker_contracts"].sum()
-            )
-            maker_vol_weighted = (
-                (group_data["maker_excess"] * group_data["maker_contracts"]).sum()
-                / group_data["maker_contracts"].sum()
-            )
+            taker_vol_weighted = (group_data["taker_excess"] * group_data["taker_contracts"]).sum() / group_data[
+                "taker_contracts"
+            ].sum()
+            maker_vol_weighted = (group_data["maker_excess"] * group_data["maker_contracts"]).sum() / group_data[
+                "maker_contracts"
+            ].sum()
 
             group_stats.append(
                 {

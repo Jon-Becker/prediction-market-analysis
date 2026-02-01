@@ -111,9 +111,7 @@ class EvYesVsNoAnalysis(Analysis):
         )
 
         combined_df["implied_prob"] = combined_df["price"] / 100
-        combined_df["best_ev"] = np.maximum(
-            combined_df["yes_ev"].fillna(-100), combined_df["no_ev"].fillna(-100)
-        )
+        combined_df["best_ev"] = np.maximum(combined_df["yes_ev"].fillna(-100), combined_df["no_ev"].fillna(-100))
         combined_df["best_bet"] = np.where(
             combined_df["yes_ev"].fillna(-100) > combined_df["no_ev"].fillna(-100),
             "YES",
@@ -125,18 +123,12 @@ class EvYesVsNoAnalysis(Analysis):
 
         return AnalysisOutput(figure=fig, data=combined_df, chart=chart)
 
-    def _create_figure(
-        self, yes_df: pd.DataFrame, no_df: pd.DataFrame
-    ) -> plt.Figure:
+    def _create_figure(self, yes_df: pd.DataFrame, no_df: pd.DataFrame) -> plt.Figure:
         """Create the matplotlib figure."""
         fig, ax = plt.subplots(figsize=(12, 7))
 
-        ax.plot(
-            yes_df["price"], yes_df["ev"], label="YES bets", color="#2ecc71", linewidth=2.5
-        )
-        ax.plot(
-            no_df["price"], no_df["ev"], label="NO bets", color="#e74c3c", linewidth=2.5
-        )
+        ax.plot(yes_df["price"], yes_df["ev"], label="YES bets", color="#2ecc71", linewidth=2.5)
+        ax.plot(no_df["price"], no_df["ev"], label="NO bets", color="#e74c3c", linewidth=2.5)
 
         ax.fill_between(yes_df["price"], yes_df["ev"], 0, alpha=0.3, color="#2ecc71")
         ax.fill_between(no_df["price"], no_df["ev"], 0, alpha=0.3, color="#e74c3c")
@@ -146,10 +138,7 @@ class EvYesVsNoAnalysis(Analysis):
 
         ax.set_xlabel("Purchase Price (cents)")
         ax.set_ylabel("Expected Value (cents per contract)")
-        ax.set_title(
-            "Expected Value of YES vs NO Bets by Price Level\n"
-            "(Including both maker and taker sides)"
-        )
+        ax.set_title("Expected Value of YES vs NO Bets by Price Level\n(Including both maker and taker sides)")
         ax.set_xlim(1, 99)
         ax.legend(loc="upper left")
         ax.grid(True, alpha=0.3)
@@ -163,7 +152,7 @@ class EvYesVsNoAnalysis(Analysis):
             xy=(yes_min_price, yes_min_ev),
             xytext=(yes_min_price + 15, yes_min_ev - 3),
             fontsize=9,
-            arrowprops=dict(arrowstyle="->", color="gray"),
+            arrowprops={"arrowstyle": "->", "color": "gray"},
         )
 
         no_max_idx = no_df["ev"].idxmax()
@@ -174,15 +163,13 @@ class EvYesVsNoAnalysis(Analysis):
             xy=(no_max_price, no_max_ev),
             xytext=(no_max_price - 20, no_max_ev + 3),
             fontsize=9,
-            arrowprops=dict(arrowstyle="->", color="gray"),
+            arrowprops={"arrowstyle": "->", "color": "gray"},
         )
 
         plt.tight_layout()
         return fig
 
-    def _create_chart(
-        self, yes_df: pd.DataFrame, no_df: pd.DataFrame
-    ) -> ChartConfig:
+    def _create_chart(self, yes_df: pd.DataFrame, no_df: pd.DataFrame) -> ChartConfig:
         """Create the chart configuration for web display."""
         chart_data = []
         for price in range(1, 100):

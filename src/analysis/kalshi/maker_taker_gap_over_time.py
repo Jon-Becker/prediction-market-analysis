@@ -90,16 +90,13 @@ class MakerTakerGapOverTimeAnalysis(Analysis):
         maker_df = df[df["role"] == "maker"].copy()
 
         # Merge to compute gap
-        merged = taker_df.merge(
-            maker_df,
-            on="quarter",
-            suffixes=("_taker", "_maker")
-        )
+        merged = taker_df.merge(maker_df, on="quarter", suffixes=("_taker", "_maker"))
         merged["gap"] = (merged["excess_return_maker"] - merged["excess_return_taker"]) * 100
 
         # Prepare output dataframe
-        output_df = merged[["quarter", "excess_return_taker", "excess_return_maker", "gap",
-                            "n_trades_taker", "volume_usd_taker"]].copy()
+        output_df = merged[
+            ["quarter", "excess_return_taker", "excess_return_maker", "gap", "n_trades_taker", "volume_usd_taker"]
+        ].copy()
         output_df.columns = ["quarter", "taker_return", "maker_return", "gap_pp", "n_trades", "volume_usd"]
         output_df["taker_return"] = output_df["taker_return"] * 100
         output_df["maker_return"] = output_df["maker_return"] * 100
@@ -118,10 +115,7 @@ class MakerTakerGapOverTimeAnalysis(Analysis):
         df["quarter"] = pd.to_datetime(df["quarter"])
         quarters = df["quarter"].values
         x = np.arange(len(quarters))
-        quarter_labels = [
-            f"{pd.Timestamp(q).year} Q{(pd.Timestamp(q).month-1)//3+1}"
-            for q in quarters
-        ]
+        quarter_labels = [f"{pd.Timestamp(q).year} Q{(pd.Timestamp(q).month - 1) // 3 + 1}" for q in quarters]
 
         # Plot returns
         ax1.plot(
@@ -187,7 +181,7 @@ class MakerTakerGapOverTimeAnalysis(Analysis):
 
         chart_data = [
             {
-                "quarter": f"{pd.Timestamp(row['quarter']).year} Q{(pd.Timestamp(row['quarter']).month-1)//3+1}",
+                "quarter": f"{pd.Timestamp(row['quarter']).year} Q{(pd.Timestamp(row['quarter']).month - 1) // 3 + 1}",
                 "Taker Return": round(row["excess_return_taker"] * 100, 2),
                 "Maker Return": round(row["excess_return_maker"] * 100, 2),
             }

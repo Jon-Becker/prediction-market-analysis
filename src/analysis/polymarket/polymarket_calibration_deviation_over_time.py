@@ -77,7 +77,7 @@ class PolymarketCalibrationDeviationOverTimeAnalysis(Analysis):
                 continue
 
         # Step 2: Register token mapping
-        token_data = [(tid, won) for tid, won in token_won.items()]
+        token_data = list(token_won.items())
         con.execute("CREATE TABLE token_resolution (token_id VARCHAR, won BOOLEAN)")
         con.executemany("INSERT INTO token_resolution VALUES (?, ?)", token_data)
 
@@ -139,10 +139,14 @@ class PolymarketCalibrationDeviationOverTimeAnalysis(Analysis):
             cumulative_df = trades_df[trades_df["block_number"] <= end_block]
 
             # Aggregate by price across all historical trades
-            agg = cumulative_df.groupby("price").agg(
-                total=("won", "count"),
-                wins=("won", "sum"),
-            ).reset_index()
+            agg = (
+                cumulative_df.groupby("price")
+                .agg(
+                    total=("won", "count"),
+                    wins=("won", "sum"),
+                )
+                .reset_index()
+            )
 
             # Skip if not enough cumulative data yet
             if agg["total"].sum() < 1000:

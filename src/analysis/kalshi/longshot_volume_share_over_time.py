@@ -110,9 +110,7 @@ class LongshotVolumeShareOverTimeAnalysis(Analysis):
             .reset_index()
         )
         longshot_df = longshot_df.merge(quarterly_totals, on="quarter")
-        longshot_df["longshot_share"] = (
-            longshot_df["volume_usd"] / longshot_df["total_volume"] * 100
-        )
+        longshot_df["longshot_share"] = longshot_df["volume_usd"] / longshot_df["total_volume"] * 100
 
         fig = self._create_figure(longshot_df)
         chart = self._create_chart(longshot_df, df, quarterly_totals)
@@ -125,10 +123,7 @@ class LongshotVolumeShareOverTimeAnalysis(Analysis):
 
         quarters = longshot_df["quarter"].values
         x = np.arange(len(quarters))
-        quarter_labels = [
-            f"{pd.Timestamp(q).year} Q{(pd.Timestamp(q).month-1)//3+1}"
-            for q in quarters
-        ]
+        quarter_labels = [f"{pd.Timestamp(q).year} Q{(pd.Timestamp(q).month - 1) // 3 + 1}" for q in quarters]
 
         ax.plot(
             x,
@@ -149,9 +144,7 @@ class LongshotVolumeShareOverTimeAnalysis(Analysis):
                 break
 
         if election_idx is not None:
-            ax.axvline(
-                x=election_idx, color="blue", linestyle=":", linewidth=1.5, alpha=0.7
-            )
+            ax.axvline(x=election_idx, color="blue", linestyle=":", linewidth=1.5, alpha=0.7)
             ax.annotate(
                 "2024 Election",
                 xy=(election_idx, ax.get_ylim()[1] * 0.9),
@@ -178,9 +171,9 @@ class LongshotVolumeShareOverTimeAnalysis(Analysis):
     ) -> ChartConfig:
         """Create the chart configuration for web display."""
         # Pivot for stacked bar chart
-        pivot_df = df.pivot_table(
-            index="quarter", columns="price_bucket", values="volume_share", aggfunc="sum"
-        ).fillna(0)
+        pivot_df = df.pivot_table(index="quarter", columns="price_bucket", values="volume_share", aggfunc="sum").fillna(
+            0
+        )
 
         # Reorder columns logically
         bucket_order = [
@@ -198,11 +191,7 @@ class LongshotVolumeShareOverTimeAnalysis(Analysis):
         pivot_df = pivot_df[[c for c in bucket_order if c in pivot_df.columns]]
 
         # Filter out quarters with < $1M volume
-        valid_quarters = set(
-            pd.to_datetime(
-                quarterly_totals[quarterly_totals["total_volume"] >= 1e6]["quarter"]
-            )
-        )
+        valid_quarters = set(pd.to_datetime(quarterly_totals[quarterly_totals["total_volume"] >= 1e6]["quarter"]))
         pivot_filtered = pivot_df[pivot_df.index.isin(valid_quarters)]
 
         # Use snake_case keys for consistency
@@ -222,7 +211,7 @@ class LongshotVolumeShareOverTimeAnalysis(Analysis):
 
         chart_data = [
             {
-                "quarter": f"{pd.Timestamp(q).year} Q{(pd.Timestamp(q).month-1)//3+1}",
+                "quarter": f"{pd.Timestamp(q).year} Q{(pd.Timestamp(q).month - 1) // 3 + 1}",
                 **{
                     bucket_key_map[bucket]: round(pivot_filtered.loc[q, bucket], 2)
                     if bucket in pivot_filtered.columns

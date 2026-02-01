@@ -87,8 +87,10 @@ class PolymarketVolumeOverTimeAnalysis(Analysis):
         bars = ax.bar(df["quarter"], df["volume_usd"] / 1e6, width=80, color="#4C72B0")
         bars[-1].set_hatch("//")
         bars[-1].set_edgecolor((1, 1, 1, 0.3))
-        labels = [f"${v/1e3:.2f}B" if v > 999 else f"${v:.2f}M" for v in df["volume_usd"] / 1e6]
-        ax.bar_label(bars, labels=labels, fontsize=7, rotation=90, label_type="center", color="white", fontweight="bold")
+        labels = [f"${v / 1e3:.2f}B" if v > 999 else f"${v:.2f}M" for v in df["volume_usd"] / 1e6]
+        ax.bar_label(
+            bars, labels=labels, fontsize=7, rotation=90, label_type="center", color="white", fontweight="bold"
+        )
         ax.set_xlabel("Date")
         ax.set_yscale("log")
         ax.set_ylim(bottom=1)
