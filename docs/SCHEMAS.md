@@ -66,24 +66,7 @@ Each row represents a prediction market.
 | `created_at` | datetime (nullable) | When market was created |
 | `_fetched_at` | datetime | When this record was fetched |
 
-## Polymarket Trades (API)
-
-Each row represents a single trade from the public data API.
-
-| Column | Type | Description |
-|--------|------|-------------|
-| `condition_id` | string | Market condition ID |
-| `asset` | string | Asset/token ID |
-| `side` | string | Trade side: `BUY` or `SELL` |
-| `size` | float | Number of shares traded |
-| `price` | float | Price (0-1 decimal) |
-| `timestamp` | int | Unix timestamp |
-| `outcome` | string | Outcome name |
-| `outcome_index` | int | Outcome index (0 or 1) |
-| `transaction_hash` | string | Blockchain transaction hash |
-| `_fetched_at` | datetime | When this record was fetched |
-
-## Polymarket Trades (Blockchain)
+## Polymarket Trades
 
 Each row represents an `OrderFilled` event from the Polygon blockchain.
 

@@ -29,7 +29,7 @@ Download and extract the pre-collected dataset (33.3GiB compressed):
 make setup
 ```
 
-This downloads `data.tar.zst` from Google Cloud Storage and extracts it to `data/`.
+This downloads `data.tar.zst` from [Google Cloud Storage](https://storage.googleapis.com/prediction-market-analysis) and extracts it to `data/`.
 
 ### Data Collection
 
@@ -40,11 +40,6 @@ make index
 ```
 
 This opens an interactive menu to select which indexer to run. Data is saved to `data/kalshi/` and `data/polymarket/` directories. Progress is saved automatically, so you can interrupt and resume collection.
-
-#### Polymarket Trade Sources
-
-- **Trades (API)**: Fetches from Polymarket's public data API. Fast but only provides recent trades (limited historical depth).
-- **Trades (Blockchain)**: Fetches `OrderFilled` events directly from the Polygon blockchain. Complete historical data from block 15,000,000 onwards, but slower due to RPC rate limits.
 
 ### Running Analyses
 
