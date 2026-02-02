@@ -25,7 +25,10 @@ from __future__ import annotations
 
 import importlib
 import inspect
+import sys
 from abc import ABC, abstractmethod
+from collections.abc import Generator
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -34,6 +37,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from matplotlib.animation import FuncAnimation
 from matplotlib.figure import Figure
+from tqdm import tqdm
 
 if TYPE_CHECKING:
     from src.common.interfaces.chart import ChartConfig
@@ -58,6 +62,27 @@ class Analysis(ABC):
     def __init__(self, name: str, description: str):
         self.name = name
         self.description = description
+
+    @contextmanager
+    def progress(self, description: str) -> Generator[None, None, None]:
+        """Show a progress spinner while executing a block of code.
+
+        Usage:
+            with self.progress("Loading data"):
+                df = con.execute("SELECT * FROM large_table").df()
+
+        Args:
+            description: Text to display alongside the spinner.
+        """
+        with tqdm(
+            total=None,
+            desc=description,
+            bar_format="{desc}: {elapsed}",
+            file=sys.stderr,
+            leave=False,
+        ) as pbar:
+            yield
+            pbar.update()
 
     @abstractmethod
     def run(self) -> AnalysisOutput:

@@ -132,6 +132,20 @@ hierarchy = get_hierarchy("NFLGAME")  # Returns ("Sports", "NFL", "Games")
 color = GROUP_COLORS["Sports"]  # Returns "#1f77b4"
 ```
 
+## Progress Indicator
+
+For long-running operations, use the `progress()` context manager to show a spinner:
+
+```python
+def run(self) -> AnalysisOutput:
+    with self.progress("Loading trades data"):
+        df = con.execute("SELECT * FROM large_table").df()
+
+    with self.progress("Computing aggregations"):
+        # expensive computation
+        result = df.groupby(...).agg(...)
+```
+
 ## Output Conventions
 
 The `Analysis.save()` method handles output automatically:

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 
 import duckdb
@@ -11,6 +12,9 @@ import pandas as pd
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, ScaleType, UnitType
 
+# Bucket size for block-to-timestamp approximation (10800 blocks ~ 6 hours at 2 sec/block)
+BLOCK_BUCKET_SIZE = 10800
+
 
 class PolymarketVolumeOverTimeAnalysis(Analysis):
     """Analyze quarterly notional trading volume on Polymarket."""
@@ -18,7 +22,9 @@ class PolymarketVolumeOverTimeAnalysis(Analysis):
     def __init__(
         self,
         trades_dir: Path | str | None = None,
+        legacy_trades_dir: Path | str | None = None,
         blocks_dir: Path | str | None = None,
+        collateral_lookup_path: Path | str | None = None,
     ):
         super().__init__(
             name="polymarket_volume_over_time",
@@ -26,32 +32,55 @@ class PolymarketVolumeOverTimeAnalysis(Analysis):
         )
         base_dir = Path(__file__).parent.parent.parent.parent
         self.trades_dir = Path(trades_dir or base_dir / "data" / "polymarket" / "trades")
+        self.legacy_trades_dir = Path(legacy_trades_dir or base_dir / "data" / "polymarket" / "legacy_trades")
         self.blocks_dir = Path(blocks_dir or base_dir / "data" / "polymarket" / "blocks")
+        self.collateral_lookup_path = Path(
+            collateral_lookup_path or base_dir / "data" / "polymarket" / "fpmm_collateral_lookup.json"
+        )
 
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
         con = duckdb.connect()
 
-        # Load blocks lookup with computed bucket index for efficient joining
-        # Blocks are at consistent 10800 intervals starting from 39992400
+        # Load USDC market addresses from collateral lookup (only include USDC markets)
+        with open(self.collateral_lookup_path) as f:
+            collateral_lookup = json.load(f)
+        usdc_markets = [addr for addr, info in collateral_lookup.items() if info["collateral_symbol"] == "USDC"]
+
+        # Create blocks lookup table with bucket index for efficient joining
         con.execute(
             f"""
             CREATE TABLE blocks AS
             SELECT
-                (block_number - 39992400) // 10800 AS bucket,
-                timestamp
+                block_number // {BLOCK_BUCKET_SIZE} AS bucket,
+                FIRST(timestamp) AS timestamp
             FROM '{self.blocks_dir}/*.parquet'
+            GROUP BY block_number // {BLOCK_BUCKET_SIZE}
             """
         )
 
-        # Calculate quarterly notional volume using bucket join (much faster than ASOF)
-        # Notional = outcome tokens traded (worth $1 at resolution if winning)
+        # Register USDC markets as a table for filtering
+        con.execute("CREATE TABLE usdc_markets (fpmm_address VARCHAR)")
+        con.executemany("INSERT INTO usdc_markets VALUES (?)", [(addr,) for addr in usdc_markets])
+
+        # Legacy FPMM trades: amount is in USDC (6 decimals) for USDC-collateralized markets
+        # Only include markets with USDC collateral
+        legacy_volume_query = f"""
+            SELECT
+                DATE_TRUNC('quarter', b.timestamp::TIMESTAMP) AS quarter,
+                SUM(t.amount::BIGINT) / 1e6 AS volume_usd
+            FROM '{self.legacy_trades_dir}/*.parquet' t
+            JOIN blocks b ON t.block_number // {BLOCK_BUCKET_SIZE} = b.bucket
+            WHERE t.fpmm_address IN (SELECT fpmm_address FROM usdc_markets)
+            GROUP BY DATE_TRUNC('quarter', b.timestamp::TIMESTAMP)
+        """
+
+        # CTF Exchange trades: notional = outcome tokens traded
         # When maker_asset_id='0': maker pays USDC, receives taker_amount tokens
         # When taker_asset_id='0': taker pays USDC, receives maker_amount tokens
-        df = con.execute(
-            f"""
+        ctf_volume_query = f"""
             SELECT
-                DATE_TRUNC('quarter', TO_TIMESTAMP(b.timestamp)) AS quarter,
+                DATE_TRUNC('quarter', b.timestamp::TIMESTAMP) AS quarter,
                 SUM(
                     CASE
                         WHEN t.maker_asset_id = '0' THEN t.taker_amount
@@ -59,9 +88,21 @@ class PolymarketVolumeOverTimeAnalysis(Analysis):
                     END
                 ) / 1e6 AS volume_usd
             FROM '{self.trades_dir}/*.parquet' t
-            JOIN blocks b ON (t.block_number - 39992400) // 10800 = b.bucket
+            JOIN blocks b ON t.block_number // {BLOCK_BUCKET_SIZE} = b.bucket
             WHERE t.maker_asset_id = '0' OR t.taker_asset_id = '0'
-            GROUP BY DATE_TRUNC('quarter', TO_TIMESTAMP(b.timestamp))
+            GROUP BY DATE_TRUNC('quarter', b.timestamp::TIMESTAMP)
+        """
+
+        # Combine both sources and aggregate by quarter
+        df = con.execute(
+            f"""
+            SELECT quarter, SUM(volume_usd) AS volume_usd
+            FROM (
+                {legacy_volume_query}
+                UNION ALL
+                {ctf_volume_query}
+            )
+            GROUP BY quarter
             ORDER BY quarter
             """
         ).df()

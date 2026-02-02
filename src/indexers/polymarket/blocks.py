@@ -2,10 +2,11 @@
 
 import concurrent.futures
 import os
+import re
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
 
-import duckdb
 import pandas as pd
 from tqdm import tqdm
 
@@ -13,127 +14,144 @@ from src.common.indexer import Indexer
 from src.indexers.polymarket.blockchain import PolygonClient
 
 POLYGON_RPC = os.getenv("POLYGON_RPC", "")
-TRADES_DIR = Path("data/polymarket/trades")
 BLOCKS_DIR = Path("data/polymarket/blocks")
 
-
-BUCKET_SIZE = 10000
-SAMPLE_INTERVAL = 10800  # roughly 4 samples per day. 86400s per day / 2s per block / 4samples per day
-MAX_WORKERS = 50
+BUCKET_SIZE = 100_000  # 100k blocks per file
+SAMPLE_INTERVAL = 100  # Fetch every 100th block, interpolate the rest
+MAX_WORKERS = 100
 
 
 class PolymarketBlocksIndexer(Indexer):
-    """Builds a mapping from block number to timestamp, sampled 4 times daily."""
+    """Builds a mapping from block number to timestamp for every block."""
 
     def __init__(self):
         super().__init__(
             name="polymarket_blocks",
-            description="Fetches block timestamps sampled every 4 times daily",
+            description="Fetches block timestamps for every block",
         )
 
-    def _fetch_timestamp(self, client: PolygonClient, block_number: int) -> Optional[dict]:
-        """Fetch timestamp for a single block."""
+    def _fetch_timestamp(self, client: PolygonClient, block_number: int) -> Optional[tuple[int, int]]:
+        """Fetch timestamp for a single block. Returns (block_number, unix_timestamp)."""
         try:
-            timestamp = client.get_block_timestamp(block_number)
-            return {"block_number": block_number, "timestamp": timestamp}
+            unix_timestamp = client.get_block_timestamp(block_number)
+            return (block_number, unix_timestamp)
         except Exception as e:
             tqdm.write(f"Error fetching block {block_number}: {e}")
             return None
 
-    def _get_block_range(self) -> tuple[int, int]:
-        """Get min and max block numbers from trades dataset using DuckDB."""
-        if not TRADES_DIR.exists():
-            raise FileNotFoundError(f"Trades directory not found: {TRADES_DIR}")
-
-        parquet_pattern = str(TRADES_DIR / "*.parquet")
-        query = f"""
-            SELECT MIN(block_number), MAX(block_number)
-            FROM read_parquet('{parquet_pattern}')
-        """
-        result = duckdb.execute(query).fetchone()
-        return result[0], result[1]
-
-    def _get_existing_blocks(self) -> set[int]:
-        """Get block numbers already indexed."""
-        if not BLOCKS_DIR.exists():
-            return set()
-
-        parquet_files = list(BLOCKS_DIR.glob("*.parquet"))
-        if not parquet_files:
-            return set()
-
-        parquet_pattern = str(BLOCKS_DIR / "*.parquet")
-        query = f"""
-            SELECT DISTINCT block_number
-            FROM read_parquet('{parquet_pattern}')
-        """
-        result = duckdb.execute(query).fetchall()
-        return {row[0] for row in result}
-
-    def run(self) -> None:
-        """Fetch timestamps sampled across the trade range."""
-        BLOCKS_DIR.mkdir(parents=True, exist_ok=True)
-
-        print("Querying trades dataset for block range...")
-        min_block, max_block = self._get_block_range()
-        print(f"Block range: {min_block:,} to {max_block:,}")
-
-        # Generate sampled block numbers at SAMPLE_INTERVAL intervals
-        start = (min_block // SAMPLE_INTERVAL) * SAMPLE_INTERVAL
-        sampled_blocks = list(range(start, max_block + 1, SAMPLE_INTERVAL))
-        print(f"Sampled blocks (every {SAMPLE_INTERVAL}): {len(sampled_blocks):,}")
-
-        existing_blocks = self._get_existing_blocks()
-        blocks_to_fetch = [b for b in sampled_blocks if b not in existing_blocks]
-        print(f"Blocks already indexed: {len(existing_blocks):,}")
-        print(f"Blocks to fetch: {len(blocks_to_fetch):,}")
-
-        if not blocks_to_fetch:
-            print("All blocks already indexed")
-            return
-
-        client = PolygonClient()
+    def _interpolate_timestamps(self, sampled: list[tuple[int, int]], start_block: int, end_block: int) -> list[dict]:
+        """Interpolate timestamps for all blocks between sampled points."""
+        sampled_sorted = sorted(sampled, key=lambda x: x[0])
         records = []
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-            futures = {executor.submit(self._fetch_timestamp, client, block): block for block in blocks_to_fetch}
+        for i in range(len(sampled_sorted) - 1):
+            block_a, ts_a = sampled_sorted[i]
+            block_b, ts_b = sampled_sorted[i + 1]
 
-            for future in tqdm(
-                concurrent.futures.as_completed(futures),
-                total=len(futures),
-                desc="Fetching timestamps",
-            ):
-                result = future.result()
-                if result:
-                    records.append(result)
+            block_diff = block_b - block_a
+            ts_diff = ts_b - ts_a
 
-        # Combine with existing data and save
-        if records:
-            self._save_all(records)
+            for block in range(block_a, block_b):
+                offset = block - block_a
+                interpolated_ts = ts_a + (ts_diff * offset) // block_diff
+                timestamp_str = datetime.fromtimestamp(interpolated_ts, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+                records.append({"block_number": block, "timestamp": timestamp_str})
+
+        # Add the last sampled block
+        if sampled_sorted:
+            last_block, last_ts = sampled_sorted[-1]
+            timestamp_str = datetime.fromtimestamp(last_ts, tz=timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            records.append({"block_number": last_block, "timestamp": timestamp_str})
+
+        return records
+
+    def _get_last_indexed_block(self) -> int:
+        """Get the highest block number from existing files based on filename."""
+        if not BLOCKS_DIR.exists():
+            return 0
+
+        parquet_files = list(BLOCKS_DIR.glob("blocks_*.parquet"))
+        if not parquet_files:
+            return 0
+
+        max_block = 0
+        pattern = re.compile(r"blocks_(\d+)_(\d+)\.parquet")
+        for f in parquet_files:
+            match = pattern.match(f.name)
+            if match:
+                end_block = int(match.group(2))
+                max_block = max(max_block, end_block)
+
+        return max_block
+
+    def _get_latest_block(self, client: PolygonClient) -> int:
+        """Get the latest block number from the chain."""
+        return client.get_block_number()
+
+    def run(self) -> None:
+        """Fetch timestamps for every block, continuing from where we left off."""
+        BLOCKS_DIR.mkdir(parents=True, exist_ok=True)
+
+        client = PolygonClient()
+
+        last_indexed = self._get_last_indexed_block()
+        latest_block = self._get_latest_block(client)
+
+        print(f"Last indexed block: {last_indexed:,}")
+        print(f"Latest chain block: {latest_block:,}")
+
+        # Start from the next bucket boundary
+        start_block = last_indexed
+        if start_block == 0:
+            start_block = (latest_block // BUCKET_SIZE) * BUCKET_SIZE - BUCKET_SIZE * 10
+
+        blocks_remaining = latest_block - start_block
+        print(f"Blocks to fetch: {blocks_remaining:,}")
+
+        if blocks_remaining <= 0:
+            print("Already up to date")
+            return
+
+        # Process in buckets of BUCKET_SIZE
+        current_bucket_start = start_block
+        while current_bucket_start < latest_block:
+            bucket_end = min(current_bucket_start + BUCKET_SIZE, latest_block + 1)
+
+            # Only fetch every SAMPLE_INTERVAL blocks, plus bucket boundaries
+            sampled_blocks = list(range(current_bucket_start, bucket_end, SAMPLE_INTERVAL))
+            if sampled_blocks[-1] != bucket_end - 1:
+                sampled_blocks.append(bucket_end - 1)
+
+            print(
+                f"\nFetching {len(sampled_blocks):,} samples for blocks {current_bucket_start:,} to {bucket_end - 1:,}"
+            )
+
+            sampled_timestamps = []
+            with concurrent.futures.ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+                futures = {executor.submit(self._fetch_timestamp, client, block): block for block in sampled_blocks}
+
+                for future in tqdm(
+                    concurrent.futures.as_completed(futures),
+                    total=len(futures),
+                    desc="Fetching samples",
+                ):
+                    result = future.result()
+                    if result:
+                        sampled_timestamps.append(result)
+
+            if sampled_timestamps:
+                records = self._interpolate_timestamps(sampled_timestamps, current_bucket_start, bucket_end)
+                self._save_bucket(records, current_bucket_start, bucket_end)
+
+            current_bucket_start = bucket_end
 
         print("\nIndexing complete")
 
-    def _save_all(self, records: list[dict]) -> None:
-        """Save all records to parquet files, 10k entries each."""
-        df_new = pd.DataFrame(records)
+    def _save_bucket(self, records: list[dict], start_block: int, end_block: int) -> None:
+        """Save a bucket of records to a parquet file."""
+        df = pd.DataFrame(records)
+        df = df.sort_values("block_number").reset_index(drop=True)
 
-        # Load existing data
-        parquet_files = list(BLOCKS_DIR.glob("*.parquet"))
-        if parquet_files:
-            parquet_pattern = str(BLOCKS_DIR / "*.parquet")
-            df_existing = duckdb.execute(f"SELECT * FROM read_parquet('{parquet_pattern}')").df()
-            df_new = pd.concat([df_existing, df_new], ignore_index=True)
-            df_new = df_new.drop_duplicates(subset=["block_number"])
-
-        df_new = df_new.sort_values("block_number").reset_index(drop=True)
-
-        # Clear existing files
-        for f in BLOCKS_DIR.glob("*.parquet"):
-            f.unlink()
-
-        # Save in chunks of BUCKET_SIZE
-        for i in range(0, len(df_new), BUCKET_SIZE):
-            chunk = df_new.iloc[i : i + BUCKET_SIZE]
-            output_path = BLOCKS_DIR / f"blocks_{i}_{i + BUCKET_SIZE}.parquet"
-            chunk.to_parquet(output_path, index=False)
-            print(f"Saved {len(chunk)} blocks to {output_path.name}")
+        output_path = BLOCKS_DIR / f"blocks_{start_block}_{end_block}.parquet"
+        df.to_parquet(output_path, index=False)
+        print(f"Saved {len(df)} blocks to {output_path.name}")

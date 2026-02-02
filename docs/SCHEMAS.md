@@ -87,3 +87,51 @@ Each row represents an `OrderFilled` event from the Polygon blockchain.
 | `_contract` | string | Contract name (CTF Exchange or NegRisk) |
 
 **Note on Polymarket prices:** Prices are decimals between 0 and 1. A price of 0.65 means the contract costs $0.65 and pays $1.00 if the outcome wins (implied probability: 65%).
+
+## Polymarket Legacy Trades (FPMM)
+
+Each row represents an `FPMMBuy` or `FPMMSell` event from the legacy Fixed Product Market Maker contracts on Polygon. These are trades from before Polymarket migrated to the CTF Exchange (roughly 2020-2022).
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `block_number` | int | Polygon block number |
+| `transaction_hash` | string | Blockchain transaction hash |
+| `log_index` | int | Log index within transaction |
+| `fpmm_address` | string | FPMM contract (market) address |
+| `trader` | string | Buyer or seller address |
+| `amount` | string | Investment amount (buy) or return amount (sell) in collateral units (6 decimals for USDC) |
+| `fee_amount` | string | Trading fee in collateral units |
+| `outcome_index` | int | Index of the outcome traded (0 or 1) |
+| `outcome_tokens` | string | Outcome tokens bought or sold (18 decimals) |
+| `is_buy` | bool | True for buy, False for sell |
+| `timestamp` | int (nullable) | Unix timestamp (if enriched) |
+| `_fetched_at` | datetime | When this record was fetched |
+
+**Note on legacy trade amounts:** The `amount`, `fee_amount`, and `outcome_tokens` fields are stored as strings to avoid integer overflow. Collateral amounts use 6 decimals (for USDC markets), while outcome tokens use 18 decimals.
+
+## Polymarket FPMM Collateral Lookup
+
+Located at `data/polymarket/fpmm_collateral_lookup.json`, this file maps FPMM contract addresses to their collateral token information. Used to filter legacy trades to only include USDC-collateralized markets.
+
+```json
+{
+  "0x1234...": {
+    "collateral_address": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174",
+    "collateral_symbol": "USDC"
+  }
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `collateral_address` | string | ERC-20 token address used as collateral |
+| `collateral_symbol` | string | Token symbol (e.g., `USDC`, `USDT`) |
+
+## Polymarket Blocks
+
+Mapping from Polygon block numbers to timestamps.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `block_number` | int | Polygon block number |
+| `timestamp` | string | ISO 8601 timestamp (e.g., `2024-01-15T12:30:00Z`) |
