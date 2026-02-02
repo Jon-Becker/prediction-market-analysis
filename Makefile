@@ -1,9 +1,12 @@
-.PHONY: analyze index package lint format setup
+.PHONY: analyze run index package lint format setup
 
 RUN = uv run main.py
 
 analyze:
 	$(RUN) analyze
+
+run:
+	$(RUN) analyze $(filter-out $@,$(MAKECMDGOALS))
 
 index:
 	$(RUN) index
