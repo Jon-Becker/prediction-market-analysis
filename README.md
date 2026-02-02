@@ -23,7 +23,7 @@ Requires Python 3.9+. Install dependencies with [uv](https://github.com/astral-s
 uv sync
 ```
 
-Download and extract the pre-collected dataset (33.3GiB compressed):
+Download and extract the pre-collected dataset (36GiB compressed):
 
 ```bash
 make setup
