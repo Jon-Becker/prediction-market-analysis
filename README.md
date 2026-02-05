@@ -29,7 +29,7 @@ Download and extract the pre-collected dataset (33.3GiB compressed):
 make setup
 ```
 
-This downloads `data.tar.zst` from [Google Cloud Storage](https://storage.googleapis.com/prediction-market-analysis) and extracts it to `data/`.
+This downloads `data.tar.zst` from [Cloudflare R2 Storage](https://s3.jbecker.dev/data.tar.zst) and extracts it to `data/`.
 
 ### Data Collection
 

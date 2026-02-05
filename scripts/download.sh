@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-URL="https://storage.googleapis.com/prediction-market-analysis/data.tar.zst"
+URL="https://s3.jbecker.dev/data.tar.zst"
 OUTPUT_FILE="data.tar.zst"
 DATA_DIR="data"
 
