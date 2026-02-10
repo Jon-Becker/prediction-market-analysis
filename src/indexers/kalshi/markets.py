@@ -1,6 +1,7 @@
 """Indexer for Kalshi markets data."""
 
 from pathlib import Path
+from typing import Optional
 
 from src.common.indexer import Indexer
 from src.common.storage import ParquetStorage
@@ -13,11 +14,17 @@ CURSOR_FILE = Path("data/kalshi/.backfill_cursor")
 class KalshiMarketsIndexer(Indexer):
     """Fetches and stores Kalshi markets data."""
 
-    def __init__(self):
+    def __init__(
+        self,
+        min_close_ts: Optional[int] = None,
+        max_close_ts: Optional[int] = None,
+    ):
         super().__init__(
             name="kalshi_markets",
             description="Backfills Kalshi markets data to parquet files",
         )
+        self._min_close_ts = min_close_ts
+        self._max_close_ts = max_close_ts
 
     def run(self) -> None:
         DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -33,7 +40,12 @@ class KalshiMarketsIndexer(Indexer):
                 print(f"Resuming from cursor: {cursor[:20]}...")
 
         total = 0
-        for markets, next_cursor in client.iter_markets(cursor=cursor):
+        for markets, next_cursor in client.iter_markets(
+            limit=1000,
+            cursor=cursor,
+            min_close_ts=self._min_close_ts,
+            max_close_ts=self._max_close_ts,
+        ):
             if markets:
                 total_stored = storage.append_markets(markets)
                 total += len(markets)

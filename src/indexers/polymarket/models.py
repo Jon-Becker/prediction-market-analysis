@@ -18,6 +18,7 @@ class Market:
     closed: bool
     end_date: Optional[datetime]
     created_at: Optional[datetime]
+    market_maker_address: Optional[str] = None  # FPMM address for legacy markets
 
     @classmethod
     def from_dict(cls, data: dict) -> "Market":
@@ -45,6 +46,7 @@ class Market:
             closed=data.get("closed", False),
             end_date=parse_time(data.get("endDate")),
             created_at=parse_time(data.get("createdAt")),
+            market_maker_address=data.get("marketMakerAddress"),
         )
 
 

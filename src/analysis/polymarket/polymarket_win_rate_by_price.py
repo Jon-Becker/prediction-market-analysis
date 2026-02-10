@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 from pathlib import Path
 
 import duckdb
@@ -22,7 +23,6 @@ class PolymarketWinRateByPriceAnalysis(Analysis):
         legacy_trades_dir: Path | str | None = None,
         markets_dir: Path | str | None = None,
         collateral_lookup_path: Path | str | None = None,
-        fpmm_resolution_path: Path | str | None = None,
     ):
         super().__init__(
             name="polymarket_win_rate_by_price",
@@ -35,8 +35,6 @@ class PolymarketWinRateByPriceAnalysis(Analysis):
         self.collateral_lookup_path = Path(
             collateral_lookup_path or base_dir / "data" / "polymarket" / "fpmm_collateral_lookup.json"
         )
-        # Optional: path to JSON mapping fpmm_address -> winning_outcome_index (0 or 1)
-        self.fpmm_resolution_path = Path(fpmm_resolution_path) if fpmm_resolution_path else None
 
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
@@ -46,26 +44,42 @@ class PolymarketWinRateByPriceAnalysis(Analysis):
         # A market is resolved if one outcome price is > 0.99 and the other < 0.01
         markets_df = con.execute(
             f"""
-            SELECT id, clob_token_ids, outcome_prices
+            SELECT id, clob_token_ids, outcome_prices, market_maker_address
             FROM '{self.markets_dir}/*.parquet'
             WHERE closed = true
             """
         ).df()
 
         token_won: dict[str, bool] = {}
+        fpmm_resolution: dict[str, int] = {}
+
         for _, row in markets_df.iterrows():
             try:
-                token_ids = json.loads(row["clob_token_ids"]) if row["clob_token_ids"] else None
                 prices = json.loads(row["outcome_prices"]) if row["outcome_prices"] else None
-                if not token_ids or not prices or len(token_ids) != 2 or len(prices) != 2:
+                if not prices or len(prices) != 2:
                     continue
                 p0, p1 = float(prices[0]), float(prices[1])
+
+                # Determine winning outcome
+                winning_outcome = None
                 if p0 > 0.99 and p1 < 0.01:
-                    token_won[token_ids[0]] = True
-                    token_won[token_ids[1]] = False
+                    winning_outcome = 0
                 elif p0 < 0.01 and p1 > 0.99:
-                    token_won[token_ids[0]] = False
-                    token_won[token_ids[1]] = True
+                    winning_outcome = 1
+                else:
+                    continue
+
+                # CTF token resolution
+                token_ids = json.loads(row["clob_token_ids"]) if row["clob_token_ids"] else None
+                if token_ids and len(token_ids) == 2:
+                    token_won[token_ids[0]] = winning_outcome == 0
+                    token_won[token_ids[1]] = winning_outcome == 1
+
+                # FPMM resolution
+                fpmm_addr = row.get("market_maker_address")
+                if fpmm_addr:
+                    fpmm_resolution[fpmm_addr.lower()] = winning_outcome
+
             except (json.JSONDecodeError, ValueError, TypeError):
                 continue
 
@@ -73,16 +87,13 @@ class PolymarketWinRateByPriceAnalysis(Analysis):
         con.execute("CREATE TABLE token_resolution (token_id VARCHAR, won BOOLEAN)")
         con.executemany("INSERT INTO token_resolution VALUES (?, ?)", list(token_won.items()))
 
-        # Step 3: Load FPMM resolution if available (mapping fpmm_address -> winning_outcome_index)
-        fpmm_resolution: dict[str, int] = {}
-        if self.fpmm_resolution_path and self.fpmm_resolution_path.exists():
-            with open(self.fpmm_resolution_path) as f:
-                fpmm_resolution = json.load(f)
-            # Also load collateral lookup for USDC filtering
+        # Step 3: Filter FPMM resolution to USDC markets only
+        if self.collateral_lookup_path.exists():
             with open(self.collateral_lookup_path) as f:
                 collateral_lookup = json.load(f)
-            usdc_markets = {addr for addr, info in collateral_lookup.items() if info["collateral_symbol"] == "USDC"}
-            # Filter to only USDC markets with resolution data
+            usdc_markets = {
+                addr.lower() for addr, info in collateral_lookup.items() if info["collateral_symbol"] == "USDC"
+            }
             fpmm_resolution = {k: v for k, v in fpmm_resolution.items() if k in usdc_markets}
 
         # Register FPMM resolution table
@@ -91,8 +102,6 @@ class PolymarketWinRateByPriceAnalysis(Analysis):
             con.executemany("INSERT INTO fpmm_resolution VALUES (?, ?)", list(fpmm_resolution.items()))
 
         # Step 4: Build CTF trade positions query
-        # When maker_asset_id = 0, maker provides USDC and receives outcome tokens
-        # Price = maker_amount / taker_amount (in cents, since both are in 6 decimals)
         ctf_trades_query = f"""
             -- CTF Buyer side (buying outcome tokens with USDC)
             SELECT
@@ -123,30 +132,29 @@ class PolymarketWinRateByPriceAnalysis(Analysis):
             WHERE t.taker_amount > 0 AND t.maker_amount > 0
         """
 
-        # Step 5: Build legacy FPMM trade positions query (if resolution data available)
+        # Step 5: Build legacy FPMM trade positions query
         legacy_trades_query = ""
         if fpmm_resolution and self.legacy_trades_dir.exists():
             legacy_trades_query = f"""
                 UNION ALL
 
-                -- Legacy FPMM Buyer side (is_buy = true)
-                -- Price = amount / outcome_tokens * 100 (both in 6 decimals for USDC)
+                -- Legacy FPMM Buyer side
                 SELECT
                     ROUND(100.0 * t.amount::DOUBLE / t.outcome_tokens::DOUBLE) AS price,
                     (t.outcome_index = r.winning_outcome) AS won
                 FROM '{self.legacy_trades_dir}/*.parquet' t
-                INNER JOIN fpmm_resolution r ON t.fpmm_address = r.fpmm_address
-                WHERE t.is_buy = true AND t.outcome_tokens::BIGINT > 0
+                INNER JOIN fpmm_resolution r ON LOWER(t.fpmm_address) = r.fpmm_address
+                WHERE t.outcome_tokens::DOUBLE > 0
 
                 UNION ALL
 
-                -- Legacy FPMM Seller side (is_buy = false) - counterparty takes opposite position
+                -- Legacy FPMM Seller side (counterparty)
                 SELECT
                     ROUND(100.0 - 100.0 * t.amount::DOUBLE / t.outcome_tokens::DOUBLE) AS price,
                     (t.outcome_index != r.winning_outcome) AS won
                 FROM '{self.legacy_trades_dir}/*.parquet' t
-                INNER JOIN fpmm_resolution r ON t.fpmm_address = r.fpmm_address
-                WHERE t.is_buy = false AND t.outcome_tokens::BIGINT > 0
+                INNER JOIN fpmm_resolution r ON LOWER(t.fpmm_address) = r.fpmm_address
+                WHERE t.outcome_tokens::DOUBLE > 0
             """
 
         # Step 6: Aggregate all trade positions by price
@@ -168,12 +176,76 @@ class PolymarketWinRateByPriceAnalysis(Analysis):
             """
         ).df()
 
-        fig = self._create_figure(df)
+        # Compute calibration metrics from aggregated data
+        metrics = self._compute_calibration_metrics(df)
+
+        fig = self._create_figure(df, metrics)
         chart = self._create_chart(df)
 
-        return AnalysisOutput(figure=fig, data=df, chart=chart)
+        return AnalysisOutput(figure=fig, data=df, chart=chart, metadata=metrics)
 
-    def _create_figure(self, df: pd.DataFrame) -> plt.Figure:
+    def _compute_calibration_metrics(self, df: pd.DataFrame) -> dict:
+        """Compute Brier score and ECE from aggregated price data.
+
+        Brier score = mean((p - y)²) where p is predicted prob, y is outcome (0 or 1)
+        For each price bucket:
+        - wins contribute: (price/100 - 1)² per trade
+        - losses contribute: (price/100 - 0)² per trade
+
+        ECE (Expected Calibration Error) = weighted avg of |win_rate - price| across bins
+
+        NOTE: This computes Brier score at trade execution time, which is the correct
+        methodology for measuring market calibration. Some analyses (e.g., Dune's
+        polymarket_data table) use price snapshots near resolution (e.g., price_1d_before),
+        which produces artificially low Brier scores (~0.05) because markets have already
+        converged toward 0 or 1 as outcomes become obvious. Our approach answers the
+        question traders care about: "When I buy at X%, does the outcome happen X% of
+        the time?" Expected Brier score for a well-calibrated market with trades across
+        all price levels is ~0.17, not 0.05.
+        """
+        total_trades = df["total_trades"].sum()
+
+        # Brier score: compute from individual trade contributions
+        brier_sum = 0.0
+        for _, row in df.iterrows():
+            p = row["price"] / 100.0  # Convert cents to probability
+            wins = row["wins"]
+            losses = row["total_trades"] - wins
+            # Wins: (p - 1)², Losses: (p - 0)²
+            brier_sum += wins * (p - 1) ** 2 + losses * p**2
+
+        brier_score = brier_sum / total_trades if total_trades > 0 else 0.0
+
+        # ECE: weighted average of |actual_rate - predicted_rate|
+        ece_sum = 0.0
+        for _, row in df.iterrows():
+            predicted = row["price"] / 100.0
+            actual = row["win_rate"] / 100.0
+            weight = row["total_trades"]
+            ece_sum += weight * abs(actual - predicted)
+
+        ece = ece_sum / total_trades if total_trades > 0 else 0.0
+
+        # Log loss: -mean(y * log(p) + (1-y) * log(1-p))
+        epsilon = 1e-6
+        log_loss_sum = 0.0
+        for _, row in df.iterrows():
+            p = max(min(row["price"] / 100.0, 1 - epsilon), epsilon)
+            wins = row["wins"]
+            losses = row["total_trades"] - wins
+            # Wins: -log(p), Losses: -log(1-p)
+            log_loss_sum += wins * (-math.log(p)) + losses * (-math.log(1 - p))
+
+        log_loss = log_loss_sum / total_trades if total_trades > 0 else 0.0
+
+        return {
+            "brier_score": round(brier_score, 4),
+            "log_loss": round(log_loss, 4),
+            "ece": round(ece, 4),
+            "total_trades": int(total_trades),
+        }
+
+    def _create_figure(self, df: pd.DataFrame, metrics: dict | None = None) -> plt.Figure:
         """Create the matplotlib figure."""
         fig, ax = plt.subplots(figsize=(10, 10))
         ax.scatter(
@@ -203,6 +275,26 @@ class PolymarketWinRateByPriceAnalysis(Analysis):
         ax.set_yticks(range(0, 101, 1), minor=True)
         ax.set_aspect("equal")
         ax.legend(loc="upper left")
+
+        # Add calibration metrics to figure
+        if metrics:
+            metrics_text = (
+                f"Brier Score: {metrics['brier_score']:.4f}\n"
+                f"Log Loss: {metrics['log_loss']:.4f}\n"
+                f"ECE: {metrics['ece']:.4f}\n"
+                f"Trades: {metrics['total_trades']:,}"
+            )
+            ax.text(
+                0.98,
+                0.02,
+                metrics_text,
+                transform=ax.transAxes,
+                fontsize=10,
+                verticalalignment="bottom",
+                horizontalalignment="right",
+                bbox={"boxstyle": "round", "facecolor": "white", "alpha": 0.8},
+            )
+
         plt.tight_layout()
         return fig
 

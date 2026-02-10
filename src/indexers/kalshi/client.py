@@ -34,7 +34,14 @@ class KalshiClient:
         data = self._get(f"/markets/{ticker}")
         return Market.from_dict(data["market"])
 
-    def get_market_trades(self, ticker: str, limit: int = 1000, verbose: bool = True) -> list[Trade]:
+    def get_market_trades(
+        self,
+        ticker: str,
+        limit: int = 1000,
+        verbose: bool = True,
+        min_ts: Optional[int] = None,
+        max_ts: Optional[int] = None,
+    ) -> list[Trade]:
         all_trades = []
         cursor = None
 
@@ -42,6 +49,10 @@ class KalshiClient:
             params = {"ticker": ticker, "limit": limit}
             if cursor:
                 params["cursor"] = cursor
+            if min_ts is not None:
+                params["min_ts"] = min_ts
+            if max_ts is not None:
+                params["max_ts"] = max_ts
 
             data = self._get("/markets/trades", params=params)
 
@@ -85,12 +96,20 @@ class KalshiClient:
         return all_markets
 
     def iter_markets(
-        self, limit: int = 200, cursor: Optional[str] = None
+        self,
+        limit: int = 200,
+        cursor: Optional[str] = None,
+        min_close_ts: Optional[int] = None,
+        max_close_ts: Optional[int] = None,
     ) -> Generator[tuple[list[Market], Optional[str]], None, None]:
         while True:
             params = {"limit": limit}
             if cursor:
                 params["cursor"] = cursor
+            if min_close_ts is not None:
+                params["min_close_ts"] = min_close_ts
+            if max_close_ts is not None:
+                params["max_close_ts"] = max_close_ts
 
             data = self._get("/markets", params=params)
 

@@ -50,6 +50,7 @@ class AnalysisOutput:
     figure: Figure | FuncAnimation | None = None
     data: pd.DataFrame | None = None
     chart: ChartConfig | None = None
+    metadata: dict | None = None
 
 
 class Analysis(ABC):
