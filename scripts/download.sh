@@ -39,7 +39,7 @@ extract() {
     fi
 
     echo "Extracting $OUTPUT_FILE..."
-    zstd -d "$OUTPUT_FILE" --stdout | tar -xf -
+    zstd -d "$DATA_PATH" --stdout | tar -xf -
     echo "Extraction complete."
 }
 
