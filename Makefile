@@ -23,8 +23,8 @@ format:
 	uv run ruff format .
 
 setup:
-	sh scripts/install-tools.sh
-	sh scripts/download.sh
+	bash scripts/install-tools.sh
+	bash scripts/download.sh
 
 %:
 	@:
