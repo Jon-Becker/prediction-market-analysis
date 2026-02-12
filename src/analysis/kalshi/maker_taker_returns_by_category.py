@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from src.analysis.util.categories import CATEGORY_SQL, get_group
+from src.analysis.kalshi.util.categories import CATEGORY_SQL, get_group
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 

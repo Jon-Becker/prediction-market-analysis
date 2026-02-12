@@ -19,7 +19,7 @@ import pandas as pd
 from scipy import stats
 from scipy.stats import mannwhitneyu, pearsonr, spearmanr, ttest_ind
 
-from src.analysis.util.categories import CATEGORY_SQL, get_group
+from src.analysis.kalshi.util.categories import CATEGORY_SQL, get_group
 from src.common.analysis import Analysis, AnalysisOutput
 
 

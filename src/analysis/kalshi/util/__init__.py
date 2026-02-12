@@ -1,6 +1,6 @@
 """Utility modules for analysis."""
 
-from src.analysis.util.categories import (
+from src.analysis.kalshi.util.categories import (
     CATEGORY_SQL,
     GROUP_COLORS,
     SUBCATEGORY_PATTERNS,

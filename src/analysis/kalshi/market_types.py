@@ -12,7 +12,7 @@ import pandas as pd
 import squarify
 from matplotlib.patches import Patch
 
-from src.analysis.util.categories import GROUP_COLORS, get_group, get_hierarchy
+from src.analysis.kalshi.util.categories import GROUP_COLORS, get_group, get_hierarchy
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 

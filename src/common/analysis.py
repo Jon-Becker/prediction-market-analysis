@@ -127,8 +127,10 @@ class Analysis(ABC):
                 path = output_dir / f"{self.name}.{fmt}"
                 if fmt == "gif" and isinstance(output.figure, FuncAnimation):
                     output.figure.save(path, writer="pillow", dpi=dpi)
-                elif isinstance(output.figure, Figure):
+                elif fmt != "gif" and isinstance(output.figure, Figure):
                     output.figure.savefig(path, dpi=dpi, bbox_inches="tight")
+                else:
+                    continue
                 saved[fmt] = path
 
             # Close figure to free memory

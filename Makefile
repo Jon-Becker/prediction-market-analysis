@@ -1,4 +1,4 @@
-.PHONY: analyze run index package lint format setup
+.PHONY: analyze run index package lint format test setup
 
 RUN = uv run main.py
 
@@ -21,6 +21,9 @@ lint:
 format:
 	uv run ruff check --fix .
 	uv run ruff format .
+
+test:
+	uv run pytest tests/ -v
 
 setup:
 	sh scripts/install-tools.sh
