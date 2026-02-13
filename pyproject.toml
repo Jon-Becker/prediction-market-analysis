@@ -20,8 +20,9 @@ dependencies = [
     "tenacity>=8.0.0",
     "tqdm>=4.67.1",
     "web3>=6.0.0",
-    "simple-term-menu>=1.6.0",
+    "questionary>=2.0.0",
     "python-dotenv>=1.2.1",
+    "typer>=0.9.0",
 ]
 
 [dependency-groups]
