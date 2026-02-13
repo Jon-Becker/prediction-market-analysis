@@ -1,6 +1,7 @@
 """Indexer for Kalshi trades data."""
 
-from concurrent.futures import ThreadPoolExecutor, as_completed
+import traceback
+from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
@@ -40,20 +41,19 @@ class KalshiTradesIndexer(Indexer):
         DATA_DIR.mkdir(parents=True, exist_ok=True)
         CURSOR_FILE.parent.mkdir(parents=True, exist_ok=True)
 
-        # Load existing trade IDs for deduplication
-        existing_trade_ids: set[str] = set()
+        # Load existing tickers for deduplication (small, fits OK into memory)
         existing_tickers: set[str] = set()
         parquet_files = list(DATA_DIR.glob("trades_*.parquet"))
         if parquet_files:
-            print("Loading existing trades for deduplication...")
+            print("Loading existing tickers for deduplication...")
             try:
-                result = duckdb.sql(f"SELECT DISTINCT trade_id, ticker FROM '{DATA_DIR}/trades_*.parquet'").fetchall()
-                for trade_id, ticker in result:
-                    existing_trade_ids.add(trade_id)
-                    existing_tickers.add(ticker)
-                print(f"Found {len(existing_trade_ids)} existing trades")
+                existing_tickers = {
+                    row[0]
+                    for row in duckdb.sql(f"SELECT DISTINCT ticker FROM '{DATA_DIR}/trades_*.parquet'").fetchall()
+                }
+                print(f"Found {len(existing_tickers)} existing tickers")
             except Exception:
-                pass
+                traceback.print_exc()
 
         all_tickers = duckdb.sql(f"""
             SELECT DISTINCT ticker FROM '{MARKETS_DIR}/markets_*_*.parquet'
@@ -65,14 +65,12 @@ class KalshiTradesIndexer(Indexer):
 
         # Filter to tickers not fully processed
         tickers_to_process = [t for t in all_tickers if t not in existing_tickers]
+        del existing_tickers  # free some RAM
+
         print(
             f"Skipped {len(all_tickers) - len(tickers_to_process)} already processed, "
             f"{len(tickers_to_process)} to fetch"
         )
-
-        if not tickers_to_process:
-            print("Nothing to process")
-            return
 
         all_trades: list[dict] = []
         total_trades_saved = 0
@@ -101,7 +99,7 @@ class KalshiTradesIndexer(Indexer):
             next_chunk_idx += BATCH_SIZE
             return len(trades_batch)
 
-        def fetch_ticker_trades(ticker: str) -> list[dict]:
+        def fetch_ticker_trades(ticker: str) -> tuple[str, Optional[list[dict]]]:
             """Fetch trades for a single ticker."""
             client = KalshiClient()
             try:
@@ -112,38 +110,51 @@ class KalshiTradesIndexer(Indexer):
                     max_ts=self._max_ts,
                 )
                 if not trades:
-                    return []
+                    return ticker, []
                 fetched_at = datetime.utcnow()
-                return [
-                    {**asdict(t), "_fetched_at": fetched_at} for t in trades if t.trade_id not in existing_trade_ids
-                ]
+                return ticker, [{**asdict(t), "_fetched_at": fetched_at} for t in trades]
+            except Exception as e:
+                tqdm.write(f"Error fetching {ticker}: {e}")
+                return ticker, None
             finally:
                 client.close()
 
-        # Concurrent fetching
+        MAX_PENDING = self._max_workers * 2  # Tune as needed
+        pending = set()
+        tickers_iter = iter(tickers_to_process)
         pbar = tqdm(total=len(tickers_to_process), desc="Fetching trades")
-        with ThreadPoolExecutor(max_workers=self._max_workers) as executor:
-            futures = {executor.submit(fetch_ticker_trades, ticker): ticker for ticker in tickers_to_process}
 
-            for future in as_completed(futures):
-                ticker = futures[future]
-                try:
-                    trades_data = future.result()
-                    if trades_data:
+        with ThreadPoolExecutor(max_workers=self._max_workers) as executor:
+            # Submit initial futures
+            for _ in range(min(MAX_PENDING, len(tickers_to_process))):
+                ticker = next(tickers_iter)
+                future = executor.submit(fetch_ticker_trades, ticker)
+                pending.add(future)
+
+            while pending:
+                # Wait for at least one future to complete
+                done, pending = wait(pending, return_when=FIRST_COMPLETED)
+                for future in done:
+                    ticker, trades_data = future.result()
+                    if trades_data:  # Handles both error and empty result
                         all_trades.extend(trades_data)
 
-                    pbar.update(1)
                     pbar.set_postfix(buffer=len(all_trades), saved=total_trades_saved, last=ticker[-20:])
 
                     # Save in batches
                     while len(all_trades) >= BATCH_SIZE:
                         saved = save_batch(all_trades[:BATCH_SIZE])
                         total_trades_saved += saved
-                        all_trades = all_trades[BATCH_SIZE:]
-
-                except Exception as e:
+                        all_trades = list(all_trades[BATCH_SIZE:])
                     pbar.update(1)
-                    tqdm.write(f"Error fetching {ticker}: {e}")
+
+                # Submit new futures to replace the completed ones
+                for _ in range(len(done)):
+                    try:
+                        ticker = next(tickers_iter)
+                        pending.add(executor.submit(fetch_ticker_trades, ticker))
+                    except StopIteration:
+                        break
 
         pbar.close()
 
@@ -155,3 +166,32 @@ class KalshiTradesIndexer(Indexer):
             f"\nBackfill trades complete: {len(tickers_to_process)} markets processed, "
             f"{total_trades_saved} trades saved"
         )
+        self._deduplicate_trades()
+
+    def _deduplicate_trades(self) -> None:
+        parquet_files = list(DATA_DIR.glob("trades_*.parquet"))
+        # It can be either empty or contain one file which should not contain duplicates
+        if len(parquet_files) <= 1:
+            return
+
+        print("Deduplicating all trade data...")
+        temp_file = DATA_DIR / "trades_dedup_temp.parquet"
+        try:
+            duckdb.sql(f"""
+                COPY (
+                    SELECT DISTINCT ON (trade_id) *
+                    FROM '{DATA_DIR}/trades_*.parquet'
+                ) TO '{temp_file}' (FORMAT 'parquet')
+            """)
+
+            temp_file.rename(DATA_DIR / "trades_all.parquet")
+
+            for f in parquet_files:
+                f.unlink()
+
+            print(f"Deduplicated trades saved to {DATA_DIR}/trades_all.parquet")
+        except BaseException as e:
+            print(f"Error during deduplication: {e}")
+            if temp_file.exists():
+                temp_file.unlink()
+            raise

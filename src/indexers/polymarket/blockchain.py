@@ -165,7 +165,7 @@ class PolygonClient:
             try:
                 trade = self._decode_order_filled(log, contract)
                 trades.append(trade)
-            except Exception as e:
+            except BaseException as e:
                 print(f"Error decoding log: {e}")
 
         return trades
@@ -175,7 +175,7 @@ class PolygonClient:
         try:
             trades = self.get_trades(start, end, contract_address)
             return trades, start, end
-        except Exception as e:
+        except BaseException as e:
             if "too large" in str(e).lower():
                 # Split into two halves and fetch sequentially
                 mid = (start + end) // 2
