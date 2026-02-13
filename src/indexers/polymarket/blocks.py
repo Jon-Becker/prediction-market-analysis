@@ -35,7 +35,7 @@ class PolymarketBlocksIndexer(Indexer):
         try:
             unix_timestamp = client.get_block_timestamp(block_number)
             return (block_number, unix_timestamp)
-        except Exception as e:
+        except BaseException as e:
             tqdm.write(f"Error fetching block {block_number}: {e}")
             return None
 

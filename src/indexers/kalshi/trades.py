@@ -1,5 +1,6 @@
 """Indexer for Kalshi trades data."""
 
+import traceback
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict
 from datetime import datetime
@@ -47,13 +48,17 @@ class KalshiTradesIndexer(Indexer):
         if parquet_files:
             print("Loading existing trades for deduplication...")
             try:
-                result = duckdb.sql(f"SELECT DISTINCT trade_id, ticker FROM '{DATA_DIR}/trades_*.parquet'").fetchall()
-                for trade_id, ticker in result:
-                    existing_trade_ids.add(trade_id)
-                    existing_tickers.add(ticker)
+                existing_trade_ids = {
+                    row[0]
+                    for row in duckdb.sql(f"SELECT DISTINCT trade_id FROM '{DATA_DIR}/trades_*.parquet'").fetchall()
+                }
+                existing_tickers = {
+                    row[0]
+                    for row in duckdb.sql(f"SELECT DISTINCT ticker FROM '{DATA_DIR}/trades_*.parquet'").fetchall()
+                }
                 print(f"Found {len(existing_trade_ids)} existing trades")
-            except Exception:
-                pass
+            except BaseException:
+                traceback.print_exc()
 
         all_tickers = duckdb.sql(f"""
             SELECT DISTINCT ticker FROM '{MARKETS_DIR}/markets_*_*.parquet'
@@ -141,7 +146,7 @@ class KalshiTradesIndexer(Indexer):
                         total_trades_saved += saved
                         all_trades = all_trades[BATCH_SIZE:]
 
-                except Exception as e:
+                except BaseException as e:
                     pbar.update(1)
                     tqdm.write(f"Error fetching {ticker}: {e}")
 
