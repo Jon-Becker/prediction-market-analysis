@@ -26,7 +26,7 @@ class KalshiTradesIndexer(Indexer):
         self,
         min_ts: Optional[int] = None,
         max_ts: Optional[int] = None,
-        max_workers: int = 20,
+        max_workers: int = 10,
     ):
         super().__init__(
             name="kalshi_trades",
@@ -99,7 +99,7 @@ class KalshiTradesIndexer(Indexer):
             next_chunk_idx += BATCH_SIZE
             return len(trades_batch)
 
-        def fetch_ticker_trades(ticker: str) -> tuple[str, list[dict] | None]:
+        def fetch_ticker_trades(ticker: str) -> tuple[str, Optional[list[dict]]]:
             """Fetch trades for a single ticker."""
             client = KalshiClient()
             try:

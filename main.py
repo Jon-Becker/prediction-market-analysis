@@ -1,8 +1,11 @@
 from __future__ import annotations
 
+import os
 import sys
 from pathlib import Path
 
+import duckdb
+from dotenv import load_dotenv
 from simple_term_menu import TerminalMenu
 
 from src.common.analysis import Analysis
@@ -137,6 +140,10 @@ def main():
         print("\nUsage: uv run main.py <command>")
         print("Commands: analyze, index, package")
         sys.exit(0)
+
+    load_dotenv()
+    if limit := int(os.getenv("DUCKDB_MEMORY_LIMIT_GB", 0)):
+        duckdb.execute(f"PRAGMA memory_limit='{limit}GB'")
 
     command = sys.argv[1]
 
