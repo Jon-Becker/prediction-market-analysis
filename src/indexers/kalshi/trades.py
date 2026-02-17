@@ -6,6 +6,7 @@ from dataclasses import asdict
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+import shutil
 
 import duckdb
 import pandas as pd
@@ -15,6 +16,9 @@ from src.common.indexer import Indexer
 from src.indexers.kalshi.client import KalshiClient
 
 DATA_DIR = Path("data/kalshi/trades")
+BACKUP_DIR = DATA_DIR.with_name(DATA_DIR.name + "_backup")
+TEMP_DIR = DATA_DIR.with_name(DATA_DIR.name + "_temp")
+
 MARKETS_DIR = Path("data/kalshi/markets")
 CURSOR_FILE = Path("data/kalshi/.backfill_trades_cursor")
 
@@ -37,9 +41,9 @@ class KalshiTradesIndexer(Indexer):
         self._max_workers = max_workers
 
     def run(self) -> None:
+        self._fix_files()
+
         BATCH_SIZE = 10000
-        DATA_DIR.mkdir(parents=True, exist_ok=True)
-        CURSOR_FILE.parent.mkdir(parents=True, exist_ok=True)
 
         # Load existing tickers for deduplication (small, fits OK into memory)
         existing_tickers: set[str] = set()
@@ -169,29 +173,48 @@ class KalshiTradesIndexer(Indexer):
         self._deduplicate_trades()
 
     def _deduplicate_trades(self) -> None:
+        self._fix_files()
+
         parquet_files = list(DATA_DIR.glob("trades_*.parquet"))
-        # It can be either empty or contain one file which should not contain duplicates
-        if len(parquet_files) <= 1:
+        # Skip deduplication if all files are deduped already
+        if all("dedup" in i.name for i in parquet_files):
             return
 
         print("Deduplicating all trade data...")
-        temp_file = DATA_DIR / "trades_dedup_temp.parquet"
+
+        TEMP_DIR.mkdir(parents=True, exist_ok=True)
+
+        FILE_SIZE_LIMIT = 128 * 1024**2  # 128MB
         try:
             duckdb.sql(f"""
                 COPY (
                     SELECT DISTINCT ON (trade_id) *
                     FROM '{DATA_DIR}/trades_*.parquet'
-                ) TO '{temp_file}' (FORMAT 'parquet')
-            """)
+                ) TO '{TEMP_DIR}' (
+                    FORMAT 'parquet',
+                    FILE_SIZE_BYTES {FILE_SIZE_LIMIT},
+                    FILENAME_PATTERN 'trades_dedup'
+                )
+           """)
 
-            temp_file.rename(DATA_DIR / "trades_all.parquet")
+            DATA_DIR.rename(BACKUP_DIR)
+            TEMP_DIR.rename(DATA_DIR)
+            shutil.rmtree(BACKUP_DIR)
 
-            for f in parquet_files:
-                f.unlink()
-
-            print(f"Deduplicated trades saved to {DATA_DIR}/trades_all.parquet")
+            print(f"Deduplicated trades saved to {DATA_DIR}/trades_dedup.parquet")
         except BaseException as e:
             print(f"Error during deduplication: {e}")
-            if temp_file.exists():
-                temp_file.unlink()
             raise
+        finally:
+            self._fix_files()
+
+    def _fix_files(self) -> None:
+        CURSOR_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+        if BACKUP_DIR.exists():
+            # I guess if we have both data and backup and it errors, then user has done something wrong
+            BACKUP_DIR.rename(DATA_DIR)
+        DATA_DIR.mkdir(parents=True, exist_ok=True)
+
+        if TEMP_DIR.exists():
+            shutil.rmtree(TEMP_DIR)
