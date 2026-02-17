@@ -63,6 +63,7 @@ def _make_kalshi_markets() -> pd.DataFrame:
                 "result": "yes",
                 "volume": 1000,
                 "event_ticker": "INXD-24JAN01",
+                "close_time": pd.Timestamp("2024-07-01 12:00:00"),
             },
             {
                 "ticker": "MKT-B",
@@ -70,6 +71,7 @@ def _make_kalshi_markets() -> pd.DataFrame:
                 "result": "no",
                 "volume": 2000,
                 "event_ticker": "NFLGAME-25FEB01",
+                "close_time": pd.Timestamp("2024-08-01 12:00:00"),
             },
         ]
     )
