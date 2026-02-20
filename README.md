@@ -1,104 +1,147 @@
 # Prediction Market Analysis
 
-A framework for analyzing prediction market data, including the largest publicly available dataset of Polymarket and Kalshi market and trade data. Provides tools for data collection, storage, and running analysis scripts that generate figures and statistics.
+A robust framework for analyzing prediction market data, featuring the largest publicly available dataset of Polymarket and Kalshi market and trade data. This project provides tools for data collection, storage, and extensibile analysis scripts.
 
-## Overview
+## key Features
 
-This project enables research and analysis of prediction markets by providing:
-- Pre-collected datasets from Polymarket and Kalshi
-- Data collection indexers for gathering new data
-- Analysis framework for generating figures and statistics
+-   **Data Collection**: Indexers for **Polymarket** (Polygon blockchain) and **Kalshi** (API).
+-   **Analysis Framework**: Extensible Python scripts to generate figures and statistics.
+-   **Storage**: Efficient Parquet-based storage with automatic progress saving.
+-   **Modern CLI**: Interactive menus and command-line arguments via `typer` and `questionary`.
+-   **Containerized**: Docker support for consistent execution environments.
+-   **Type Safe**: Fully typed codebase with `mypy` and `ruff` linting.
 
-Currently supported features:
-- Market metadata collection (Kalshi & Polymarket)
-- Trade history collection via API and blockchain
-- Parquet-based storage with automatic progress saving
-- Extensible analysis script framework
+---
 
-## Installation & Usage
+## Quick Start
 
-Requires Python 3.9+. Install dependencies with [uv](https://github.com/astral-sh/uv):
+### Option 1: Docker (Recommended)
+
+Run the analysis environment without installing Python dependencies locally.
+
+1.  **Build the image**:
+    ```bash
+    docker build -t prediction-market-analysis .
+    ```
+
+2.  **Run the container**:
+    ```bash
+    docker run -it -v $(pwd)/data:/app/data -v $(pwd)/output:/app/output prediction-market-analysis
+    ```
+
+### Option 2: Local Setup (uv)
+
+We use [uv](https://github.com/astral-sh/uv) for fast dependency management.
+
+1.  **Install dependencies**:
+    ```bash
+    uv sync
+    ```
+
+2.  **Download dataset** (Optional, 36GiB compressed):
+    ```bash
+    make setup
+    ```
+
+### Option 3: Local Setup (pip)
+
+Standard installation using `pip`.
+
+1.  **Install dependencies**:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+---
+
+## Usage
+
+The project uses a unified CLI entry point `main.py`.
+
+### 1. Run Data Collection (`index`)
+
+Collect market and trade data from APIs and blockchain. This command opens an interactive menu to select specific indexers.
 
 ```bash
-uv sync
+uv run main.py index
+# OR
+python main.py index
 ```
 
-Download and extract the pre-collected dataset (36GiB compressed):
+Data is saved to `data/kalshi/` and `data/polymarket/`. Progress is saved automatically.
+
+### 2. Run Analysis (`analyze`)
+
+Generate figures and statistics.
+
+**Interactive Mode:**
+Select an analysis from the list.
+```bash
+uv run main.py analyze
+```
+
+**Direct Mode:**
+Run a specific analysis by name.
+```bash
+uv run main.py analyze --name win_rate_by_price
+```
+
+Output files (PNG, PDF, CSV, JSON) are saved to `output/`.
+
+### 3. Package Data (`package`)
+
+Compress the data directory for storage or distribution.
 
 ```bash
-make setup
+uv run main.py package
 ```
+Creates `data.tar.zst`.
 
-This downloads `data.tar.zst` from [Cloudflare R2 Storage](https://s3.jbecker.dev/data.tar.zst) and extracts it to `data/`.
-
-### Data Collection
-
-Collect market and trade data from prediction market APIs:
-
-```bash
-make index
-```
-
-This opens an interactive menu to select which indexer to run. Data is saved to `data/kalshi/` and `data/polymarket/` directories. Progress is saved automatically, so you can interrupt and resume collection.
-
-### Running Analyses
-
-```bash
-make analyze
-```
-
-This opens an interactive menu to select which analysis to run. You can run all analyses or select a specific one. Output files (PNG, PDF, CSV, JSON) are saved to `output/`.
-
-### Packaging Data
-
-To compress the data directory for storage/distribution:
-
-```bash
-make package
-```
-
-This creates a zstd-compressed tar archive (`data.tar.zst`) and removes the `data/` directory.
+---
 
 ## Project Structure
 
 ```
 ├── src/
-│   ├── analysis/           # Analysis scripts
-│   │   ├── kalshi/         # Kalshi-specific analyses
-│   │   └── polymarket/     # Polymarket-specific analyses
-│   ├── indexers/           # Data collection indexers
-│   │   ├── kalshi/         # Kalshi API client and indexers
-│   │   └── polymarket/     # Polymarket API/blockchain indexers
-│   └── common/             # Shared utilities and interfaces
-├── data/                   # Data directory (extracted from data.tar.zst)
-│   ├── kalshi/
-│   │   ├── markets/
-│   │   └── trades/
-│   └── polymarket/
-│       ├── blocks/
-│       ├── markets/
-│       └── trades/
-├── docs/                   # Documentation
-└── output/                 # Analysis outputs (figures, CSVs)
+│   ├── analysis/           # Analysis scripts (add your own here)
+│   ├── indexers/           # Data collectors for Kalshi/Polymarket
+│   ├── common/             # Shared utilities
+│   └── main.py             # CLI entry point
+├── data/                   # Data directory (parquet files)
+├── output/                 # Generated results
+├── tests/                  # Pytest suite
+├── Dockerfile              # Container definition
+├── pyproject.toml          # Project configuration (dependencies, tools)
+└── requirements.txt        # Frozen dependencies
+```
+
+## Development
+
+### Code Quality
+This project uses `ruff` for linting and formatting. Setup pre-commit hooks to ensure quality:
+
+```bash
+uv run pre-commit install
+```
+
+### Testing
+Run the test suite with `pytest`:
+
+```bash
+uv run pytest
 ```
 
 ## Documentation
 
-- [Data Schemas](docs/SCHEMAS.md) - Parquet file schemas for markets and trades
-- [Writing Analyses](docs/ANALYSIS.md) - Guide for writing custom analysis scripts
+-   [Data Schemas](docs/SCHEMAS.md) - Parquet file schemas.
+-   [Writing Analyses](docs/ANALYSIS.md) - Guide for custom scripts.
 
 ## Contributing
 
-If you'd like to contribute to this project, please open a pull-request with your changes, as well as detailed information on what is changed, added, or improved.
-
-For more information, see the [contributing guide](CONTRIBUTING.md).
-
-## Issues
-
-If you've found an issue or have a question, please open an issue [here](https://github.com/jon-becker/prediction-market-analysis/issues).
+Contributions are welcome! Please open a pull request with detailed information on changes. See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Research & Citations
 
-- Becker, J. (2026). _The Microstructure of Wealth Transfer in Prediction Markets_. Jbecker. https://jbecker.dev/research/prediction-market-microstructure
+-   Becker, J. (2026). _The Microstructure of Wealth Transfer in Prediction Markets_. Jbecker. https://jbecker.dev/research/prediction-market-microstructure
 
-If you have used or plan to use this dataset in your research, please reach out via [email](mailto:jonathan@jbecker.dev) or [Twitter](https://x.com/BeckerrJon) -- i'd love to hear about what you're using the data for! Additionally, feel free to open a PR and update this section with a link to your paper.
+If you use this dataset, please cite the above paper. Reach out via [email](mailto:jonathan@jbecker.dev) or [Twitter](https://x.com/BeckerrJon) if you have questions!
