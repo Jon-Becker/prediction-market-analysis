@@ -305,7 +305,7 @@ class WinRateByPriceAnimatedAnalysis(Analysis):
                     token_won[token_ids[1]] = winning_outcome == 1
 
                 fpmm_addr = row.get("market_maker_address")
-                if fpmm_addr:
+                if isinstance(fpmm_addr, str) and fpmm_addr:
                     fpmm_resolution[fpmm_addr.lower()] = winning_outcome
 
             except (json.JSONDecodeError, ValueError, TypeError):

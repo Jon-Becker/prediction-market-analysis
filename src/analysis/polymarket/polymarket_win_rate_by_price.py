@@ -77,7 +77,7 @@ class PolymarketWinRateByPriceAnalysis(Analysis):
 
                 # FPMM resolution
                 fpmm_addr = row.get("market_maker_address")
-                if fpmm_addr:
+                if isinstance(fpmm_addr, str) and fpmm_addr:
                     fpmm_resolution[fpmm_addr.lower()] = winning_outcome
 
             except (json.JSONDecodeError, ValueError, TypeError):
