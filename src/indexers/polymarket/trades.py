@@ -113,6 +113,7 @@ class PolymarketTradesIndexer(Indexer):
         total_chunks = len(ranges)
         pbar = tqdm(total=total_chunks, desc="Backfilling", unit=" chunks")
 
+        interrupted = False
         try:
             for chunk_start, chunk_end in ranges:
                 fetched_at = datetime.utcnow()
@@ -151,6 +152,7 @@ class PolymarketTradesIndexer(Indexer):
                 CURSOR_FILE.write_text(str(chunk_end))
 
         except KeyboardInterrupt:
+            interrupted = True
             print("\nInterrupted. Progress saved.")
         finally:
             pbar.close()
@@ -159,7 +161,8 @@ class PolymarketTradesIndexer(Indexer):
         if all_trades:
             save_batch(all_trades)
 
-        if CURSOR_FILE.exists():
+        # Only clean up cursor on successful completion
+        if not interrupted and CURSOR_FILE.exists():
             CURSOR_FILE.unlink()
 
         print(f"\nBackfill complete: {total_saved} trades saved")
