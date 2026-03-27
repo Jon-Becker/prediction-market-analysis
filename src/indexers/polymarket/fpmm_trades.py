@@ -145,7 +145,7 @@ class PolymarketLegacyTradesIndexer(Indexer):
                     }
                 )
             )
-        except Exception as e:
+        except BaseException as e:
             if "too large" in str(e).lower():
                 mid = (from_block + to_block) // 2
                 left = self._fetch_logs_with_retry(client, topic, from_block, mid)
@@ -163,7 +163,7 @@ class PolymarketLegacyTradesIndexer(Indexer):
             for log in buy_logs:
                 try:
                     trades.append(self._decode_fpmm_buy(log))
-                except Exception as e:
+                except BaseException as e:
                     tqdm.write(f"Error decoding FPMMBuy log: {e}")
 
             # Fetch sell logs
@@ -171,10 +171,10 @@ class PolymarketLegacyTradesIndexer(Indexer):
             for log in sell_logs:
                 try:
                     trades.append(self._decode_fpmm_sell(log))
-                except Exception as e:
+                except BaseException as e:
                     tqdm.write(f"Error decoding FPMMSell log: {e}")
 
-        except Exception as e:
+        except BaseException as e:
             tqdm.write(f"Error fetching blocks {from_block}-{to_block}: {e}")
 
         return trades, from_block, to_block
