@@ -7,11 +7,13 @@ Runs the full pipeline from data loading through edge verification:
 4. Train models (Ridge, LightGBM, XGBoost)
 5. Backtest with realistic transaction costs
 6. Verify edge statistical significance
+7. Real-world validation (purged CV, ticker holdout, permutation test, execution realism)
 
 Usage:
     uv run python -m src.quant.run                    # full pipeline
     uv run python -m src.quant.run --step signals      # only signal screening
     uv run python -m src.quant.run --step backtest     # only backtest
+    uv run python -m src.quant.run --step validate     # run validation suite
     uv run python -m src.quant.run --ticker PRES-2024-DJT  # single ticker
 """
 
@@ -50,7 +52,7 @@ def run_pipeline(config: PipelineConfig, step: str | None = None, ticker: str | 
 
     try:
         # ── Step 1: Load Data ──────────────────────────────────────────
-        if step in (None, "load", "features", "signals", "train", "backtest"):
+        if step in (None, "load", "features", "signals", "train", "backtest", "validate"):
             logger.info("=" * 60)
             logger.info("STEP 1: Loading trade data")
             logger.info("=" * 60)
@@ -90,7 +92,7 @@ def run_pipeline(config: PipelineConfig, step: str | None = None, ticker: str | 
                 return
 
         # ── Step 2: Feature Engineering ────────────────────────────────
-        if step in (None, "features", "signals", "train", "backtest"):
+        if step in (None, "features", "signals", "train", "backtest", "validate"):
             logger.info("=" * 60)
             logger.info("STEP 2: Feature engineering")
             logger.info("=" * 60)
@@ -123,7 +125,7 @@ def run_pipeline(config: PipelineConfig, step: str | None = None, ticker: str | 
                 return
 
         # ── Step 3: Signal Screening ───────────────────────────────────
-        if step in (None, "signals", "train", "backtest"):
+        if step in (None, "signals", "train", "backtest", "validate"):
             logger.info("=" * 60)
             logger.info("STEP 3: Signal screening")
             logger.info("=" * 60)
@@ -168,7 +170,7 @@ def run_pipeline(config: PipelineConfig, step: str | None = None, ticker: str | 
                 return
 
         # ── Step 4: Model Training ─────────────────────────────────────
-        if step in (None, "train", "backtest"):
+        if step in (None, "train", "backtest", "validate"):
             logger.info("=" * 60)
             logger.info("STEP 4: Model training")
             logger.info("=" * 60)
@@ -232,7 +234,7 @@ def run_pipeline(config: PipelineConfig, step: str | None = None, ticker: str | 
                 return
 
         # ── Step 5: Backtesting ────────────────────────────────────────
-        if step in (None, "backtest"):
+        if step in (None, "backtest", "validate"):
             logger.info("=" * 60)
             logger.info("STEP 5: Backtesting")
             logger.info("=" * 60)
@@ -270,6 +272,34 @@ def run_pipeline(config: PipelineConfig, step: str | None = None, ticker: str | 
 
             logger.info("All outputs saved to %s", output_dir)
 
+        # ── Step 7: Real-World Validation ──────────────────────────────
+        if step in (None, "validate"):
+            logger.info("=" * 60)
+            logger.info("STEP 7: Real-world validation suite")
+            logger.info("=" * 60)
+
+            from src.quant.validation import RealWorldValidator, format_validation_report
+
+            validator = RealWorldValidator(config)
+            validation_report = validator.run_validation_suite(
+                df=df_clean,
+                feature_cols=usable_features,
+                predictions=test_predictions,
+                model_method="train_ridge",
+            )
+
+            val_report_text = format_validation_report(validation_report)
+            print("\n" + val_report_text)
+
+            with open(output_dir / "validation_report.txt", "w") as f:
+                f.write(val_report_text)
+
+            logger.info(
+                "Validation %s", "PASSED" if validation_report.overall_pass else "FAILED"
+            )
+            for reason in validation_report.failure_reasons:
+                logger.warning("  FAIL: %s", reason)
+
     finally:
         pipeline.close()
 
@@ -281,7 +311,7 @@ def main():
     parser = argparse.ArgumentParser(description="Quant trading pipeline for prediction markets")
     parser.add_argument(
         "--step",
-        choices=["load", "features", "signals", "train", "backtest"],
+        choices=["load", "features", "signals", "train", "backtest", "validate"],
         default=None,
         help="Run only up to this step (default: full pipeline)",
     )

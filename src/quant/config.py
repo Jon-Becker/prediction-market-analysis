@@ -37,6 +37,20 @@ class PipelineConfig:
     min_sharpe_ratio: float = 0.5
     min_observations: int = 1000
 
+    # Validation
+    validation_n_permutations: int = 100
+    validation_n_random_baselines: int = 50
+    validation_embargo_multiplier: float = 1.0
+    validation_slippage_base_pct: float = 0.5  # base slippage as % of notional
+    validation_slippage_size_pct: float = 0.1  # additional slippage per $10 notional
+    validation_slippage_size_unit: float = 10.0
+    validation_latency_trades: int = 3  # execute N trades later than signal
+    validation_liquidity_volume_percentile: float = 20.0  # skip bottom 20% by rolling volume
+    validation_liquidity_window: int = 100
+    validation_stress_cost_multipliers: list[float] = field(default_factory=lambda: [2.0, 3.0, 5.0])
+    validation_stress_max_position_fractions: list[float] = field(default_factory=lambda: [0.5, 0.25])
+    validation_sample_size: int = 50_000  # subsample for expensive validation steps
+
     @property
     def test_fraction(self) -> float:
         return 1.0 - self.train_fraction - self.validation_fraction
