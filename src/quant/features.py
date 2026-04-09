@@ -166,41 +166,37 @@ class FeatureEngine:
             return df
 
         ts = pd.to_datetime(df["created_time"])
+        time_delta = ts.diff().dt.total_seconds()
 
-        # Time of day features
-        df["hour"] = ts.dt.hour
-        df["hour_sin"] = np.sin(2 * np.pi * ts.dt.hour / 24)
-        df["hour_cos"] = np.cos(2 * np.pi * ts.dt.hour / 24)
-        df["is_weekend"] = ts.dt.dayofweek.isin([5, 6]).astype(int)
+        new_cols: dict[str, pd.Series] = {
+            "hour": ts.dt.hour,
+            "hour_sin": np.sin(2 * np.pi * ts.dt.hour / 24),
+            "hour_cos": np.cos(2 * np.pi * ts.dt.hour / 24),
+            "is_weekend": ts.dt.dayofweek.isin([5, 6]).astype(int),
+            "time_delta_seconds": time_delta,
+            "log_time_delta": np.log1p(time_delta.clip(lower=0)),
+        }
 
-        # Inter-trade duration
-        df["time_delta_seconds"] = ts.diff().dt.total_seconds()
-        df["log_time_delta"] = np.log1p(df["time_delta_seconds"].clip(lower=0))
-
-        # Trade velocity (trades per minute, rolling)
         for w in [20, 100]:
-            time_span = ts.diff().dt.total_seconds().rolling(w, min_periods=1).sum()
-            df[f"trade_velocity_{w}"] = w / time_span.clip(lower=1) * 60  # trades per minute
+            time_span = time_delta.rolling(w, min_periods=1).sum()
+            new_cols[f"trade_velocity_{w}"] = w / time_span.clip(lower=1) * 60
 
-        return df
+        return pd.concat([df, pd.DataFrame(new_cols, index=df.index)], axis=1)
 
     def _target_variable(self, df: pd.DataFrame) -> pd.DataFrame:
         """Create the prediction target: future price movement."""
         horizon = self.config.target_horizon
+        future_price = df["yes_price"].shift(-horizon)
+        future_return = future_price - df["yes_price"]
 
-        # Future price (N trades ahead)
-        df["future_price"] = df["yes_price"].shift(-horizon)
-        df["future_return"] = df["future_price"] - df["yes_price"]
+        new_cols = pd.DataFrame({
+            "future_price": future_price,
+            "future_return": future_return,
+            "target_up": (future_return > 0).astype(int),
+            "target_return": future_return / df["yes_price"].clip(lower=1) * 100,
+        }, index=df.index)
 
-        # Binary target: price goes up
-        df["target_up"] = (df["future_return"] > 0).astype(int)
-
-        # Regression target: excess return for a yes-taker
-        # If we buy YES at yes_price, we get $1 if outcome is yes, else $0
-        # But we don't know the outcome during trading -- so we use future price as proxy
-        df["target_return"] = df["future_return"] / df["yes_price"].clip(lower=1) * 100
-
-        return df
+        return pd.concat([df, new_cols], axis=1)
 
     @staticmethod
     def get_feature_names(df: pd.DataFrame) -> list[str]:

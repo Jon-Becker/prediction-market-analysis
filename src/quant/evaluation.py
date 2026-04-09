@@ -74,7 +74,7 @@ class EdgeVerifier:
         # 7. Sensitivity analysis
         sensitivity = self._sensitivity_analysis(backtest)
 
-        is_sig = (
+        is_sig = bool(
             t_pval < self.significance_level
             and ci_lower > 0
             and stability >= 0.5
