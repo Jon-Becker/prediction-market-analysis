@@ -12,7 +12,6 @@ the standard calibration curve format used in forecasting evaluation.
 from __future__ import annotations
 
 import json
-import math
 from pathlib import Path
 
 import duckdb
@@ -231,7 +230,7 @@ class PolymarketCalibrationByBucketAnalysis(Analysis):
         x = np.arange(len(bucket_labels))
         bar_width = 0.35
 
-        predicted_bars = ax.bar(
+        ax.bar(
             x - bar_width / 2,
             df["mean_predicted"],
             bar_width,
@@ -240,7 +239,7 @@ class PolymarketCalibrationByBucketAnalysis(Analysis):
             edgecolor="white",
             linewidth=0.5,
         )
-        actual_bars = ax.bar(
+        ax.bar(
             x + bar_width / 2,
             df["actual_rate"],
             bar_width,
