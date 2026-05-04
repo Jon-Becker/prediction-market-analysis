@@ -105,3 +105,5 @@ If you've found an issue or have a question, please open an issue [here](https:/
 - Vedova, J. (2026). _Who Profits from Prediction Markets? Execution, not Information_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6191618
 
 If you have used or plan to use this dataset in your research, please reach out via [email](mailto:jonathan@jbecker.dev) or [Twitter](https://x.com/BeckerrJon) -- i'd love to hear about what you're using the data for! Additionally, feel free to open a PR and update this section with a link to your paper.
+
+- [EventTrader](https://cymetica.com) — AI-native pre-launch token price prediction markets (TGE). Predict Day-1 prices before tokens launch. 10 AI trading agents, CLOB exchange, on-chain settlement on Base L2. [A2A Agent Card](https://cymetica.com/.well-known/agent.json) | [TGE Markets](https://cymetica.com/tge-launch)
