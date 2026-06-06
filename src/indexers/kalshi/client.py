@@ -1,9 +1,7 @@
 from collections.abc import Generator
 from typing import Optional
 
-import httpx
-
-from src.common.client import retry_request
+from src.common.client import HttpClient
 from src.indexers.kalshi.models import Market, Trade
 
 KALSHI_API_HOST = "https://api.elections.kalshi.com/trade-api/v2"
@@ -12,26 +10,19 @@ KALSHI_API_HOST = "https://api.elections.kalshi.com/trade-api/v2"
 class KalshiClient:
     def __init__(self, host: str = KALSHI_API_HOST):
         self.host = host
-        self.client = httpx.Client(base_url=host, timeout=30.0)
+        self.http = HttpClient(base_url=host, rate_limit=10)
 
     def __enter__(self):
         return self
 
     def __exit__(self, *args):
-        self.client.close()
+        self.http.close()
 
     def close(self):
-        self.client.close()
-
-    @retry_request()
-    def _get(self, path: str, params: Optional[dict] = None) -> dict:
-        """Make a GET request with retry/backoff."""
-        response = self.client.get(path, params=params)
-        response.raise_for_status()
-        return response.json()
+        self.http.close()
 
     def get_market(self, ticker: str) -> Market:
-        data = self._get(f"/markets/{ticker}")
+        data = self.http.get(f"/markets/{ticker}")
         return Market.from_dict(data["market"])
 
     def get_market_trades(
@@ -54,7 +45,7 @@ class KalshiClient:
             if max_ts is not None:
                 params["max_ts"] = max_ts
 
-            data = self._get("/markets/trades", params=params)
+            data = self.http.get("/markets/trades", params=params)
 
             trades = [Trade.from_dict(t) for t in data.get("trades", [])]
             if trades:
@@ -70,7 +61,7 @@ class KalshiClient:
 
     def list_markets(self, limit: int = 20, **kwargs) -> list[Market]:
         params = {"limit": limit, **kwargs}
-        data = self._get("/markets", params=params)
+        data = self.http.get("/markets", params=params)
         return [Market.from_dict(m) for m in data.get("markets", [])]
 
     def list_all_markets(self, limit: int = 200) -> list[Market]:
@@ -82,7 +73,7 @@ class KalshiClient:
             if cursor:
                 params["cursor"] = cursor
 
-            data = self._get("/markets", params=params)
+            data = self.http.get("/markets", params=params)
 
             markets = [Market.from_dict(m) for m in data.get("markets", [])]
             if markets:
@@ -111,7 +102,7 @@ class KalshiClient:
             if max_close_ts is not None:
                 params["max_close_ts"] = max_close_ts
 
-            data = self._get("/markets", params=params)
+            data = self.http.get("/markets", params=params)
 
             markets = [Market.from_dict(m) for m in data.get("markets", [])]
             cursor = data.get("cursor")
@@ -122,5 +113,5 @@ class KalshiClient:
                 break
 
     def get_recent_trades(self, limit: int = 100) -> list[Trade]:
-        data = self._get("/markets/trades", params={"limit": limit})
+        data = self.http.get("/markets/trades", params={"limit": limit})
         return [Trade.from_dict(t) for t in data.get("trades", [])]
