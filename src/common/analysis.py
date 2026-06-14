@@ -105,9 +105,7 @@ class Analysis(ABC):
         Args:
             output_dir: Directory to save outputs.
             formats: List of formats to save. Defaults to ["png", "pdf", "csv"].
-                     Supported: png, pdf, svg, gif, csv, json.
-            dpi: Resolution for raster formats (default: 300).
-
+                     Supported: png, pdf, svg, gif, csv, xlsx, json.
         Returns:
             Dict mapping format to saved file path.
         """
@@ -142,6 +140,12 @@ class Analysis(ABC):
             path = output_dir / f"{self.name}.csv"
             output.data.to_csv(path, index=False)
             saved["csv"] = path
+
+        # Save Excel
+        if output.data is not None and "xlsx" in formats:
+            path = output_dir / f"{self.name}.xlsx"
+            output.data.to_excel(path, index=False)
+            saved["xlsx"] = path
 
         # Save JSON chart config
         if output.chart is not None and "json" in formats:
