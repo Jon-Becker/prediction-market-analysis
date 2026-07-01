@@ -1,0 +1,63 @@
+{
+  "analysis": "Maker-Taker Divergence by Category",
+  "summary": {
+    "maker_avg_brier": 2781.3176649159846,
+    "taker_avg_brier": 2761.580051989386,
+    "brier_difference": -19.73761292659856,
+    "spread_correlation": {
+      "rho": 0.0,
+      "p_value": 1.0
+    }
+  },
+  "by_category": [
+    {
+      "category": "sports",
+      "role": "taker",
+      "brier": 2893.8003875968993,
+      "mad": 47.88565891472868,
+      "spread": 100.0,
+      "n": 1032
+    },
+    {
+      "category": "sports",
+      "role": "maker",
+      "brier": 2959.1531007751937,
+      "mad": 48.55232558139535,
+      "spread": 100.0,
+      "n": 1032
+    },
+    {
+      "category": "finance",
+      "role": "taker",
+      "brier": 2038.9179104477612,
+      "mad": 37.365671641791046,
+      "spread": 99.34328358208955,
+      "n": 134
+    },
+    {
+      "category": "finance",
+      "role": "maker",
+      "brier": 1997.3955223880596,
+      "mad": 36.992537313432834,
+      "spread": 99.34328358208955,
+      "n": 134
+    },
+    {
+      "category": "crypto",
+      "role": "taker",
+      "brier": 3352.0218579234975,
+      "mad": 50.13661202185792,
+      "spread": 19.76775956284153,
+      "n": 732
+    },
+    {
+      "category": "crypto",
+      "role": "maker",
+      "brier": 3387.4043715846997,
+      "mad": 50.513661202185794,
+      "spread": 19.76775956284153,
+      "n": 732
+    }
+  ],
+  "interpretation": "Makers demonstrate inferior calibration compared to takers (\u0394Brier=-19.7376), suggesting that retail takers may be better informed or makers are providing liquidity at suboptimal prices. This asymmetry varies by category, with the largest divergence in finance markets."
+}

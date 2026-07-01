@@ -1,0 +1,44 @@
+================================================================================
+CROSS-PLATFORM PREDICTION MARKET CALIBRATION VALIDATION
+================================================================================
+
+Methodology:
+  1. Pre-register hypotheses BEFORE analysis
+  2. 70/30 train/test split
+  3. Training set analysis only
+  4. Robustness checks for each finding
+  5. Holdout validation on test set
+  6. Report ONLY findings that replicate
+
+
+Pre-registering hypotheses...
+Registered 4 hypotheses
+Loading Polymarket data...
+Loaded 300000 markets
+Loaded 300000 trades
+Computing market features...
+Traceback (most recent call last):
+  File "/home/ec2-user/github/prediction-market-analysis/cross_platform_validation.py", line 597, in <module>
+    log = main()
+          ^^^^^^
+  File "/home/ec2-user/github/prediction-market-analysis/cross_platform_validation.py", line 536, in main
+    train_df, test_df = load_polymarket_data(max_files=30, test_size=0.3)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/github/prediction-market-analysis/cross_platform_validation.py", line 162, in load_polymarket_data
+    df = compute_market_features(markets, trades)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/github/prediction-market-analysis/cross_platform_validation.py", line 188, in compute_market_features
+    trade_stats = trades.groupby('market').agg({
+                  ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/util/_decorators.py", line 336, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/core/frame.py", line 10833, in groupby
+    return DataFrameGroupBy(
+           ^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/core/groupby/groupby.py", line 1095, in __init__
+    grouper, exclusions, obj = get_grouper(
+                               ^^^^^^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/core/groupby/grouper.py", line 901, in get_grouper
+    raise KeyError(gpr)
+KeyError: 'market'

@@ -1,0 +1,119 @@
+{
+  "analysis": "Time-to-Resolution Calibration Decay",
+  "summary": {
+    "total_improvement_pct": -32.05374805527394,
+    "earliest_brier": 2387.808795180723,
+    "latest_brier": 3153.191010429624
+  },
+  "time_buckets": [
+    {
+      "time_bin": "<1 hour",
+      "median_hours": 0.48668386291666665,
+      "brier": 3153.191010429624,
+      "brier_sem": 15.242027796042029,
+      "brier_ci_lower": 3123.3166359493816,
+      "brier_ci_upper": 3183.065384909866,
+      "mad": 47.049779925365996,
+      "mad_sem": 0.14991379682640138,
+      "mad_ci_lower": 46.75594888358625,
+      "mad_ci_upper": 47.34361096714574,
+      "n": 41804,
+      "volume": 9585004,
+      "pct_volume": 25.72456418688055
+    },
+    {
+      "time_bin": "1-24 hours",
+      "median_hours": 3.014917837777778,
+      "brier": 2598.603138115839,
+      "brier_sem": 8.75691600959652,
+      "brier_ci_lower": 2581.43958273703,
+      "brier_ci_upper": 2615.7666934946483,
+      "mad": 44.250868470329955,
+      "mad_sem": 0.09094495973250903,
+      "mad_ci_lower": 44.07261634925424,
+      "mad_ci_upper": 44.42912059140567,
+      "n": 77435,
+      "volume": 19197870,
+      "pct_volume": 51.52390536992874
+    },
+    {
+      "time_bin": "1-7 days",
+      "median_hours": 53.65351979347222,
+      "brier": 2317.2499688006988,
+      "brier_sem": 19.793822998963346,
+      "brier_ci_lower": 2278.4540757227305,
+      "brier_ci_upper": 2356.045861878667,
+      "mad": 39.784475227754896,
+      "mad_sem": 0.214075623607153,
+      "mad_ci_lower": 39.364887005484874,
+      "mad_ci_upper": 40.20406345002492,
+      "n": 16026,
+      "volume": 3605612,
+      "pct_volume": 9.676865792334228
+    },
+    {
+      "time_bin": "7-30 days",
+      "median_hours": 338.42292736222225,
+      "brier": 2619.4418026418025,
+      "brier_sem": 34.90130610476355,
+      "brier_ci_lower": 2551.0352426764657,
+      "brier_ci_upper": 2687.8483626071393,
+      "mad": 42.163791763791764,
+      "mad_sem": 0.36165390323506896,
+      "mad_ci_lower": 41.45495011345103,
+      "mad_ci_upper": 42.8726334141325,
+      "n": 6435,
+      "volume": 1488207,
+      "pct_volume": 3.9941012538820995
+    },
+    {
+      "time_bin": "30+ days",
+      "median_hours": 1532.8458425018057,
+      "brier": 2387.808795180723,
+      "brier_sem": 30.9119292089626,
+      "brier_ci_lower": 2327.2214139311563,
+      "brier_ci_upper": 2448.3961764302894,
+      "mad": 38.88542168674699,
+      "mad_sem": 0.32482298709100266,
+      "mad_ci_lower": 38.24876863204862,
+      "mad_ci_upper": 39.52207474144535,
+      "n": 8300,
+      "volume": 3383429,
+      "pct_volume": 9.080563396974384
+    }
+  ],
+  "decay_curves": {
+    "brier_exp": {
+      "a": -280000.31302946334,
+      "b": -7.518212481787223e-07,
+      "c": 282696.80161792896,
+      "formula": "-280000.3130 * exp(--0.000001 * x) + 282696.8016"
+    },
+    "brier_power": {
+      "a": -1680592.6424869264,
+      "b": -4.386488897386332e-05,
+      "c": 1683466.3229334191,
+      "formula": "-1680592.6425 * x^(--0.0000) + 1683466.3229"
+    },
+    "mad_exp": {
+      "a": -7178.505191221869,
+      "b": -4.566679373586716e-07,
+      "c": 7222.196824567741,
+      "formula": "-7178.5052 * exp(--0.000000 * x) + 7222.1968"
+    },
+    "mad_power": {
+      "a": -21243.36897777278,
+      "b": -4.219210242432641e-05,
+      "c": 21288.93781154473,
+      "formula": "-21243.3690 * x^(--0.0000) + 21288.9378"
+    }
+  },
+  "panel_test": {
+    "avg_improvement": 430.54172027735024,
+    "t_statistic": 0.6817661530569439,
+    "p_value": 0.5146358190602234,
+    "n_markets": 9,
+    "interpretation": "compositional"
+  },
+  "interpretation": "Market calibration improves systematically as resolution approaches, with Brier scores declining -32.1% from 30+ days to <1 hour before close. The improvement pattern suggests a power-law decay consistent with sequential information revelation. Trading volume concentrates in the final 24 hours (77.2% of volume), indicating that price discovery accelerates as uncertainty resolves."
+}

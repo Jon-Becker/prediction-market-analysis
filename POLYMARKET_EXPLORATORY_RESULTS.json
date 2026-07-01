@@ -1,0 +1,64 @@
+{
+  "q1": {
+    "train": {
+      "short_mean_log_vol": 6.882054011515913,
+      "long_mean_log_vol": 9.630147131494178,
+      "short_median_log_vol": 7.8944103601041915,
+      "long_median_log_vol": 9.770507510575605,
+      "n_short": 94131,
+      "n_long": 31401,
+      "mann_whitney_p": 0.0,
+      "effect_size_rank_biserial": 0.401320346321291
+    },
+    "test": {
+      "short_mean_log_vol": 6.872398671475198,
+      "long_mean_log_vol": 9.58366974505824,
+      "replicates": true
+    }
+  },
+  "q2": {
+    "train": {
+      "r": 0.04324890641617685,
+      "p": 4.796044921537707e-53,
+      "n": 125532
+    },
+    "test": {
+      "r": 0.04512892228553885,
+      "p": 1.1534585063602834e-25,
+      "n": 53800
+    },
+    "replicates": true
+  },
+  "q3": {
+    "train": {
+      "closed_mean": 7.570567416230248,
+      "active_mean": 7.5348661551606195,
+      "mann_whitney_p": 7.397636513587196e-19,
+      "n_closed": 121678,
+      "n_active": 3854
+    }
+  },
+  "q4": {
+    "short_closure_rate": 0.9991076266054754,
+    "long_closure_rate": 0.8799401292952453
+  },
+  "multiple_testing": {
+    "method": "Benjamini-Hochberg FDR",
+    "alpha": 0.05,
+    "original_p": [
+      0.0,
+      4.796044921537707e-53,
+      7.397636513587196e-19
+    ],
+    "adjusted_p": [
+      0.0,
+      7.19406738230656e-53,
+      7.397636513587196e-19
+    ],
+    "significant": [
+      true,
+      true,
+      true
+    ]
+  }
+}

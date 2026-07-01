@@ -1,0 +1,73 @@
+================================================================================
+RIGOROUS CROSS-PLATFORM VALIDATION: KALSHI → POLYMARKET
+================================================================================
+================================================================================
+KALSHI BASELINE FINDINGS (from adversarial review)
+================================================================================
+
+H1_horizon_volume: Short-horizon markets benefit more from volume
+  Status: Real pattern but selection bias makes causal interpretation suspect
+  Concerns:
+    - Confounded by event type (sports vs non-sports)
+    - Baseline incomparability (12% vs 1% MAE across horizons)
+    - 7-30 day reversal unexplained
+    - No category controls in original regression
+
+H2_spread_error: Bid-ask spread correlates with market error
+  Status: Real correlation but weak predictive power
+  Concerns:
+    - Explains only 1.5% of variance
+    - 91% mediation claim was mathematical error
+    - Actual mediation likely 40-60%
+    - Practical significance unclear
+
+================================================================================
+PRE-REGISTERING REPLICATION HYPOTHESES
+================================================================================
+✓ Registered 2 replication hypotheses
+
+================================================================================
+LOADING POLYMARKET DATA
+================================================================================
+
+Loading Polymarket markets (max 20 files)...
+  Loaded 200000 markets
+  Columns: ['id', 'condition_id', 'question', 'slug', 'outcomes', 'outcome_prices', 'clob_token_ids', 'volume', 'liquidity', 'active', 'closed', 'end_date', 'created_at', 'market_maker_address', '_fetched_at']
+
+Computing features...
+Traceback (most recent call last):
+  File "/home/ec2-user/github/prediction-market-analysis/rigorous_cross_platform_analysis.py", line 441, in <module>
+    log = main()
+          ^^^^^^
+  File "/home/ec2-user/github/prediction-market-analysis/rigorous_cross_platform_analysis.py", line 390, in main
+    df = compute_polymarket_features(markets)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/github/prediction-market-analysis/rigorous_cross_platform_analysis.py", line 108, in compute_polymarket_features
+    df['last_price_yes'] = df['outcome_prices'].apply(
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/core/series.py", line 5084, in apply
+    ).apply()
+      ^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/core/apply.py", line 1520, in apply
+    return self.apply_standard()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/core/apply.py", line 1578, in apply_standard
+    mapped = obj._map_values(mapper=curried)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/core/base.py", line 1020, in _map_values
+    return arr.map(mapper, na_action=na_action)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/core/arrays/arrow/array.py", line 1753, in map
+    return super().map(mapper, na_action)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/core/arrays/base.py", line 2745, in map
+    return map_array(self, mapper, na_action=na_action)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/ec2-user/.hermes/hermes-agent/venv/lib/python3.11/site-packages/pandas/core/algorithms.py", line 1715, in map_array
+    return lib.map_infer(values, mapper)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "pandas/_libs/lib.pyx", line 3071, in pandas._libs.lib.map_infer
+  File "/home/ec2-user/github/prediction-market-analysis/rigorous_cross_platform_analysis.py", line 109, in <lambda>
+    lambda x: float(eval(x)[0]) if isinstance(x, str) and x.startswith('[') else np.nan
+                    ~~~~~~~^^^
+IndexError: list index out of range

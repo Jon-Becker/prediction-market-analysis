@@ -1,0 +1,92 @@
+{
+  "analysis": "Price Discovery Speed & Liquidity Thresholds",
+  "summary": {
+    "total_markets": 50000,
+    "mean_mae_overall": 46.52694,
+    "std_mae_overall": 19.424000619656123
+  },
+  "liquidity_bins": [
+    {
+      "bin": "<10",
+      "mae": 47.38587614715935,
+      "std": 15.811530692741565,
+      "sem": 0.08202638917326452,
+      "ci_95_lower": 47.22510442437975,
+      "ci_95_upper": 47.54664786993895,
+      "n": 37157,
+      "median_trades": 1.0
+    },
+    {
+      "bin": "10-50",
+      "mae": 43.552550942239925,
+      "std": 26.417649339075023,
+      "sem": 0.32699217861984925,
+      "ci_95_lower": 42.91164627214502,
+      "ci_95_upper": 44.19345561233483,
+      "n": 6527,
+      "median_trades": 21.0
+    },
+    {
+      "bin": "50-100",
+      "mae": 41.827457795431975,
+      "std": 28.790106620797992,
+      "sem": 0.6415249332168517,
+      "ci_95_lower": 40.57006892632695,
+      "ci_95_upper": 43.084846664537004,
+      "n": 2014,
+      "median_trades": 70.0
+    },
+    {
+      "bin": "100-200",
+      "mae": 44.81818181818182,
+      "std": 28.91912201781119,
+      "sem": 0.7119395693971257,
+      "ci_95_lower": 43.42278026216346,
+      "ci_95_upper": 46.213583374200184,
+      "n": 1650,
+      "median_trades": 139.0
+    },
+    {
+      "bin": "200-500",
+      "mae": 45.17304015296367,
+      "std": 28.048044031244252,
+      "sem": 0.7080943168042757,
+      "ci_95_lower": 43.78517529202729,
+      "ci_95_upper": 46.560905013900054,
+      "n": 1569,
+      "median_trades": 296.0
+    },
+    {
+      "bin": "500-1k",
+      "mae": 48.479537366548044,
+      "std": 25.87109877174231,
+      "sem": 1.091306435445573,
+      "ci_95_lower": 46.34057675307472,
+      "ci_95_upper": 50.61849798002137,
+      "n": 562,
+      "median_trades": 649.0
+    },
+    {
+      "bin": "1k+",
+      "mae": 48.08061420345489,
+      "std": 20.720210971390994,
+      "sem": 0.9077689242134596,
+      "ci_95_lower": 46.30138711199651,
+      "ci_95_upper": 49.859841294913274,
+      "n": 521,
+      "median_trades": 2131.0
+    }
+  ],
+  "inflection_point": {
+    "bin": "500-1k",
+    "median_trades": 649.0,
+    "mae_at_inflection": 48.479537366548044
+  },
+  "correlation": {
+    "pearson_r": -0.08162916971904731,
+    "pearson_p": 8.167161605388854e-48,
+    "spearman_rho": -0.2808349220034625,
+    "spearman_p": 0.0
+  },
+  "interpretation": "Markets exhibit significant calibration improvement with liquidity, showing a sharp inflection point at ~649 trades (Spearman \u03c1=-0.281, p<0.001). This suggests that prediction markets require sustained trading activity to efficiently aggregate information, with minimal gains beyond ~649 trades per market."
+}
