@@ -108,5 +108,14 @@ If you've found an issue or have a question, please open an issue [here](https:/
 - Bartlett, R., O'Hara, M. (2026). _Adverse Selection in Prediction Markets: Evidence from Kalshi_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6615739
 - Luong, K. L., Heesen, G. (2026). _The Wisdom of the Few: Skilled Traders and Prediction Market Accuracy_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6758662
 - Adegbenro, A. (2026). _What Prediction Markets Can See: Market Formation, Settlement Legibility, and the Geography of Tradable Uncertainty in Africa and Latin America_. arXiv. https://arxiv.org/abs/2606.17503
+- Dubach, P. D. (2026). _The Anatomy of a Decentralized Prediction Market: Microstructure Evidence from the Polymarket Order Book_. arXiv. https://arxiv.org/abs/2604.24366
+- Rahman, N., Al-Chami, J., Clark, J. (2025). _SoK: Market Microstructure for Decentralized Prediction Markets (DePMs)_. arXiv. https://arxiv.org/abs/2510.15612
+- Dai, D., Jia, R., Yu, S. (2026). _Settlement Manipulation in Prediction Markets_. arXiv. https://arxiv.org/abs/2606.31675
+- Tsang, K. P., Yang, Z. (2026). _Political Shocks and Price Discovery in Prediction Markets: Evidence from the 2024 U.S. Presidential Election_. arXiv. https://arxiv.org/abs/2603.03152
+- Arora, A., Malpani, R. (2026). _PredictionMarketBench: A SWE-bench-Style Framework for Backtesting Trading Agents on Prediction Markets_. arXiv. https://arxiv.org/abs/2602.00133
+- Palumbo, N. (2026). _A Microstructure Perspective on Prediction Markets_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6325658
+- Gupta, A. (2026). _Who Profits in Binary Prediction Markets? Maker-Taker Dynamics, Behavioral Bias, and Sentiment Arbitrage on Kalshi_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6858200
+- Ng, H., Peng, L., Tao, Y., Zhou, D. (2026). _Price Discovery and Trading in Modern Prediction Markets_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=5331995
+- Heidari, H., Lahaie, S., Pennock, D. M., Vaughan, J. W. (2018). _Integrating Market Makers, Limit Orders, and Continuous Trade in Prediction Markets_. ACM Transactions on Economics and Computation. https://doi.org/10.1145/3274643
 
 If you have used or plan to use this dataset in your research, please reach out via [email](mailto:jonathan@jbecker.dev) or [Twitter](https://x.com/BeckerrJon) -- i'd love to hear about what you're using the data for! Additionally, feel free to open a PR and update this section with a link to your paper.
