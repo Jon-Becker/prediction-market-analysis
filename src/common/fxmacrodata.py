@@ -10,7 +10,7 @@ from __future__ import annotations
 import json
 import os
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import Any
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
@@ -22,7 +22,7 @@ def fetch_release_calendar(
     *,
     limit: int = 100,
     base_url: str = FXMACRODATA_BASE_URL,
-    api_key: Optional[str] = None,
+    api_key: str | None = None,
     timeout: float = 20.0,
 ) -> list[dict[str, Any]]:
     """Fetch scheduled macro releases from FXMacroData.
