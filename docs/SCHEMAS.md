@@ -127,6 +127,24 @@ Located at `data/polymarket/fpmm_collateral_lookup.json`, this file maps FPMM co
 | `collateral_address` | string | ERC-20 token address used as collateral |
 | `collateral_symbol` | string | Token symbol (e.g., `USDC`, `USDT`) |
 
+## Polymarket Resolutions
+
+Each row represents a `ConditionResolution` event from the Gnosis ConditionalTokens contract on Polygon, recording the exact on-chain payout for a resolved market.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `block_number` | int | Polygon block number |
+| `transaction_hash` | string | Blockchain transaction hash |
+| `log_index` | int | Log index within transaction |
+| `condition_id` | string | Condition ID (0x-prefixed hex), joins to `condition_id` in Polymarket Markets |
+| `oracle` | string | Oracle address that reported the payouts |
+| `question_id` | string | Question ID (0x-prefixed hex) |
+| `outcome_slot_count` | int | Number of outcome slots for the condition |
+| `payout_numerators` | string | JSON string of payout numerators, one per outcome slot |
+| `_fetched_at` | datetime | When this record was fetched |
+
+**Note on payout numerators:** `payout_numerators` is stored as a JSON string to avoid integer overflow. The winning outcome is the index of the sole nonzero numerator; conditions with multiple nonzero numerators resolved to split/invalid payouts.
+
 ## Polymarket Blocks
 
 Mapping from Polygon block numbers to timestamps.
