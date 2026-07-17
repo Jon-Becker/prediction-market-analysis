@@ -52,13 +52,19 @@ class FakeClient:
     """Stub for PolymarketClient serving canned keyset pages.
 
     `responses` maps (closed, after_cursor) -> (events, next_cursor);
-    `interrupt_at` raises KeyboardInterrupt before serving that key.
+    `interrupt_at` raises `exc` (KeyboardInterrupt by default) before serving that key.
     """
 
-    def __init__(self, responses: dict, interrupt_at: tuple | None = None):
+    def __init__(
+        self,
+        responses: dict,
+        interrupt_at: tuple | None = None,
+        exc: type[BaseException] = KeyboardInterrupt,
+    ):
         self.responses = responses
         self.calls: list[dict] = []
         self._interrupt_at = interrupt_at
+        self._exc = exc
         self.was_closed = False
 
     def iter_events_keyset(self, limit: int = 500, after_cursor: str | None = None, **kwargs):
@@ -66,7 +72,7 @@ class FakeClient:
         cursor = after_cursor
         while True:
             if self._interrupt_at is not None and (closed, cursor) == self._interrupt_at:
-                raise KeyboardInterrupt
+                raise self._exc
             self.calls.append({"limit": limit, "after_cursor": cursor, "closed": closed})
             events, cursor = self.responses[(closed, cursor)]
             yield events, cursor
@@ -189,6 +195,22 @@ def test_interrupt_then_resume_completes(isolated_dirs):
     assert client2.calls[0] == {"limit": 500, "after_cursor": "o2", "closed": False}
     assert sorted(read_all(data_dir)["id"]) == ["1", "2", "3", "4"], "Resume fetches only the remaining pages"
     assert not cursor_file.exists(), "Cursor file should be deleted after successful completion"
+
+
+def test_crash_flushes_buffer_and_preserves_cursor(isolated_dirs):
+    """A non-interrupt crash still flushes buffered events, so the saved cursor never points past unsaved data."""
+    data_dir, cursor_file = isolated_dirs
+
+    client = FakeClient(
+        {(False, None): ([make_event(1), make_event(2)], "o2")},
+        interrupt_at=(False, "o2"),
+        exc=RuntimeError,
+    )
+    with pytest.raises(RuntimeError):
+        run_indexer(client)
+
+    assert json.loads(cursor_file.read_text()) == {"phase": "open", "cursor": "o2"}
+    assert sorted(read_all(data_dir)["id"]) == ["1", "2"], "Buffered events flushed on crash"
 
 
 def test_interrupt_between_phases_resumes_at_closed_phase(isolated_dirs):

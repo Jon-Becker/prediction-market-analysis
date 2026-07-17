@@ -108,9 +108,10 @@ class PolymarketEventsIndexer(Indexer):
         except KeyboardInterrupt:
             interrupted = True
             print("\nInterrupted. Progress saved.")
-
-        # Save remaining events
-        save_chunk(buffer)
+        finally:
+            # Flush on any exit: the cursor may already point past buffered events,
+            # so losing the buffer would leave a silent gap on resume.
+            save_chunk(buffer)
 
         # Only clean up cursor on successful completion
         if not interrupted and CURSOR_FILE.exists():
