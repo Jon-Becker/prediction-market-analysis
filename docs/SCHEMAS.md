@@ -89,6 +89,17 @@ Each row represents an event, the top-level question grouping one or more market
 | `created_at` | datetime (nullable) | When event was created |
 | `_fetched_at` | datetime | When this record was fetched |
 
+## Polymarket Price History
+
+Each row represents one point in the price time series of a single outcome token, fetched from the CLOB `/prices-history` endpoint at hourly fidelity. Both outcome tokens of every market in the markets dataset are covered.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `token_id` | string | CLOB token ID (joins to an entry of `clob_token_ids` in Polymarket Markets) |
+| `timestamp` | int | Unix timestamp of the price point (seconds) |
+| `price` | float | Token price (decimal between 0 and 1, see the note on Polymarket prices below) |
+| `_fetched_at` | datetime | When this record was fetched |
+
 ## Polymarket Trades
 
 Each row represents an `OrderFilled` event from the Polygon blockchain.
