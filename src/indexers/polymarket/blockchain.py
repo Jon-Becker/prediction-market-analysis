@@ -36,6 +36,30 @@ ORDER_FILLED_ABI = {
     "type": "event",
 }
 
+# Gnosis ConditionalTokens contract used by Polymarket
+CONDITIONAL_TOKENS = "0x4D97DCd97eC945f40cF65F87097ACe5EA0476045"
+
+# ConditionResolution event signature
+# ConditionResolution(bytes32 indexed conditionId, address indexed oracle, bytes32 indexed questionId,
+#                     uint256 outcomeSlotCount, uint256[] payoutNumerators)
+CONDITION_RESOLUTION_TOPIC = (
+    "0x" + Web3.keccak(text="ConditionResolution(bytes32,address,bytes32,uint256,uint256[])").hex()
+)
+
+# ABI for ConditionResolution event
+CONDITION_RESOLUTION_ABI = {
+    "anonymous": False,
+    "inputs": [
+        {"indexed": True, "name": "conditionId", "type": "bytes32"},
+        {"indexed": True, "name": "oracle", "type": "address"},
+        {"indexed": True, "name": "questionId", "type": "bytes32"},
+        {"indexed": False, "name": "outcomeSlotCount", "type": "uint256"},
+        {"indexed": False, "name": "payoutNumerators", "type": "uint256[]"},
+    ],
+    "name": "ConditionResolution",
+    "type": "event",
+}
+
 # Public Polygon RPC
 POLYGON_RPC = os.getenv("POLYGON_RPC", "")
 
@@ -99,6 +123,28 @@ class BlockchainTrade:
         return hex(asset_id)
 
 
+@dataclass
+class ConditionResolution:
+    """A ConditionResolution event decoded from the blockchain."""
+
+    block_number: int
+    transaction_hash: str
+    log_index: int
+    condition_id: str  # 0x-prefixed hex, joins to markets.condition_id
+    oracle: str
+    question_id: str  # 0x-prefixed hex
+    outcome_slot_count: int
+    payout_numerators: list[int]
+
+    @property
+    def winning_outcome(self) -> Optional[int]:
+        """Index of the sole winning outcome, or None for split/invalid payouts."""
+        nonzero = [i for i, numerator in enumerate(self.payout_numerators) if numerator != 0]
+        if len(nonzero) == 1:
+            return nonzero[0]
+        return None
+
+
 class PolygonClient:
     """Client for fetching Polymarket trades from Polygon blockchain."""
 
@@ -112,6 +158,10 @@ class PolygonClient:
         self.negrisk_exchange = self.w3.eth.contract(
             address=Web3.to_checksum_address(NEGRISK_CTF_EXCHANGE),
             abi=[ORDER_FILLED_ABI],
+        )
+        self.conditional_tokens = self.w3.eth.contract(
+            address=Web3.to_checksum_address(CONDITIONAL_TOKENS),
+            abi=[CONDITION_RESOLUTION_ABI],
         )
 
     def get_block_number(self) -> int:
@@ -169,6 +219,43 @@ class PolygonClient:
                 print(f"Error decoding log: {e}")
 
         return trades
+
+    def _decode_condition_resolution(self, log: dict) -> ConditionResolution:
+        """Decode a ConditionResolution event log."""
+        decoded = self.conditional_tokens.events.ConditionResolution().process_log(log)
+        args = decoded["args"]
+
+        return ConditionResolution(
+            block_number=log["blockNumber"],
+            transaction_hash=log["transactionHash"].hex(),
+            log_index=log["logIndex"],
+            condition_id="0x" + bytes(args["conditionId"]).hex(),
+            oracle=args["oracle"],
+            question_id="0x" + bytes(args["questionId"]).hex(),
+            outcome_slot_count=args["outcomeSlotCount"],
+            payout_numerators=list(args["payoutNumerators"]),
+        )
+
+    def get_condition_resolutions(self, from_block: int, to_block: int) -> list[ConditionResolution]:
+        """Fetch ConditionResolution events from a block range."""
+        logs = self.w3.eth.get_logs(
+            {
+                "address": Web3.to_checksum_address(CONDITIONAL_TOKENS),
+                "topics": [CONDITION_RESOLUTION_TOPIC],
+                "fromBlock": from_block,
+                "toBlock": to_block,
+            }
+        )
+
+        resolutions = []
+        for log in logs:
+            try:
+                resolution = self._decode_condition_resolution(log)
+                resolutions.append(resolution)
+            except Exception as e:
+                print(f"Error decoding log: {e}")
+
+        return resolutions
 
     def _fetch_chunk(self, start: int, end: int, contract_address: str) -> tuple[list[BlockchainTrade], int, int]:
         """Fetch a single chunk of trades. Used by thread pool."""
@@ -238,6 +325,9 @@ class PolygonClient:
 
 # Polymarket CTF Exchange created at block 33605403
 POLYMARKET_START_BLOCK = int(os.getenv("POLYMARKET_START_BLOCK", "33605403"))
+
+# Gnosis ConditionalTokens deployed at block 4023686
+CONDITIONAL_TOKENS_START_BLOCK = int(os.getenv("CONDITIONAL_TOKENS_START_BLOCK", "4023686"))
 
 
 def get_deployment_block() -> int:
