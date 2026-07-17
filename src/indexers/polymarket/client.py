@@ -2,16 +2,32 @@ from collections.abc import Generator
 from typing import Optional, Union
 
 from src.common.client import HttpClient
-from src.indexers.polymarket.models import Event, Market, OrderBookSnapshot, PricePoint
+from src.indexers.polymarket.models import DataApiTrade, Event, Market, OrderBookSnapshot, PricePoint
 
 GAMMA_API_URL = "https://gamma-api.polymarket.com"
 CLOB_API_URL = "https://clob.polymarket.com"
+DATA_API_URL = "https://data-api.polymarket.com"
+
+# The Data API `/trades` and `/activity` endpoints return only the most recent
+# ~3 years when `start` is omitted or 0; any positive epoch retrieves from that
+# point, so `start=1` means full history.
+FULL_HISTORY_START = 1
+
+# The Data API hard-caps `offset` at 10,000; deeper scans must narrow the
+# `start`/`end` timestamp window instead of paging further.
+MAX_DATA_API_OFFSET = 10000
 
 
 class PolymarketClient:
-    def __init__(self, gamma_url: str = GAMMA_API_URL, clob_url: str = CLOB_API_URL):
+    def __init__(
+        self,
+        gamma_url: str = GAMMA_API_URL,
+        clob_url: str = CLOB_API_URL,
+        data_api_url: str = DATA_API_URL,
+    ):
         self.gamma_url = gamma_url
         self.clob_url = clob_url
+        self.data_api_url = data_api_url
         self.http = HttpClient(rate_limit=10)
 
     def __enter__(self):
@@ -128,6 +144,85 @@ class PolymarketClient:
 
             if not cursor:
                 break
+
+    # -- Data API --------------------------------------------------------------
+
+    def _get_data_trades_page(
+        self,
+        start: Optional[int] = None,
+        end: Optional[int] = None,
+        limit: int = 1000,
+        offset: int = 0,
+        taker_only: bool = True,
+        **kwargs,
+    ) -> tuple[list[DataApiTrade], int]:
+        """Fetch one `/trades` page; returns (parsed trades, raw row count).
+
+        The raw count includes malformed rows that were skipped during parsing,
+        so pagination can detect a short page correctly.
+        """
+        params = {"limit": limit, "offset": offset, "takerOnly": taker_only, **kwargs}
+        if start is not None:
+            params["start"] = start
+        if end is not None:
+            params["end"] = end
+        data = self.http.get(f"{self.data_api_url}/trades", params=params)
+        rows = data if isinstance(data, list) else data.get("trades") or []
+        trades = []
+        for row in rows:
+            try:
+                trades.append(DataApiTrade.from_dict(row))
+            except (AttributeError, TypeError, ValueError):
+                continue
+        return trades, len(rows)
+
+    def get_data_trades(
+        self,
+        start: Optional[int] = None,
+        end: Optional[int] = None,
+        limit: int = 1000,
+        offset: int = 0,
+        taker_only: bool = True,
+        **kwargs,
+    ) -> list[DataApiTrade]:
+        """Fetch one page of the market-wide trade tape from the Data API `/trades`.
+
+        `start`/`end` are unix seconds. When `start` is omitted the API returns
+        only the most recent ~3 years; pass `start=FULL_HISTORY_START` (1) for
+        full history. `takerOnly` is always sent explicitly: True yields one row
+        per fill (the taker side), False adds maker-side rows, which
+        double-count a fill when aggregating volume. Malformed rows are skipped.
+        """
+        trades, _ = self._get_data_trades_page(
+            start=start, end=end, limit=limit, offset=offset, taker_only=taker_only, **kwargs
+        )
+        return trades
+
+    def get_data_trades_window(
+        self,
+        start: int,
+        end: int,
+        limit: int = 1000,
+        taker_only: bool = True,
+    ) -> tuple[list[DataApiTrade], bool]:
+        """Fetch every `/trades` row in the [start, end] window by paging offsets.
+
+        Returns (trades, truncated). `truncated` is True when the window still
+        had rows beyond the API's 10,000 offset cap — callers must split the
+        window into smaller timestamp ranges to recover the missing rows.
+        """
+        trades: list[DataApiTrade] = []
+        offset = 0
+        while True:
+            page, raw_count = self._get_data_trades_page(
+                start=start, end=end, limit=limit, offset=offset, taker_only=taker_only
+            )
+            trades.extend(page)
+            if raw_count < limit:
+                return trades, False
+            offset += limit
+            if offset > MAX_DATA_API_OFFSET:
+                return trades, True
 
     # -- CLOB API --------------------------------------------------------------
 
