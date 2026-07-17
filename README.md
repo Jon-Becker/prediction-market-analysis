@@ -92,6 +92,7 @@ This creates a zstd-compressed tar archive (`data.tar.zst`) and removes the `dat
 │       ├── markets/
 │       ├── orderbook/
 │       ├── price_history/
+│       ├── resolutions/
 │       └── trades/
 ├── docs/                   # Documentation
 └── output/                 # Analysis outputs (figures, CSVs)
