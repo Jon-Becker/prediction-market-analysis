@@ -1,0 +1,34 @@
+services:
+  mock:
+    build:
+      context: tests/e2e/mock
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8080/health', timeout=2)"]
+      interval: 1s
+      timeout: 3s
+      retries: 60
+
+  runner:
+    build:
+      context: .
+      dockerfile: tests/e2e/runner.Dockerfile
+    depends_on:
+      mock:
+        condition: service_healthy
+    environment:
+      POLYMARKET_GAMMA_URL: http://mock:8080/gamma
+      POLYMARKET_CLOB_URL: http://mock:8080/clob
+      POLYMARKET_DATA_API_URL: http://mock:8080/data-api
+      POLYMARKET_WS_URL: ws://mock:8080/ws/market
+      POLYGON_RPC: http://mock:8080/rpc
+      POLYMARKET_START_BLOCK: "1100000"
+      CONDITIONAL_TOKENS_START_BLOCK: "1100000"
+      E2E_MOCK_ADMIN_URL: http://mock:8080
+      E2E_EXPECT_NO_EGRESS: "1"
+    tmpfs:
+      - /app/data
+
+networks:
+  default:
+    # No external egress: tests cannot silently reach production endpoints.
+    internal: true

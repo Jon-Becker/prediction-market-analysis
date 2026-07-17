@@ -1,12 +1,17 @@
+import os
 from collections.abc import Generator
 from typing import Optional, Union
+
+from dotenv import load_dotenv
 
 from src.common.client import HttpClient
 from src.indexers.polymarket.models import DataApiTrade, Event, Market, OrderBookSnapshot, PricePoint
 
-GAMMA_API_URL = "https://gamma-api.polymarket.com"
-CLOB_API_URL = "https://clob.polymarket.com"
-DATA_API_URL = "https://data-api.polymarket.com"
+load_dotenv()
+
+GAMMA_API_URL = os.getenv("POLYMARKET_GAMMA_URL", "https://gamma-api.polymarket.com")
+CLOB_API_URL = os.getenv("POLYMARKET_CLOB_URL", "https://clob.polymarket.com")
+DATA_API_URL = os.getenv("POLYMARKET_DATA_API_URL", "https://data-api.polymarket.com")
 
 # The Data API `/trades` and `/activity` endpoints only honor `start`/`end`
 # when the query is scoped by `market` or `user`; the unscoped market-wide

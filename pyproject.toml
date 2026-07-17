@@ -34,7 +34,11 @@ dev = [
 
 [tool.pytest.ini_options]
 pythonpath = ["."]
-markers = ["slow: marks tests as slow (deselect with '-m \"not slow\"')"]
+addopts = ["-m", "not e2e"]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "e2e: end-to-end tests that require the Docker Compose mock harness (run with 'make e2e')",
+]
 
 [tool.ruff]
 target-version = "py39"

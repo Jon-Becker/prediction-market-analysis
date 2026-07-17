@@ -1,0 +1,14 @@
+.git
+.venv
+.env
+__pycache__
+*.py[oc]
+data
+data.zip
+*.tar.zst
+output
+fig
+scratchpad
+.tmp
+research
+docs

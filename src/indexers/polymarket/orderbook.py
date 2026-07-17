@@ -16,6 +16,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 import json
+import os
 from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
@@ -28,7 +29,7 @@ from src.common.indexer import Indexer
 from src.indexers.polymarket.client import PolymarketClient
 from src.indexers.polymarket.models import OrderBookDelta
 
-WS_MARKET_URL = "wss://ws-subscriptions-clob.polymarket.com/ws/market"
+WS_MARKET_URL = os.getenv("POLYMARKET_WS_URL", "wss://ws-subscriptions-clob.polymarket.com/ws/market")
 DATA_DIR = Path("data/polymarket/orderbook")
 CHUNK_SIZE = 10000
 PING_INTERVAL_SECONDS = 10.0

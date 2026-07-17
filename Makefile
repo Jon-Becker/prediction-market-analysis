@@ -1,4 +1,4 @@
-.PHONY: analyze run index record package lint format test setup
+.PHONY: analyze run index record package lint format test e2e setup
 
 RUN = uv run main.py
 
@@ -27,6 +27,10 @@ format:
 
 test:
 	uv run pytest tests/ -v
+
+e2e:
+	docker compose -f compose.e2e.yaml up --build --abort-on-container-exit --exit-code-from runner; \
+	status=$$?; docker compose -f compose.e2e.yaml down -v --remove-orphans; exit $$status
 
 setup:
 	bash scripts/install-tools.sh
