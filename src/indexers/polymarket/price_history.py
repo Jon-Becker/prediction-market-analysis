@@ -18,7 +18,7 @@ DATA_DIR = Path("data/polymarket/price_history")
 MARKETS_DIR = Path("data/polymarket/markets")
 BATCH_SIZE = 10000
 FIDELITY_MINUTES = 60
-WINDOW_SECONDS = 30 * 24 * 60 * 60  # max span per /prices-history request; longer ranges get truncated
+WINDOW_SECONDS = 15 * 24 * 60 * 60  # max span per /prices-history request; the API 400s on longer ranges
 END_PADDING_SECONDS = 7 * 24 * 60 * 60  # markets can keep trading past their scheduled end until resolution
 EARLIEST_TS = 1577836800  # 2020-01-01, before the first Polymarket market
 

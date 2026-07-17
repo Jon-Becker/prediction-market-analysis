@@ -198,7 +198,7 @@ def test_parquet_schema_and_values(isolated_dirs):
 
 def test_long_histories_are_windowed_and_deduplicated(isolated_dirs):
     data_dir, markets_dir = isolated_dirs
-    end_date = CREATED_AT + timedelta(days=40)  # spans two request windows
+    end_date = CREATED_AT + timedelta(days=40)  # spans multiple request windows
     write_markets(markets_dir, [{"clob_token_ids": '["111"]', "created_at": CREATED_AT, "end_date": end_date}])
     boundary_ts = BASE_TS + mod.WINDOW_SECONDS
     fake = FakeClient(histories={"111": [(BASE_TS + 60, 0.5), (boundary_ts, 0.6), (boundary_ts + 60, 0.7)]})
@@ -208,8 +208,13 @@ def test_long_histories_are_windowed_and_deduplicated(isolated_dirs):
     expected_end = int(end_date.timestamp()) + mod.END_PADDING_SECONDS
     assert fake.calls == [
         ("111", None, mod.FIDELITY_MINUTES, BASE_TS, boundary_ts),
-        ("111", None, mod.FIDELITY_MINUTES, boundary_ts, expected_end),
+        ("111", None, mod.FIDELITY_MINUTES, boundary_ts, BASE_TS + 2 * mod.WINDOW_SECONDS),
+        ("111", None, mod.FIDELITY_MINUTES, BASE_TS + 2 * mod.WINDOW_SECONDS, BASE_TS + 3 * mod.WINDOW_SECONDS),
+        ("111", None, mod.FIDELITY_MINUTES, BASE_TS + 3 * mod.WINDOW_SECONDS, expected_end),
     ]
+    assert all(call[4] - call[3] <= 15 * 24 * 60 * 60 for call in fake.calls), (
+        "/prices-history rejects startTs/endTs spans longer than 15 days"
+    )
     df = load_prices(data_dir)
     assert len(df) == 3, "boundary point returned by both windows should be stored once"
     assert sorted(df["timestamp"].tolist()) == [BASE_TS + 60, boundary_ts, boundary_ts + 60]
