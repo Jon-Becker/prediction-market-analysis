@@ -171,6 +171,6 @@ class PolymarketClient:
         return float(data.get("spread", 0) or 0)
 
     def get_price(self, token_id: str, side: str) -> float:
-        """Fetch the best price for a token; `side` is BUY (best ask) or SELL (best bid)."""
+        """Fetch the best price for a token; `side` is BUY (best bid) or SELL (best ask)."""
         data = self.http.get(f"{self.clob_url}/price", params={"token_id": token_id, "side": side})
         return float(data.get("price", 0) or 0)
