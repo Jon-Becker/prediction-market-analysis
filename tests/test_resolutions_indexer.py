@@ -84,9 +84,12 @@ def test_interrupt_then_resume_completes(isolated_dirs):
         indexer = PolymarketResolutionsIndexer(to_block=5000, chunk_size=1000)
         indexer.run()
 
-    # Should have resumed from the saved cursor, not from the beginning
+    # Should have resumed from the block after the cursor: the cursor block's
+    # rows were already flushed, so re-fetching it would duplicate them
     first_requested = min(start for start, _ in client2.requested_ranges)
-    assert first_requested == saved_block, f"Resume should start from cursor ({saved_block}), not {first_requested}"
+    assert first_requested == saved_block + 1, (
+        f"Resume should start after cursor ({saved_block + 1}), not {first_requested}"
+    )
 
     # Cursor should be cleaned up after successful completion
     assert not cursor_file.exists(), "Cursor file should be deleted after successful completion"

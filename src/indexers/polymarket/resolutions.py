@@ -54,7 +54,9 @@ class PolymarketResolutionsIndexer(Indexer):
         if from_block is None:
             if CURSOR_FILE.exists():
                 try:
-                    from_block = int(CURSOR_FILE.read_text().strip())
+                    # Cursor holds the last completed block; its rows are already
+                    # flushed, so resume at the next block to avoid duplicates
+                    from_block = int(CURSOR_FILE.read_text().strip()) + 1
                     print(f"Resuming from block {from_block}")
                 except (ValueError, TypeError):
                     from_block = CONDITIONAL_TOKENS_START_BLOCK
