@@ -1,6 +1,18 @@
-from dataclasses import dataclass
+import json
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
+
+
+def parse_time(val: Optional[str]) -> Optional[datetime]:
+    if not val:
+        return None
+    try:
+        # Handle ISO format with Z suffix
+        val = val.replace("Z", "+00:00")
+        return datetime.fromisoformat(val)
+    except (ValueError, TypeError):
+        return None
 
 
 @dataclass
@@ -22,16 +34,6 @@ class Market:
 
     @classmethod
     def from_dict(cls, data: dict) -> "Market":
-        def parse_time(val: Optional[str]) -> Optional[datetime]:
-            if not val:
-                return None
-            try:
-                # Handle ISO format with Z suffix
-                val = val.replace("Z", "+00:00")
-                return datetime.fromisoformat(val)
-            except (ValueError, TypeError):
-                return None
-
         return cls(
             id=data.get("id", ""),
             condition_id=data.get("conditionId", ""),
@@ -47,4 +49,96 @@ class Market:
             end_date=parse_time(data.get("endDate")),
             created_at=parse_time(data.get("createdAt")),
             market_maker_address=data.get("marketMakerAddress"),
+        )
+
+
+@dataclass
+class Event:
+    id: str
+    slug: str
+    title: str
+    category: Optional[str]
+    tags: str  # JSON string of tag slugs
+    market_ids: str  # JSON string of child market IDs
+    volume: float
+    liquidity: float
+    active: bool
+    closed: bool
+    start_date: Optional[datetime]
+    end_date: Optional[datetime]
+    created_at: Optional[datetime]
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "Event":
+        return cls(
+            id=data.get("id", ""),
+            slug=data.get("slug", ""),
+            title=data.get("title", ""),
+            category=data.get("category"),
+            tags=json.dumps([t.get("slug", "") for t in data.get("tags") or []]),
+            market_ids=json.dumps([m.get("id", "") for m in data.get("markets") or []]),
+            volume=float(data.get("volume", 0) or 0),
+            liquidity=float(data.get("liquidity", 0) or 0),
+            active=data.get("active", False),
+            closed=data.get("closed", False),
+            start_date=parse_time(data.get("startDate")),
+            end_date=parse_time(data.get("endDate")),
+            created_at=parse_time(data.get("createdAt")),
+        )
+
+
+@dataclass
+class PricePoint:
+    token_id: str
+    timestamp: int  # unix seconds
+    price: float
+
+    @classmethod
+    def from_dict(cls, token_id: str, data: dict) -> "PricePoint":
+        return cls(
+            token_id=token_id,
+            timestamp=int(data.get("t", 0) or 0),
+            price=float(data.get("p", 0) or 0),
+        )
+
+
+@dataclass
+class OrderBookLevel:
+    price: float
+    size: float
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "OrderBookLevel":
+        return cls(
+            price=float(data.get("price", 0) or 0),
+            size=float(data.get("size", 0) or 0),
+        )
+
+
+@dataclass
+class OrderBookSnapshot:
+    condition_id: str  # `market` in the API response
+    token_id: str  # `asset_id` in the API response
+    timestamp: int  # unix milliseconds
+    hash: str
+    bids: list[OrderBookLevel] = field(default_factory=list)
+    asks: list[OrderBookLevel] = field(default_factory=list)
+    min_order_size: float = 0.0
+    tick_size: float = 0.0
+    neg_risk: bool = False
+    last_trade_price: float = 0.0
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "OrderBookSnapshot":
+        return cls(
+            condition_id=data.get("market", ""),
+            token_id=data.get("asset_id", ""),
+            timestamp=int(data.get("timestamp", 0) or 0),
+            hash=data.get("hash", ""),
+            bids=[OrderBookLevel.from_dict(level) for level in data.get("bids") or []],
+            asks=[OrderBookLevel.from_dict(level) for level in data.get("asks") or []],
+            min_order_size=float(data.get("min_order_size", 0) or 0),
+            tick_size=float(data.get("tick_size", 0) or 0),
+            neg_risk=data.get("neg_risk", False),
+            last_trade_price=float(data.get("last_trade_price", 0) or 0),
         )
