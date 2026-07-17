@@ -12,6 +12,7 @@ This project enables research and analysis of prediction markets by providing:
 Currently supported features:
 - Market metadata collection (Kalshi & Polymarket)
 - Trade history collection via API and blockchain
+- Live order-book recording via the Polymarket CLOB WebSocket
 - Parquet-based storage with automatic progress saving
 - Extensible analysis script framework
 
@@ -40,6 +41,17 @@ make index
 ```
 
 This opens an interactive menu to select which indexer to run. Data is saved to `data/kalshi/` and `data/polymarket/` directories. Progress is saved automatically, so you can interrupt and resume collection.
+
+### Live Orderbook Recording
+
+**Polymarket provides no API for historical order-book depth — it cannot be backfilled after the fact and must be recorded live.** The recorder subscribes to the CLOB market WebSocket channel and persists full book snapshots plus incremental price changes (see [docs/SCHEMAS.md](docs/SCHEMAS.md)):
+
+```bash
+make record                            # record the highest-volume open markets
+uv run main.py record <token_id> ...   # record specific CLOB token IDs
+```
+
+Recording runs until interrupted with Ctrl+C; buffered rows are flushed to `data/polymarket/orderbook/` on exit and every 10,000 rows. The recorder heartbeats every 10 seconds and reconnects automatically — after a reconnect the exchange re-sends full snapshots, so gaps only span the time actually spent offline.
 
 ### Running Analyses
 
@@ -78,6 +90,7 @@ This creates a zstd-compressed tar archive (`data.tar.zst`) and removes the `dat
 │       ├── blocks/
 │       ├── events/
 │       ├── markets/
+│       ├── orderbook/
 │       ├── price_history/
 │       └── trades/
 ├── docs/                   # Documentation

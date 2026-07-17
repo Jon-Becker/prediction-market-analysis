@@ -169,3 +169,40 @@ Mapping from Polygon block numbers to timestamps.
 |--------|------|-------------|
 | `block_number` | int | Polygon block number |
 | `timestamp` | string | ISO 8601 timestamp (e.g., `2024-01-15T12:30:00Z`) |
+
+## Polymarket Orderbook (live recording)
+
+Located in `data/polymarket/orderbook/{books,price_changes}/`.
+
+**Polymarket exposes no historical order-book endpoint — depth data cannot be fetched retroactively.** These tables only cover periods when the live recorder (`uv run main.py record`) was running against the CLOB market WebSocket channel. Prices and sizes are stored as raw strings exactly as sent by the exchange so books can be replayed and verified against the `hash` field.
+
+### Orderbook Book Snapshots (`books/`)
+
+Each row is a full L2 `book` snapshot for one token. The server sends a snapshot on every (re)subscribe and after each trade that affects the book, so a reconnect always re-baselines the state — deltas missed while disconnected are superseded by the next snapshot.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `token_id` | string | CLOB token ID (`asset_id` in the message) |
+| `condition_id` | string | Condition ID (`market` in the message) |
+| `timestamp` | int | Exchange timestamp in unix **milliseconds** |
+| `hash` | string | Book integrity hash from the exchange |
+| `bids` | string | Raw JSON array of `{price, size}` levels, as sent |
+| `asks` | string | Raw JSON array of `{price, size}` levels, as sent |
+| `_recorded_at` | datetime | When the message was received locally |
+
+### Orderbook Price Changes (`price_changes/`)
+
+Each row is one changed level from a `price_change` message (order placements/cancellations). To reconstruct the book at time T: take the latest snapshot at or before T and apply subsequent deltas in `timestamp` order.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `token_id` | string | CLOB token ID |
+| `condition_id` | string | Condition ID |
+| `timestamp` | int | Exchange timestamp in unix **milliseconds** |
+| `hash` | string | Book hash after this change |
+| `side` | string | `BUY` (bid level) or `SELL` (ask level) |
+| `price` | string | Price level that changed (raw string) |
+| `size` | string | New total size at that level; `"0"` means the level was removed |
+| `best_bid` | string | Best bid after this change |
+| `best_ask` | string | Best ask after this change |
+| `_recorded_at` | datetime | When the message was received locally |
