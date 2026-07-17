@@ -116,6 +116,44 @@ class OrderBookLevel:
 
 
 @dataclass
+class OrderBookDelta:
+    condition_id: str
+    token_id: str
+    timestamp: int  # unix milliseconds
+    hash: str
+    side: str  # BUY (bid level) or SELL (ask level)
+    price: str  # raw string, preserved for exact replay
+    size: str  # raw string; "0" means the level was removed
+    best_bid: str
+    best_ask: str
+
+    @classmethod
+    def list_from_message(cls, data: dict) -> list["OrderBookDelta"]:
+        """Parse a market-channel `price_change` message into one delta per changed level.
+
+        Handles both the current shape (`price_changes` with per-change `asset_id`
+        and `hash`) and the legacy shape (`changes` with top-level `asset_id`).
+        """
+        condition_id = data.get("market", "")
+        timestamp = int(data.get("timestamp", 0) or 0)
+        changes = data.get("price_changes") or data.get("changes") or []
+        return [
+            cls(
+                condition_id=condition_id,
+                token_id=str(change.get("asset_id") or data.get("asset_id") or ""),
+                timestamp=timestamp,
+                hash=change.get("hash") or data.get("hash") or "",
+                side=change.get("side", ""),
+                price=str(change.get("price", "")),
+                size=str(change.get("size", "")),
+                best_bid=str(change.get("best_bid", "")),
+                best_ask=str(change.get("best_ask", "")),
+            )
+            for change in changes
+        ]
+
+
+@dataclass
 class OrderBookSnapshot:
     condition_id: str  # `market` in the API response
     token_id: str  # `asset_id` in the API response

@@ -23,6 +23,7 @@ dependencies = [
     "simple-term-menu>=1.6.0",
     "python-dotenv>=1.2.1",
     "requests>=2.32.5",
+    "websockets>=15.0.1",
 ]
 
 [dependency-groups]
