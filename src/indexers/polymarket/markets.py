@@ -41,29 +41,35 @@ class PolymarketMarketsIndexer(Indexer):
         all_markets = []
         total = offset
 
-        for markets, next_offset in client.iter_markets(offset=offset):
-            if markets:
-                fetched_at = datetime.utcnow()
-                for market in markets:
-                    record = asdict(market)
-                    record["_fetched_at"] = fetched_at
-                    all_markets.append(record)
+        interrupted = False
+        try:
+            for markets, next_offset in client.iter_markets(offset=offset):
+                if markets:
+                    fetched_at = datetime.utcnow()
+                    for market in markets:
+                        record = asdict(market)
+                        record["_fetched_at"] = fetched_at
+                        all_markets.append(record)
 
-                total += len(markets)
-                print(f"Fetched {len(markets)} markets (total: {total})")
+                    total += len(markets)
+                    print(f"Fetched {len(markets)} markets (total: {total})")
 
-                # Save in chunks
-                while len(all_markets) >= CHUNK_SIZE:
-                    chunk = all_markets[:CHUNK_SIZE]
-                    chunk_start = total - len(all_markets)
-                    chunk_path = DATA_DIR / f"markets_{chunk_start}_{chunk_start + CHUNK_SIZE}.parquet"
-                    pd.DataFrame(chunk).to_parquet(chunk_path)
-                    all_markets = all_markets[CHUNK_SIZE:]
+                    # Save in chunks
+                    while len(all_markets) >= CHUNK_SIZE:
+                        chunk = all_markets[:CHUNK_SIZE]
+                        chunk_start = total - len(all_markets)
+                        chunk_path = DATA_DIR / f"markets_{chunk_start}_{chunk_start + CHUNK_SIZE}.parquet"
+                        pd.DataFrame(chunk).to_parquet(chunk_path)
+                        all_markets = all_markets[CHUNK_SIZE:]
 
-            if next_offset > 0:
-                OFFSET_FILE.write_text(str(next_offset))
-            else:
-                break
+                if next_offset > 0:
+                    OFFSET_FILE.write_text(str(next_offset))
+                else:
+                    break
+
+        except KeyboardInterrupt:
+            interrupted = True
+            print("\nInterrupted. Progress saved.")
 
         # Save remaining markets
         if all_markets:
@@ -71,7 +77,8 @@ class PolymarketMarketsIndexer(Indexer):
             chunk_path = DATA_DIR / f"markets_{chunk_start}_{chunk_start + len(all_markets)}.parquet"
             pd.DataFrame(all_markets).to_parquet(chunk_path)
 
-        if OFFSET_FILE.exists():
+        # Only clean up offset on successful completion
+        if not interrupted and OFFSET_FILE.exists():
             OFFSET_FILE.unlink()
 
         client.close()

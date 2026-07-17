@@ -251,6 +251,7 @@ class PolymarketLegacyTradesIndexer(Indexer):
         pbar = tqdm(total=total_chunks, desc="Backfilling Legacy", unit=" chunks")
         last_block_processed = from_block
 
+        interrupted = False
         try:
             with concurrent.futures.ThreadPoolExecutor(max_workers=self._max_workers) as executor:
                 for batch_start in range(0, len(ranges), self._max_workers):
@@ -298,6 +299,7 @@ class PolymarketLegacyTradesIndexer(Indexer):
                     CURSOR_FILE.write_text(str(last_block_processed))
 
         except KeyboardInterrupt:
+            interrupted = True
             print("\nInterrupted. Progress saved.")
         finally:
             pbar.close()
@@ -306,7 +308,8 @@ class PolymarketLegacyTradesIndexer(Indexer):
         if all_trades:
             save_batch(all_trades)
 
-        if CURSOR_FILE.exists():
+        # Only clean up cursor on successful completion
+        if not interrupted and CURSOR_FILE.exists():
             CURSOR_FILE.unlink()
 
         print(f"\nFPMM backfill complete: {total_saved} trades saved")
