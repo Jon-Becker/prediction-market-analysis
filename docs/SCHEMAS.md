@@ -122,6 +122,31 @@ Each row represents an `OrderFilled` event from the Polygon blockchain.
 
 **Note on Polymarket prices:** Prices are decimals between 0 and 1. A price of 0.65 means the contract costs $0.65 and pays $1.00 if the outcome wins (implied probability: 65%).
 
+## Polymarket Data API Trades
+
+Each row represents a taker-side fill from the public market-wide trade tape at `data-api.polymarket.com/trades`, with denormalized market and trader metadata. This complements the on-chain `OrderFilled` dataset above.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `proxy_wallet` | string | Proxy wallet address of the taker |
+| `side` | string | Taker side: `BUY` or `SELL` |
+| `asset` | string | CLOB token ID traded (decimal string) |
+| `condition_id` | string | Condition ID (hex hash), joins to `markets.condition_id` |
+| `size` | float | Number of outcome shares traded |
+| `price` | float | Execution price (decimal between 0 and 1) |
+| `timestamp` | int | Unix timestamp of the trade (seconds) |
+| `transaction_hash` | string | Polygon transaction hash |
+| `title` | string | Market question (denormalized) |
+| `slug` | string | Market slug (denormalized) |
+| `event_slug` | string | Parent event slug (denormalized) |
+| `outcome` | string | Outcome name traded |
+| `outcome_index` | int | Index of the outcome traded (`-1` if missing) |
+| `name` | string | Trader profile name (denormalized) |
+| `pseudonym` | string | Trader profile pseudonym (denormalized) |
+| `_fetched_at` | datetime | When this record was fetched |
+
+**Note on coverage:** Rows are taker-side only (`takerOnly=true`), so each fill appears once and sizes sum to traded volume without double-counting. The API only honors `start`/`end` on market-scoped queries — the unscoped market-wide tape silently ignores them — and caps `offset` at 10,000, so deep history is unreachable without scoping. The indexer therefore iterates condition IDs from the markets dataset above (run `polymarket_markets` first) in small batches, requesting each batch with an explicit `start=1` for full history (omitting `start` silently limits scoped results to the API's default ~3-year window) and recursively splitting any timestamp window that overflows the offset cap.
+
 ## Polymarket Legacy Trades (FPMM)
 
 Each row represents an `FPMMBuy` or `FPMMSell` event from the legacy Fixed Product Market Maker contracts on Polygon. These are trades from before Polymarket migrated to the CTF Exchange (roughly 2020-2022).

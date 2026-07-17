@@ -103,6 +103,45 @@ class PricePoint:
 
 
 @dataclass
+class DataApiTrade:
+    proxy_wallet: str
+    side: str  # taker side: BUY or SELL
+    asset: str  # CLOB token ID (decimal string, kept as string to avoid overflow)
+    condition_id: str
+    size: float  # outcome shares traded
+    price: float  # execution price, 0-1 decimal
+    timestamp: int  # unix seconds
+    transaction_hash: str
+    title: str = ""
+    slug: str = ""
+    event_slug: str = ""
+    outcome: str = ""
+    outcome_index: int = -1
+    name: str = ""
+    pseudonym: str = ""
+
+    @classmethod
+    def from_dict(cls, data: dict) -> "DataApiTrade":
+        return cls(
+            proxy_wallet=data.get("proxyWallet", ""),
+            side=data.get("side", ""),
+            asset=str(data.get("asset", "")),
+            condition_id=data.get("conditionId", ""),
+            size=float(data.get("size", 0) or 0),
+            price=float(data.get("price", 0) or 0),
+            timestamp=int(data.get("timestamp", 0) or 0),
+            transaction_hash=data.get("transactionHash", ""),
+            title=data.get("title", ""),
+            slug=data.get("slug", ""),
+            event_slug=data.get("eventSlug", ""),
+            outcome=data.get("outcome", ""),
+            outcome_index=int(data.get("outcomeIndex", -1) if data.get("outcomeIndex") is not None else -1),
+            name=data.get("name", ""),
+            pseudonym=data.get("pseudonym", ""),
+        )
+
+
+@dataclass
 class OrderBookLevel:
     price: float
     size: float

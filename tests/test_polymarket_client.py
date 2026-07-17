@@ -5,8 +5,9 @@ from __future__ import annotations
 import json
 from datetime import datetime, timezone
 
-from src.indexers.polymarket.client import PolymarketClient
-from src.indexers.polymarket.models import Event, Market, OrderBookSnapshot, PricePoint
+import src.indexers.polymarket.client as client_module
+from src.indexers.polymarket.client import FULL_HISTORY_START, PolymarketClient
+from src.indexers.polymarket.models import DataApiTrade, Event, Market, OrderBookSnapshot, PricePoint
 
 GAMMA_MARKET = {
     "id": "500000",
@@ -39,6 +40,24 @@ GAMMA_EVENT = {
     "startDate": "2026-06-04T00:00:00Z",
     "endDate": "2026-06-22T00:00:00Z",
     "createdAt": "2026-05-27T14:40:02.074Z",
+}
+
+DATA_API_TRADE = {
+    "proxyWallet": "0x" + "ef" * 20,
+    "side": "BUY",
+    "asset": "111",
+    "conditionId": "0x" + "ab" * 32,
+    "size": "10.5",
+    "price": "0.65",
+    "timestamp": 1752700000,
+    "transactionHash": "0x" + "12" * 32,
+    "title": "Will it rain tomorrow?",
+    "slug": "will-it-rain-tomorrow",
+    "eventSlug": "weather-week",
+    "outcome": "Yes",
+    "outcomeIndex": 0,
+    "name": "trader",
+    "pseudonym": "Quiet-Fox",
 }
 
 ORDER_BOOK = {
@@ -259,6 +278,127 @@ def test_iter_events_keyset_resumes_from_cursor():
     url, params = client.http.calls[0]
     assert url == "https://gamma-api.polymarket.com/events/keyset"
     assert params["after_cursor"] == "resume-here"
+
+
+# -- Data API trades --------------------------------------------------------------
+
+
+def test_data_api_trade_from_dict():
+    trade = DataApiTrade.from_dict(DATA_API_TRADE)
+
+    assert trade.proxy_wallet == "0x" + "ef" * 20
+    assert trade.side == "BUY"
+    assert trade.asset == "111"
+    assert trade.condition_id == "0x" + "ab" * 32
+    assert trade.size == 10.5
+    assert trade.price == 0.65
+    assert trade.timestamp == 1752700000
+    assert trade.transaction_hash == "0x" + "12" * 32
+    assert trade.title == "Will it rain tomorrow?"
+    assert trade.event_slug == "weather-week"
+    assert trade.outcome == "Yes"
+    assert trade.outcome_index == 0
+    assert trade.pseudonym == "Quiet-Fox"
+
+
+def test_data_api_trade_from_dict_defaults():
+    trade = DataApiTrade.from_dict({})
+
+    assert trade.proxy_wallet == ""
+    assert trade.asset == ""
+    assert trade.size == 0.0
+    assert trade.price == 0.0
+    assert trade.timestamp == 0
+    assert trade.outcome_index == -1
+    assert trade.pseudonym == ""
+
+
+def test_get_data_trades_default_window_omits_start_and_sends_taker_only():
+    client = make_client([[DATA_API_TRADE]])
+
+    trades = client.get_data_trades()
+
+    assert len(trades) == 1
+    url, params = client.http.calls[0]
+    assert url == "https://data-api.polymarket.com/trades"
+    assert params == {"limit": 1000, "offset": 0, "takerOnly": True}
+    assert "start" not in params  # API defaults to its ~3-year window
+    assert "end" not in params
+
+
+def test_get_data_trades_full_history_sends_start_1():
+    client = make_client([[DATA_API_TRADE]])
+
+    client.get_data_trades(start=FULL_HISTORY_START, end=1752700000, taker_only=False)
+
+    assert client.http.calls[0][1] == {
+        "limit": 1000,
+        "offset": 0,
+        "takerOnly": False,
+        "start": 1,
+        "end": 1752700000,
+    }
+
+
+def test_get_data_trades_skips_malformed_rows():
+    malformed = dict(DATA_API_TRADE, size="not-a-number")
+    client = make_client([[DATA_API_TRADE, malformed, "not-a-dict", None]])
+
+    trades = client.get_data_trades()
+
+    assert len(trades) == 1
+    assert trades[0].size == 10.5
+
+
+def test_get_data_trades_window_paginates_offsets_until_short_page():
+    client = make_client([[DATA_API_TRADE] * 2, [DATA_API_TRADE] * 2, [DATA_API_TRADE]])
+
+    trades, truncated = client.get_data_trades_window(1, 100, limit=2)
+
+    assert len(trades) == 5
+    assert truncated is False
+    assert [call[1]["offset"] for call in client.http.calls] == [0, 2, 4]
+    for _, params in client.http.calls:
+        assert params["start"] == 1
+        assert params["end"] == 100
+        assert params["takerOnly"] is True
+
+
+def test_get_data_trades_window_truncates_at_offset_cap(monkeypatch):
+    monkeypatch.setattr(client_module, "MAX_DATA_API_OFFSET", 4)
+    client = make_client([[DATA_API_TRADE] * 2] * 3)
+
+    trades, truncated = client.get_data_trades_window(1, 100, limit=2)
+
+    assert len(trades) == 6
+    assert truncated is True
+    assert [call[1]["offset"] for call in client.http.calls] == [0, 2, 4]
+
+
+def test_get_data_trades_window_scopes_by_market():
+    client = make_client([[DATA_API_TRADE]])
+
+    trades, truncated = client.get_data_trades_window(1, 100, market="0xaa,0xbb")
+
+    assert len(trades) == 1
+    assert truncated is False
+    params = client.http.calls[0][1]
+    assert params["market"] == "0xaa,0xbb"
+    assert params["start"] == 1
+    assert params["end"] == 100
+
+
+def test_get_data_trades_window_counts_raw_rows_for_pagination():
+    malformed = dict(DATA_API_TRADE, size="not-a-number")
+    client = make_client([[DATA_API_TRADE, malformed], [DATA_API_TRADE]])
+
+    trades, truncated = client.get_data_trades_window(1, 100, limit=2)
+
+    # First page is full in raw rows despite the skipped malformed row,
+    # so pagination must continue to the second (short) page.
+    assert len(trades) == 2
+    assert truncated is False
+    assert len(client.http.calls) == 2
 
 
 # -- CLOB endpoints --------------------------------------------------------------
