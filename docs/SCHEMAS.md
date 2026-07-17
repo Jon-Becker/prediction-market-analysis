@@ -68,6 +68,27 @@ Each row represents a prediction market.
 | `market_maker_address` | string (nullable) | FPMM contract address for legacy markets |
 | `_fetched_at` | datetime | When this record was fetched |
 
+## Polymarket Events
+
+Each row represents an event, the top-level question grouping one or more markets. Events are fetched from the Gamma API with keyset pagination in two passes (`closed=false`, then `closed=true`), since Gamma excludes closed events by default. An event that closes mid-backfill can appear in both passes; deduplicate on `id`, keeping the latest `_fetched_at`.
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | string | Event ID |
+| `slug` | string | URL slug |
+| `title` | string | Event title |
+| `category` | string (nullable) | Event category |
+| `tags` | string | JSON string of tag slugs, used for categorization |
+| `market_ids` | string | JSON string of child market IDs (joins to `markets.id`) |
+| `volume` | float | Total volume in USD |
+| `liquidity` | float | Current liquidity in USD |
+| `active` | bool | Is event active |
+| `closed` | bool | Is event closed |
+| `start_date` | datetime (nullable) | When event starts |
+| `end_date` | datetime (nullable) | When event ends |
+| `created_at` | datetime (nullable) | When event was created |
+| `_fetched_at` | datetime | When this record was fetched |
+
 ## Polymarket Trades
 
 Each row represents an `OrderFilled` event from the Polygon blockchain.
