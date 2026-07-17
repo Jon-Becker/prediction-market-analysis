@@ -77,6 +77,7 @@ This creates a zstd-compressed tar archive (`data.tar.zst`) and removes the `dat
 │   └── polymarket/
 │       ├── blocks/
 │       ├── markets/
+│       ├── price_history/
 │       └── trades/
 ├── docs/                   # Documentation
 └── output/                 # Analysis outputs (figures, CSVs)
