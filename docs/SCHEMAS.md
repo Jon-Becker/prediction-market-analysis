@@ -113,6 +113,8 @@ Each row represents an `FPMMBuy` or `FPMMSell` event from the legacy Fixed Produ
 
 Located at `data/polymarket/fpmm_collateral_lookup.json`, this file maps FPMM contract addresses to their collateral token information. Used to filter legacy trades to only include USDC-collateralized markets.
 
+Produced by the `polymarket_collateral` indexer, which calls `collateralToken()` on each distinct FPMM address found in the legacy trades data and `symbol()` on the returned ERC-20 (recorded as `UNKNOWN` if the symbol cannot be read). The indexer is idempotent: addresses already present in the file are skipped on re-runs.
+
 ```json
 {
   "0x1234...": {

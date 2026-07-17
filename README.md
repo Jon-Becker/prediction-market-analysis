@@ -76,8 +76,10 @@ This creates a zstd-compressed tar archive (`data.tar.zst`) and removes the `dat
 │   │   └── trades/
 │   └── polymarket/
 │       ├── blocks/
+│       ├── legacy_trades/
 │       ├── markets/
-│       └── trades/
+│       ├── trades/
+│       └── fpmm_collateral_lookup.json
 ├── docs/                   # Documentation
 └── output/                 # Analysis outputs (figures, CSVs)
 ```
