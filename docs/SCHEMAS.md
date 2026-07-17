@@ -58,12 +58,14 @@ Each row represents a prediction market.
 | `slug` | string | URL slug |
 | `outcomes` | string | JSON string of outcome names |
 | `outcome_prices` | string | JSON string of outcome prices |
+| `clob_token_ids` | string | JSON string of CLOB token IDs, one per outcome |
 | `volume` | float | Total volume in USD |
 | `liquidity` | float | Current liquidity in USD |
 | `active` | bool | Is market active |
 | `closed` | bool | Is market closed |
 | `end_date` | datetime (nullable) | When market ends |
 | `created_at` | datetime (nullable) | When market was created |
+| `market_maker_address` | string (nullable) | FPMM contract address for legacy markets |
 | `_fetched_at` | datetime | When this record was fetched |
 
 ## Polymarket Trades
