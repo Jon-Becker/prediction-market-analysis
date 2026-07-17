@@ -8,9 +8,11 @@ GAMMA_API_URL = "https://gamma-api.polymarket.com"
 CLOB_API_URL = "https://clob.polymarket.com"
 DATA_API_URL = "https://data-api.polymarket.com"
 
-# The Data API `/trades` and `/activity` endpoints return only the most recent
-# ~3 years when `start` is omitted or 0; any positive epoch retrieves from that
-# point, so `start=1` means full history.
+# The Data API `/trades` and `/activity` endpoints only honor `start`/`end`
+# when the query is scoped by `market` or `user`; the unscoped market-wide
+# tape silently ignores them. Scoped queries return only the most recent
+# ~3 years when `start` is omitted or 0; any positive epoch retrieves from
+# that point, so `start=1` means full history.
 FULL_HISTORY_START = 1
 
 # The Data API hard-caps `offset` at 10,000; deeper scans must narrow the
@@ -185,13 +187,16 @@ class PolymarketClient:
         taker_only: bool = True,
         **kwargs,
     ) -> list[DataApiTrade]:
-        """Fetch one page of the market-wide trade tape from the Data API `/trades`.
+        """Fetch one page of the trade tape from the Data API `/trades`.
 
-        `start`/`end` are unix seconds. When `start` is omitted the API returns
-        only the most recent ~3 years; pass `start=FULL_HISTORY_START` (1) for
-        full history. `takerOnly` is always sent explicitly: True yields one row
-        per fill (the taker side), False adds maker-side rows, which
-        double-count a fill when aggregating volume. Malformed rows are skipped.
+        `start`/`end` are unix seconds (inclusive) and are only honored when
+        the query is scoped by `market` or `user` (pass via kwargs); the
+        unscoped market-wide tape silently ignores them. For scoped queries,
+        omitting `start` returns only the most recent ~3 years; pass
+        `start=FULL_HISTORY_START` (1) for full history. `takerOnly` is always
+        sent explicitly: True yields one row per fill (the taker side), False
+        adds maker-side rows, which double-count a fill when aggregating
+        volume. Malformed rows are skipped.
         """
         trades, _ = self._get_data_trades_page(
             start=start, end=end, limit=limit, offset=offset, taker_only=taker_only, **kwargs
@@ -204,18 +209,24 @@ class PolymarketClient:
         end: int,
         limit: int = 1000,
         taker_only: bool = True,
+        market: Optional[str] = None,
     ) -> tuple[list[DataApiTrade], bool]:
         """Fetch every `/trades` row in the [start, end] window by paging offsets.
+
+        `market` is a comma-separated list of condition IDs; the API only
+        honors `start`/`end` on market- or user-scoped queries, so an unscoped
+        window sees the same newest-first tape regardless of bounds.
 
         Returns (trades, truncated). `truncated` is True when the window still
         had rows beyond the API's 10,000 offset cap — callers must split the
         window into smaller timestamp ranges to recover the missing rows.
         """
+        scope = {"market": market} if market else {}
         trades: list[DataApiTrade] = []
         offset = 0
         while True:
             page, raw_count = self._get_data_trades_page(
-                start=start, end=end, limit=limit, offset=offset, taker_only=taker_only
+                start=start, end=end, limit=limit, offset=offset, taker_only=taker_only, **scope
             )
             trades.extend(page)
             if raw_count < limit:

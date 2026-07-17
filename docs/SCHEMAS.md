@@ -113,7 +113,7 @@ Each row represents a taker-side fill from the public market-wide trade tape at 
 | `pseudonym` | string | Trader profile pseudonym (denormalized) |
 | `_fetched_at` | datetime | When this record was fetched |
 
-**Note on coverage:** Rows are taker-side only (`takerOnly=true`), so each fill appears once and sizes sum to traded volume without double-counting. The indexer requests `start=1` explicitly for full history; omitting `start` would silently limit results to the API's default ~3-year window. The API caps `offset` at 10,000, so the indexer paginates by timestamp windows and recursively splits any window that overflows the cap.
+**Note on coverage:** Rows are taker-side only (`takerOnly=true`), so each fill appears once and sizes sum to traded volume without double-counting. The API only honors `start`/`end` on market-scoped queries — the unscoped market-wide tape silently ignores them — and caps `offset` at 10,000, so deep history is unreachable without scoping. The indexer therefore iterates condition IDs from the markets dataset above (run `polymarket_markets` first) in small batches, requesting each batch with an explicit `start=1` for full history (omitting `start` silently limits scoped results to the API's default ~3-year window) and recursively splitting any timestamp window that overflows the offset cap.
 
 ## Polymarket Legacy Trades (FPMM)
 

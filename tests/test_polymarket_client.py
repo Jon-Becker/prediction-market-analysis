@@ -375,6 +375,19 @@ def test_get_data_trades_window_truncates_at_offset_cap(monkeypatch):
     assert [call[1]["offset"] for call in client.http.calls] == [0, 2, 4]
 
 
+def test_get_data_trades_window_scopes_by_market():
+    client = make_client([[DATA_API_TRADE]])
+
+    trades, truncated = client.get_data_trades_window(1, 100, market="0xaa,0xbb")
+
+    assert len(trades) == 1
+    assert truncated is False
+    params = client.http.calls[0][1]
+    assert params["market"] == "0xaa,0xbb"
+    assert params["start"] == 1
+    assert params["end"] == 100
+
+
 def test_get_data_trades_window_counts_raw_rows_for_pagination():
     malformed = dict(DATA_API_TRADE, size="not-a-number")
     client = make_client([[DATA_API_TRADE, malformed], [DATA_API_TRADE]])
