@@ -47,7 +47,7 @@ This opens an interactive menu to select which indexer to run. Data is saved to 
 make analyze
 ```
 
-This opens an interactive menu to select which analysis to run. You can run all analyses or select a specific one. Output files (PNG, PDF, CSV, JSON) are saved to `output/`.
+This opens an interactive menu to select which analysis to run. You can run all analyses or select a specific one. Output files (PNG, PDF, XLSX, CSV, JSON) are saved to `output/`.
 
 ### Packaging Data
 
