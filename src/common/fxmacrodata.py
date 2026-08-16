@@ -1,79 +1,87 @@
-"""FXMacroData helpers for macro-event prediction market studies.
-
-The helpers intentionally use the public FXMacroData REST API and the Python
-standard library so analysis scripts can join scheduled macro releases to
-Kalshi or Polymarket data without adding another dependency.
-"""
+"""Read-only access to the FXMacroData release calendar."""
 
 from __future__ import annotations
 
 import json
 import os
-from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any
+from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-FXMACRODATA_BASE_URL = "https://fxmacrodata.com/api/v1"
+FXMACRODATA_BASE_URL = "https://api.fxmacrodata.com/v1"
+
+
+class FXMacroDataError(RuntimeError):
+    """Raised when the release calendar cannot be requested or decoded."""
+
+
+def parse_release_calendar(payload: Any) -> list[dict[str, Any]]:
+    """Validate and sort an FXMacroData release-calendar response."""
+    if not isinstance(payload, dict):
+        raise FXMacroDataError("FXMacroData calendar response must be an object")
+
+    data = payload.get("data")
+    if not isinstance(data, list):
+        raise FXMacroDataError("FXMacroData calendar response must contain a data list")
+
+    rows: list[dict[str, Any]] = []
+    for index, item in enumerate(data):
+        if not isinstance(item, dict):
+            raise FXMacroDataError(f"FXMacroData calendar row {index} must be an object")
+        timestamp = item.get("announcement_datetime")
+        if isinstance(timestamp, bool) or not isinstance(timestamp, (int, float)):
+            raise FXMacroDataError(f"FXMacroData calendar row {index} must contain a Unix announcement_datetime")
+        rows.append(dict(item))
+
+    return sorted(rows, key=lambda row: float(row["announcement_datetime"]))
+
+
+def load_release_calendar(path: Path | str) -> list[dict[str, Any]]:
+    """Load a saved release-calendar response for reproducible analysis."""
+    try:
+        with Path(path).open(encoding="utf-8") as handle:
+            payload = json.load(handle)
+    except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+        raise FXMacroDataError("Unable to read the saved FXMacroData calendar") from exc
+    return parse_release_calendar(payload)
 
 
 def fetch_release_calendar(
-    currency: str = "usd",
+    currency: str = "USD",
     *,
     limit: int = 100,
     base_url: str = FXMACRODATA_BASE_URL,
     api_key: str | None = None,
     timeout: float = 20.0,
 ) -> list[dict[str, Any]]:
-    """Fetch scheduled macro releases from FXMacroData.
+    """Fetch scheduled macro releases from the documented v1 endpoint."""
+    normalized_currency = currency.strip().upper()
+    if len(normalized_currency) not in (3, 4) or not normalized_currency.isalpha():
+        raise ValueError("currency must be a three- or four-letter code")
+    if not 1 <= limit <= 100:
+        raise ValueError("limit must be between 1 and 100")
+    if timeout <= 0:
+        raise ValueError("timeout must be positive")
 
-    Args:
-        currency: ISO currency code, for example ``"usd"``.
-        limit: Maximum number of events to request.
-        base_url: FXMacroData API base URL.
-        api_key: Optional API key. If omitted, ``FXMACRODATA_API_KEY`` is used
-            when present.
-        timeout: Request timeout in seconds.
-
-    Returns:
-        A list of release-calendar rows.
-    """
-
-    limit_count = max(1, min(int(limit), 100))
-    params: dict[str, str] = {"limit": str(limit_count)}
-    token = api_key or os.getenv("FXMACRODATA_API_KEY")
+    params = {"limit": str(limit)}
+    token = api_key or os.getenv("FXMACRODATA_API_KEY") or os.getenv("FXMD_API_KEY")
     if token:
         params["api_key"] = token
 
-    url = f"{base_url.rstrip('/')}/calendar/{currency.lower()}?{urlencode(params)}"
-    request = Request(url, headers={"User-Agent": "prediction-market-analysis-fxmacrodata/1.0"})
-    with urlopen(request, timeout=timeout) as response:
-        payload = json.load(response)
+    url = f"{base_url.rstrip('/')}/calendar/{normalized_currency.lower()}?{urlencode(params)}"
+    request = Request(
+        url,
+        headers={"Accept": "application/json", "User-Agent": "prediction-market-analysis/1.0"},
+    )
 
-    data = payload.get("data", [])
-    if not isinstance(data, list):
-        raise ValueError("FXMacroData calendar response did not contain a list in 'data'")
-    return data[:limit_count]
+    try:
+        with urlopen(request, timeout=timeout) as response:
+            payload = json.load(response)
+    except HTTPError as exc:
+        raise FXMacroDataError(f"FXMacroData calendar request failed with HTTP {exc.code}") from None
+    except (URLError, TimeoutError, OSError, UnicodeError, json.JSONDecodeError):
+        raise FXMacroDataError("FXMacroData calendar request failed") from None
 
-
-def upcoming_market_events(
-    currency: str = "usd",
-    *,
-    min_tier: int = 1,
-    limit: int = 100,
-) -> list[dict[str, Any]]:
-    """Return upcoming macro releases suitable for prediction-market joins."""
-
-    now = datetime.now(timezone.utc)
-    events = []
-    for event in fetch_release_calendar(currency, limit=limit):
-        timestamp = event.get("announcement_datetime")
-        if timestamp is None:
-            continue
-        event_time = datetime.fromtimestamp(float(timestamp), timezone.utc)
-        if event_time < now:
-            continue
-        if int(event.get("market_tier") or 99) > min_tier:
-            continue
-        events.append(event)
-    return events
+    return parse_release_calendar(payload)[:limit]
