@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+import base64
+import gzip
+import hashlib
 import json
 from copy import deepcopy
 from pathlib import Path
@@ -57,13 +60,23 @@ def _cluster_fixture() -> dict:
     }
 
 
+def _stream_response(
+    status_code: int,
+    body: bytes,
+    *,
+    headers: dict[str, str] | list[tuple[str, str]] | None = None,
+) -> httpx.Response:
+    return httpx.Response(status_code, headers=headers, stream=httpx.ByteStream(body))
+
+
 def test_router_client_sends_only_query_metadata_and_auth_header() -> None:
     seen: dict[str, object] = {}
 
     def handler(request: httpx.Request) -> httpx.Response:
         seen["url"] = str(request.url)
         seen["authorization"] = request.headers["authorization"]
-        return httpx.Response(200, json={"clusters": [_cluster_fixture()]})
+        seen["accept_encoding"] = request.headers["accept-encoding"]
+        return _stream_response(200, json.dumps({"clusters": [_cluster_fixture()]}).encode())
 
     query = PmxtQuery()
     with PmxtRouterClient("pmxt_test_secret", transport=httpx.MockTransport(handler)) as client:
@@ -72,6 +85,7 @@ def test_router_client_sends_only_query_metadata_and_auth_header() -> None:
 
     assert extract_clusters(payload)[0]["clusterId"] == "mcl_test_001"
     assert seen["authorization"] == "Bearer pmxt_test_secret"
+    assert seen["accept_encoding"] == "identity"
     assert "minConfidence=0.8" in str(seen["url"])
     assert "venues=kalshi%2Cpolymarket" in str(seen["url"])
 
@@ -82,7 +96,7 @@ def test_router_response_body_is_hard_bounded() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         nonlocal requests
         requests += 1
-        return httpx.Response(200, json={"clusters": [], "padding": "x" * 200})
+        return _stream_response(200, json.dumps({"clusters": [], "padding": "x" * 200}).encode())
 
     with PmxtRouterClient(
         "pmxt_test_secret",
@@ -97,7 +111,7 @@ def test_router_response_body_is_hard_bounded() -> None:
 
 def test_router_rejects_nonfinite_json_constants() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
-        return httpx.Response(200, content=b'{"clusters": [], "confidence": NaN}')
+        return _stream_response(200, b'{"clusters": [], "confidence": NaN}')
 
     with PmxtRouterClient("pmxt_test_secret", transport=httpx.MockTransport(handler)) as client:
         with pytest.raises(PmxtRouterError, match="invalid JSON"):
@@ -106,11 +120,324 @@ def test_router_rejects_nonfinite_json_constants() -> None:
 
 def test_router_rejects_redirect_response_even_if_body_looks_valid() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
-        return httpx.Response(302, json={"clusters": []})
+        return _stream_response(302, b'{"clusters": []}')
 
     with PmxtRouterClient("pmxt_test_secret", transport=httpx.MockTransport(handler)) as client:
         with pytest.raises(PmxtRouterError, match="HTTP 302"):
             client.fetch_market_clusters(PmxtQuery())
+
+
+def test_router_429_minute_body_and_safe_headers_are_exact_evidence_without_retry() -> None:
+    requests: list[httpx.Request] = []
+    raw_body = (
+        b'{\n  "error": "rate_limit_exceeded", "plan": "free", '
+        b'"limit": 60, "used": 60, "window": "1 minute"\n}'
+    )
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        return _stream_response(
+            429,
+            raw_body,
+            headers=[
+                ("Content-Type", "application/json"),
+                ("Retry-After", "37"),
+                ("X-Request-ID", "fixture-request-id"),
+                ("Set-Cookie", "session=unsafe-cookie"),
+                ("Authorization", "unsafe-response-authorization"),
+                ("X-Api-Key", "unsafe-response-key"),
+            ],
+        )
+
+    with PmxtRouterClient("pmxt_test_secret", transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError, match="rate limited") as raised:
+            client.fetch_market_clusters(PmxtQuery())
+        assert len(client._client.cookies) == 0
+
+    error = raised.value
+    assert len(requests) == 1
+    assert requests[0].headers["accept-encoding"] == "identity"
+    assert error.reason_code == "PMXT_HTTP_RATE_LIMITED"
+    response = error.evidence["response"]
+    body = response["body"]
+    assert response["status_code"] == 429
+    assert base64.b64decode(body["raw_body_base64"], validate=True) == raw_body
+    assert body["raw_body_sha256"] == hashlib.sha256(raw_body).hexdigest()
+    assert body["raw_body_byte_size"] == len(raw_body)
+    assert body["capture_status"] == "EXACT_COMPLETE"
+    assert response["response_headers"]["retry-after"] == "37"
+    assert response["response_headers"]["x-request-id"] == "fixture-request-id"
+    serialized = json.dumps(error.evidence, sort_keys=True)
+    for unsafe in ("set-cookie", "unsafe-cookie", "authorization", "unsafe-response-key"):
+        assert unsafe not in serialized.lower()
+    assert response["rate_limit"] == {
+        "classification": "PER_MINUTE",
+        "retry_policy": "NO_RETRY_THIS_RUN",
+        "requests_attempted": 1,
+        "retries_performed": 0,
+        "retry_after": {"kind": "DELTA_SECONDS", "raw": "37", "seconds": 37},
+        "body_parse_status": "VALID_JSON_OBJECT",
+        "server_error_code": "rate_limit_exceeded",
+        "quota": {"plan": "free", "limit": 60, "used": 60, "window": "1 minute"},
+    }
+
+
+def test_router_429_monthly_quota_is_distinct_and_not_retried() -> None:
+    requests = 0
+    raw_body = b'{"error":"monthly_quota_exceeded","plan":"free","limit":25000,"used":25000}'
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        nonlocal requests
+        requests += 1
+        return _stream_response(429, raw_body, headers={"Content-Type": "application/json"})
+
+    with PmxtRouterClient("pmxt_test_secret", transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError) as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    rate_limit = raised.value.evidence["response"]["rate_limit"]
+    assert requests == 1
+    assert rate_limit["classification"] == "MONTHLY_QUOTA"
+    assert rate_limit["server_error_code"] == "monthly_quota_exceeded"
+    assert rate_limit["quota"] == {"plan": "free", "limit": 25000, "used": 25000}
+    assert rate_limit["retry_after"] == {"kind": "ABSENT"}
+    assert rate_limit["retries_performed"] == 0
+
+
+@pytest.mark.parametrize(
+    ("raw_body", "parse_status"),
+    [
+        (b'{"error":', "INVALID_JSON"),
+    ],
+)
+def test_router_429_invalid_body_is_withheld_when_credential_scan_is_indeterminate(
+    raw_body: bytes,
+    parse_status: str,
+) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _stream_response(429, raw_body)
+
+    with PmxtRouterClient("pmxt_test_secret", transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError) as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    response = raised.value.evidence["response"]
+    assert response["rate_limit"]["classification"] == "UNKNOWN_429"
+    assert response["rate_limit"]["body_parse_status"] == parse_status
+    assert response["body"]["capture_status"] == "WITHHELD_CREDENTIAL_SCAN_INDETERMINATE"
+    assert response["body"]["credential_scan_status"] == "UNKNOWN_INVALID_JSON"
+    assert "raw_body_base64" not in response["body"]
+    assert "raw_body_sha256" not in response["body"]
+
+
+def test_router_429_duplicate_error_codes_are_unknown_but_credential_scan_remains_conclusive() -> None:
+    raw_body = b'{"error":"rate_limit_exceeded","error":"monthly_quota_exceeded"}'
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _stream_response(429, raw_body)
+
+    with PmxtRouterClient("pmxt_test_secret", transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError) as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    response = raised.value.evidence["response"]
+    assert response["rate_limit"]["classification"] == "UNKNOWN_429"
+    assert response["rate_limit"]["body_parse_status"] == "INVALID_JSON"
+    assert response["body"]["capture_status"] == "EXACT_COMPLETE"
+    assert base64.b64decode(response["body"]["raw_body_base64"], validate=True) == raw_body
+
+
+def test_router_non_utf8_body_is_withheld_when_credential_scan_is_indeterminate() -> None:
+    api_key = "fixture_utf16_secret"
+    raw_body = json.dumps({"error": "rate_limit_exceeded", "echo": api_key}).encode("utf-16le")
+    assert api_key.encode() not in raw_body
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _stream_response(429, raw_body, headers={"Content-Type": "application/json; charset=utf-16"})
+
+    with PmxtRouterClient(api_key, transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError, match="credential safety scan") as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    response = raised.value.evidence["response"]
+    assert raised.value.reason_code == "PMXT_RESPONSE_CREDENTIAL_SCAN_INDETERMINATE"
+    assert response["body"]["capture_status"] == "WITHHELD_CREDENTIAL_SCAN_INDETERMINATE"
+    assert response["body"]["credential_scan_status"] == "UNKNOWN_INVALID_JSON"
+    assert "raw_body_base64" not in response["body"]
+    assert api_key not in json.dumps(raised.value.evidence, sort_keys=True)
+
+
+def test_router_oversized_429_withholds_incomplete_body_and_does_not_retry() -> None:
+    requests = 0
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        nonlocal requests
+        requests += 1
+        return _stream_response(429, b"x" * 101)
+
+    with PmxtRouterClient(
+        "pmxt_test_secret",
+        transport=httpx.MockTransport(handler),
+        max_response_bytes=100,
+    ) as client:
+        with pytest.raises(PmxtRouterError, match="response exceeded") as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    body = raised.value.evidence["response"]["body"]
+    assert requests == 1
+    assert raised.value.reason_code == "PMXT_RESPONSE_TOO_LARGE"
+    assert body == {
+        "capture_status": "WITHHELD_INCOMPLETE_RESPONSE",
+        "retained_byte_size": 100,
+        "observed_byte_size_lower_bound": 101,
+        "complete": False,
+        "max_response_bytes": 100,
+        "representation": "HTTP_ENTITY_BYTES_ACCEPT_ENCODING_IDENTITY",
+        "credential_scan_status": "UNKNOWN_INCOMPLETE",
+    }
+    assert raised.value.evidence["response"]["rate_limit"]["body_parse_status"] == "NOT_PARSED_INCOMPLETE"
+
+
+def test_router_error_evidence_withholds_reflected_api_key_from_body_and_headers() -> None:
+    api_key = "fixture_secret_must_never_persist"
+    raw_body = json.dumps(
+        {
+            "error": "rate_limit_exceeded",
+            "plan": api_key,
+            "limit": 60,
+            "used": 60,
+            "window": "1 minute",
+            "message": f"Bearer {api_key}",
+        }
+    ).encode()
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _stream_response(
+            429,
+            raw_body,
+            headers={"Retry-After": api_key, "X-Request-ID": api_key, "X-Api-Key": api_key},
+        )
+
+    with PmxtRouterClient(api_key, transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError) as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    serialized = json.dumps(raised.value.evidence, sort_keys=True)
+    response = raised.value.evidence["response"]
+    assert api_key not in serialized
+    assert api_key not in str(raised.value)
+    assert api_key not in repr(raised.value)
+    assert response["body"]["capture_status"] == "WITHHELD_API_KEY_ECHO"
+    assert "raw_body_base64" not in response["body"]
+    assert "raw_body_sha256" not in response["body"]
+    assert response["response_headers"] == {}
+    assert response["response_header_capture"]["omitted_for_credential_echo"] == 2
+    assert response["rate_limit"]["retry_after"] == {"kind": "WITHHELD_CREDENTIAL_ECHO"}
+    assert response["rate_limit"]["credential_fields_withheld"] == ["plan"]
+
+
+def test_router_success_body_reflecting_api_key_fails_closed_before_payload_return() -> None:
+    api_key = "fixture_secret_must_never_return"
+    raw_body = json.dumps({"clusters": [], "reflected": api_key}).encode()
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _stream_response(200, raw_body)
+
+    with PmxtRouterClient(api_key, transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError, match="credential material") as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    assert raised.value.reason_code == "PMXT_RESPONSE_CREDENTIAL_ECHO"
+    assert raised.value.evidence["response"]["body"]["capture_status"] == "WITHHELD_API_KEY_ECHO"
+    assert api_key not in json.dumps(raised.value.evidence, sort_keys=True)
+
+
+def test_router_success_body_unicode_escaping_api_key_fails_credential_scan() -> None:
+    api_key = "fixture_escaped_secret"
+    escaped_key = "".join(f"\\u{ord(character):04x}" for character in api_key)
+    raw_body = f'{{"clusters":[],"echo":"{escaped_key}"}}'.encode()
+    assert api_key.encode() not in raw_body
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _stream_response(200, raw_body)
+
+    with PmxtRouterClient(api_key, transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError, match="credential material") as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    body = raised.value.evidence["response"]["body"]
+    assert body["capture_status"] == "WITHHELD_API_KEY_ECHO"
+    assert body["credential_scan_status"] == "PRESENT"
+    assert "raw_body_base64" not in body
+
+
+def test_router_unexpected_content_encoding_withholds_raw_body_before_error_persistence() -> None:
+    api_key = "fixture_secret_hidden_inside_gzip"
+    compressed = gzip.compress(json.dumps({"error": "rate_limit_exceeded", "echo": api_key}).encode())
+    assert api_key.encode() not in compressed
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _stream_response(429, compressed, headers={"Content-Encoding": "gzip"})
+
+    with PmxtRouterClient(api_key, transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError, match="unexpected content encoding") as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    response = raised.value.evidence["response"]
+    assert raised.value.reason_code == "PMXT_UNEXPECTED_CONTENT_ENCODING"
+    assert response["body"]["capture_status"] == "WITHHELD_UNEXPECTED_CONTENT_ENCODING"
+    assert "raw_body_base64" not in response["body"]
+    assert "raw_body_sha256" not in response["body"]
+    assert api_key not in json.dumps(raised.value.evidence, sort_keys=True)
+
+
+def test_router_retry_after_truncation_is_invalid_evidence() -> None:
+    raw_body = b'{"error":"rate_limit_exceeded"}'
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _stream_response(429, raw_body, headers={"Retry-After": "9" * 1_025})
+
+    with PmxtRouterClient("pmxt_test_secret", transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError) as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    response = raised.value.evidence["response"]
+    assert response["response_header_capture"]["retry_after_value_truncated"] is True
+    assert response["rate_limit"]["retry_after"] == {"kind": "INVALID", "reason": "value_truncated"}
+
+
+def test_router_retry_after_omitted_by_header_bound_is_incomplete_evidence() -> None:
+    headers = [("X-Request-ID", f"request-{index}") for index in range(32)]
+    headers.append(("Retry-After", "12"))
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _stream_response(429, b'{"error":"rate_limit_exceeded"}', headers=headers)
+
+    with PmxtRouterClient("pmxt_test_secret", transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError) as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    response = raised.value.evidence["response"]
+    assert response["response_header_capture"]["retry_after_omitted_for_bound"] is True
+    assert response["rate_limit"]["retry_after"] == {"kind": "INCOMPLETE", "reason": "header_item_bound"}
+
+
+def test_router_extreme_retry_after_date_is_invalid_instead_of_escaping_error_wrapper() -> None:
+    extreme_date = "Fri, 31 Dec 9999 23:59:59 -2359"
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return _stream_response(
+            429,
+            b'{"error":"rate_limit_exceeded"}',
+            headers={"Retry-After": extreme_date},
+        )
+
+    with PmxtRouterClient("pmxt_test_secret", transport=httpx.MockTransport(handler)) as client:
+        with pytest.raises(PmxtRouterError, match="rate limited") as raised:
+            client.fetch_market_clusters(PmxtQuery())
+
+    retry_after = raised.value.evidence["response"]["rate_limit"]["retry_after"]
+    assert retry_after == {"kind": "INVALID", "raw": extreme_date}
 
 
 def test_custom_pmxt_base_url_requires_an_injected_test_transport() -> None:

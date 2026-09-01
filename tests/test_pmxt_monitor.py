@@ -71,7 +71,8 @@ def _pmxt_cluster() -> dict:
 def _pmxt_transport(seen: list[httpx.Request]) -> httpx.MockTransport:
     def handler(request: httpx.Request) -> httpx.Response:
         seen.append(request)
-        return httpx.Response(200, json={"clusters": [_pmxt_cluster()]})
+        body = json.dumps({"clusters": [_pmxt_cluster()]}).encode()
+        return httpx.Response(200, stream=httpx.ByteStream(body))
 
     return httpx.MockTransport(handler)
 
@@ -627,6 +628,151 @@ def test_pmxt_connect_error_is_attempted_once_and_persists_only_sanitized_failur
         assert (run_dir / name).read_bytes() == b""
 
 
+def test_pmxt_429_is_persisted_once_with_exact_bounded_evidence_and_no_native_reads(
+    tmp_path: Path,
+) -> None:
+    attempts: list[httpx.Request] = []
+    api_key = "fixture_secret_must_not_be_persisted"
+    raw_body = (
+        b'{"error":"rate_limit_exceeded","plan":"free",'
+        b'"limit":60,"used":60,"window":"1 minute"}'
+    )
+
+    def rate_limited(request: httpx.Request) -> httpx.Response:
+        attempts.append(request)
+        return httpx.Response(
+            429,
+            headers={
+                "Content-Type": "application/json",
+                "Retry-After": "17",
+                "X-Request-ID": "fixture-429-id",
+                "Set-Cookie": f"session={api_key}",
+            },
+            stream=httpx.ByteStream(raw_body),
+        )
+
+    native = FixtureNativeClient()
+    with pytest.raises(RuntimeError, match="PMXT sync failed; evidence manifest:"):
+        PmxtReadOnlyMonitor(
+            api_key=api_key,
+            output_dir=tmp_path,
+            config=_config(),
+            pmxt_transport=httpx.MockTransport(rate_limited),
+            native_client=native,
+        ).sync_once()
+
+    assert len(attempts) == 1
+    assert native.metadata_calls == []
+    assert native.book_calls == []
+    run_dirs = list((tmp_path / "runs").iterdir())
+    assert len(run_dirs) == 1
+    run_dir = run_dirs[0]
+    manifest_bytes = (run_dir / "manifest.json").read_bytes()
+    manifest = json.loads(manifest_bytes)
+    raw_pmxt_bytes = (run_dir / "raw_pmxt.json").read_bytes()
+    raw_pmxt = json.loads(raw_pmxt_bytes)
+    assert manifest["status"] == "PMXT_SYNC_FAILED"
+    assert manifest["counts"]["pmxt_network_requests"] == 1
+    assert manifest["counts"]["pmxt_retry_attempts"] == 0
+    assert manifest["live_eligible"] is False
+    assert manifest["no_order_actions"] is True
+    assert raw_pmxt["pmxt_network_requests"] == 1
+    assert raw_pmxt["pmxt_retry_attempts"] == 0
+    assert raw_pmxt["router_error"]["reason_code"] == "PMXT_HTTP_RATE_LIMITED"
+    response = raw_pmxt["router_error"]["evidence"]["response"]
+    assert response["status_code"] == 429
+    assert base64.b64decode(response["body"]["raw_body_base64"], validate=True) == raw_body
+    assert response["body"]["raw_body_sha256"] == hashlib.sha256(raw_body).hexdigest()
+    assert response["rate_limit"]["classification"] == "PER_MINUTE"
+    assert response["rate_limit"]["retries_performed"] == 0
+    assert response["rate_limit"]["retry_after"] == {
+        "kind": "DELTA_SECONDS",
+        "raw": "17",
+        "seconds": 17,
+    }
+    assert manifest["artifacts"]["raw_pmxt"]["sha256"] == hashlib.sha256(raw_pmxt_bytes).hexdigest()
+    persisted = b"".join(path.read_bytes() for path in sorted(run_dir.iterdir()) if path.is_file())
+    assert api_key.encode() not in persisted
+    for name in (
+        "candidates.jsonl",
+        "raw_native_metadata.jsonl",
+        "semantic_decisions.jsonl",
+        "rejections.jsonl",
+        "native_books.jsonl",
+        "calculations.jsonl",
+        "alerts.jsonl",
+    ):
+        assert (run_dir / name).read_bytes() == b""
+
+
+def test_pmxt_success_response_reflecting_key_is_withheld_and_never_persisted_as_payload(
+    tmp_path: Path,
+) -> None:
+    attempts = 0
+    api_key = "fixture_success_echo_must_not_persist"
+    raw_body = json.dumps({"clusters": [], "echo": api_key}).encode()
+
+    def reflected_key(request: httpx.Request) -> httpx.Response:
+        nonlocal attempts
+        attempts += 1
+        return httpx.Response(200, stream=httpx.ByteStream(raw_body))
+
+    native = FixtureNativeClient()
+    with pytest.raises(RuntimeError, match="PMXT sync failed; evidence manifest:"):
+        PmxtReadOnlyMonitor(
+            api_key=api_key,
+            output_dir=tmp_path,
+            config=_config(),
+            pmxt_transport=httpx.MockTransport(reflected_key),
+            native_client=native,
+        ).sync_once()
+
+    assert attempts == 1
+    assert native.metadata_calls == []
+    run_dir = next((tmp_path / "runs").iterdir())
+    raw_pmxt = json.loads((run_dir / "raw_pmxt.json").read_text(encoding="utf-8"))
+    assert "payload" not in raw_pmxt
+    assert raw_pmxt["router_error"]["reason_code"] == "PMXT_RESPONSE_CREDENTIAL_ECHO"
+    assert (
+        raw_pmxt["router_error"]["evidence"]["response"]["body"]["capture_status"]
+        == "WITHHELD_API_KEY_ECHO"
+    )
+    persisted = b"".join(path.read_bytes() for path in run_dir.iterdir() if path.is_file())
+    assert api_key.encode() not in persisted
+
+
+def test_deeply_nested_429_still_persists_a_bounded_failure_artifact(tmp_path: Path) -> None:
+    attempts = 0
+    raw_body = (b"[" * 1_100) + b"0" + (b"]" * 1_100)
+
+    def deeply_nested(request: httpx.Request) -> httpx.Response:
+        nonlocal attempts
+        attempts += 1
+        return httpx.Response(429, stream=httpx.ByteStream(raw_body))
+
+    with pytest.raises(RuntimeError, match="PMXT sync failed; evidence manifest:"):
+        PmxtReadOnlyMonitor(
+            api_key="fixture_key",
+            output_dir=tmp_path,
+            config=_config(),
+            pmxt_transport=httpx.MockTransport(deeply_nested),
+            native_client=FixtureNativeClient(),
+        ).sync_once()
+
+    assert attempts == 1
+    run_dir = next((tmp_path / "runs").iterdir())
+    raw_pmxt = json.loads((run_dir / "raw_pmxt.json").read_text(encoding="utf-8"))
+    router_error = raw_pmxt["router_error"]
+    assert router_error["reason_code"] == "PMXT_RESPONSE_CREDENTIAL_SCAN_INDETERMINATE"
+    response = router_error["evidence"]["response"]
+    assert response["body"]["capture_status"] == "WITHHELD_CREDENTIAL_SCAN_INDETERMINATE"
+    assert response["body"]["credential_scan_status"] == "UNKNOWN_PARSER_LIMIT"
+    assert "raw_body_base64" not in response["body"]
+    assert response["rate_limit"]["body_parse_status"] == "PARSER_LIMIT_EXCEEDED"
+    assert raw_pmxt["pmxt_network_requests"] == 1
+    assert raw_pmxt["pmxt_retry_attempts"] == 0
+
+
 def test_one_identity_sync_fails_closed_on_estimate_only_fees_with_immutable_evidence(tmp_path: Path) -> None:
     requests: list[httpx.Request] = []
     native = FixtureNativeClient()
@@ -829,7 +975,8 @@ def test_server_overdelivery_is_hard_capped_before_native_requests(tmp_path: Pat
 
     def handler(request: httpx.Request) -> httpx.Response:
         requests.append(request)
-        return httpx.Response(200, json={"clusters": clusters})
+        body = json.dumps({"clusters": clusters}).encode()
+        return httpx.Response(200, stream=httpx.ByteStream(body))
 
     native = FixtureNativeClient()
     with pytest.raises(RuntimeError, match="PMXT sync failed; evidence manifest:"):

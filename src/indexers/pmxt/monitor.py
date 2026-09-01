@@ -357,6 +357,11 @@ class PmxtReadOnlyMonitor:
         error: Exception,
         raw_payload: Any = None,
     ) -> MonitorRunArtifacts:
+        router_error: dict[str, Any] | None = None
+        if isinstance(error, PmxtRouterError):
+            router_error = {"reason_code": error.reason_code}
+            if error.evidence:
+                router_error["evidence"] = error.evidence
         raw_pmxt = {
             "schema_version": 1,
             "source": "pmxt_router",
@@ -366,8 +371,12 @@ class PmxtReadOnlyMonitor:
             "query": query.as_dict(),
             "status": "ERROR",
             "error": {"type": type(error).__name__, "message": str(error)},
+            "pmxt_network_requests": 1,
+            "pmxt_retry_attempts": 0,
             "live_eligible": False,
         }
+        if router_error is not None:
+            raw_pmxt["router_error"] = router_error
         if raw_payload is not None:
             raw_pmxt["payload_sha256"] = canonical_json_sha256(raw_payload)
             raw_pmxt["payload"] = raw_payload
@@ -376,7 +385,13 @@ class PmxtReadOnlyMonitor:
             run_id=run_id,
             status="PMXT_SYNC_FAILED",
             config=self._config.as_dict(),
-            counts={"pmxt_clusters": 0, "verified_candidates": 0, "alerts": 0},
+            counts={
+                "pmxt_clusters": 0,
+                "pmxt_network_requests": 1,
+                "pmxt_retry_attempts": 0,
+                "verified_candidates": 0,
+                "alerts": 0,
+            },
             raw_pmxt=raw_pmxt,
             candidates=[],
             raw_native_metadata=[],

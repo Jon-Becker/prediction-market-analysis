@@ -26,9 +26,10 @@ uv run main.py pmxt-monitor `
   --threshold 0.05
 ```
 
-One discovery invocation makes exactly one PMXT Router request. A successful
-response is capped at 5,000,000 decoded bytes before JSON parsing. The query is
-fixed to:
+One discovery invocation makes exactly one PMXT Router request. Responses are
+requested with identity encoding and streamed once as raw HTTP entity bytes;
+the body is capped at 5,000,000 bytes before JSON parsing. The query is fixed
+to:
 
 - relation: `identity`;
 - minimum confidence: at least `0.80`;
@@ -226,6 +227,22 @@ artifact byte sizes, SHA-256 hashes, and row counts are recorded in the
 manifest, which is written last. The manifest also records configuration,
 stage counts, terminal status, `live_eligible=false`, and
 `no_order_actions=true`.
+
+A PMXT HTTP failure is terminal for that invocation and is never retried,
+slept, or treated as permission for another request. Its failure artifact
+retains the status, exact bounded response bytes and SHA-256 when the body is
+complete and credential-free, and only an explicit allowlist of provenance and
+rate-limit headers. `429` bodies are classified as per-minute,
+monthly-quota, or unknown from PMXT's documented error codes; `Retry-After` is
+captured only when actually returned and never authorizes a retry. Unsafe
+headers and cookies are excluded, the response cookie jar is cleared, and a
+body or allowlisted header containing the exact PMXT API key is withheld rather
+than persisted. The body scan covers literal bytes and decoded JSON strings,
+including JSON Unicode escapes; an indeterminate bounded scan also withholds
+the body and fails closed. Incomplete, over-bound, or unexpectedly HTTP- or
+character-encoded bodies are likewise withheld so a body cut through or
+encoding a credential cannot leak it while being mislabeled exact. The
+manifest records one PMXT network attempt and zero retry attempts.
 
 An existing run ID or artifact is never reopened for writing. If persistence
 cannot complete, only the exact newly reserved run directory is removed;
