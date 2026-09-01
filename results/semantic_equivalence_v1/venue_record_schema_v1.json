@@ -1,0 +1,556 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:prediction-market-analysis:pmxt:venue-native-semantic-equivalence:1.0.0",
+  "title": "Venue-native semantic-equivalence pair record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_type",
+    "pair_id",
+    "source_candidate",
+    "venues",
+    "coverage",
+    "semantic_decision",
+    "live_eligible"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "record_type": {
+      "const": "venue_native_semantic_equivalence_pair"
+    },
+    "pair_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_candidate": {
+      "type": "object",
+      "required": [
+        "snapshot_id",
+        "cluster_id",
+        "candidate_id",
+        "relation",
+        "relation_confidence",
+        "candidate_line_sha256"
+      ],
+      "properties": {
+        "snapshot_id": {},
+        "cluster_id": {},
+        "candidate_id": {},
+        "relation": {},
+        "relation_confidence": {},
+        "candidate_line_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "venues": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kalshi",
+        "polymarket"
+      ],
+      "properties": {
+        "kalshi": {
+          "$ref": "#/$defs/venue_record"
+        },
+        "polymarket": {
+          "$ref": "#/$defs/venue_record"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "complete",
+        "missing_by_venue"
+      ],
+      "properties": {
+        "complete": {
+          "type": "boolean"
+        },
+        "missing_by_venue": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kalshi",
+            "polymarket"
+          ],
+          "properties": {
+            "kalshi": {
+              "$ref": "#/$defs/string_array"
+            },
+            "polymarket": {
+              "$ref": "#/$defs/string_array"
+            }
+          }
+        }
+      }
+    },
+    "semantic_decision": {
+      "const": "PENDING_SEMANTIC_REVIEW"
+    },
+    "live_eligible": {
+      "const": false
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "identifier": {
+      "type": "object",
+      "required": [
+        "source",
+        "field",
+        "value"
+      ],
+      "properties": {
+        "source": {},
+        "field": {},
+        "value": {},
+        "label": {}
+      },
+      "additionalProperties": false
+    },
+    "identifier_array": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/identifier"
+      }
+    },
+    "time_value": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source",
+        "field",
+        "raw",
+        "normalized_utc",
+        "timezone_explicit"
+      ],
+      "properties": {
+        "source": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "raw": {},
+        "normalized_utc": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timezone_explicit": {
+          "type": "boolean"
+        }
+      }
+    },
+    "time_array": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/time_value"
+      }
+    },
+    "response_evidence": {
+      "type": "object",
+      "required": [
+        "ordinal",
+        "candidate_id",
+        "venue",
+        "resource",
+        "status",
+        "status_code",
+        "request_path",
+        "request_params",
+        "request_started_utc_ns",
+        "response_completed_utc_ns",
+        "duration_monotonic_ns",
+        "body_path",
+        "body_bytes",
+        "body_sha256",
+        "headers_path",
+        "headers_sha256",
+        "request_metadata_path",
+        "error"
+      ],
+      "properties": {
+        "ordinal": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "candidate_id": {
+          "type": "string"
+        },
+        "venue": {
+          "enum": [
+            "kalshi",
+            "polymarket"
+          ]
+        },
+        "resource": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "OK",
+            "ERROR"
+          ]
+        },
+        "status_code": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "request_path": {},
+        "request_params": {
+          "type": "object"
+        },
+        "request_started_utc_ns": {
+          "type": "integer"
+        },
+        "response_completed_utc_ns": {
+          "type": "integer"
+        },
+        "duration_monotonic_ns": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "body_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "body_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "body_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "headers_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "headers_sha256": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "request_metadata_path": {
+          "type": "string"
+        },
+        "error": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "venue_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "candidate_id",
+        "venue",
+        "candidate_side",
+        "status",
+        "live_eligible",
+        "identifiers",
+        "exact_text",
+        "polarity",
+        "market_structure",
+        "times",
+        "rules",
+        "resolution",
+        "early_close",
+        "exceptional_outcomes",
+        "revisions",
+        "fees",
+        "response_evidence",
+        "immutable_raw_hash",
+        "normalized_rule_hash",
+        "missing_requirements",
+        "issues"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "1.0.0"
+        },
+        "candidate_id": {
+          "type": "string"
+        },
+        "venue": {
+          "enum": [
+            "kalshi",
+            "polymarket"
+          ]
+        },
+        "candidate_side": {
+          "enum": [
+            "a",
+            "b"
+          ]
+        },
+        "status": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL"
+          ]
+        },
+        "live_eligible": {
+          "const": false
+        },
+        "identifiers": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event",
+            "market",
+            "series",
+            "condition",
+            "question",
+            "outcome",
+            "token"
+          ],
+          "properties": {
+            "event": {
+              "$ref": "#/$defs/identifier_array"
+            },
+            "market": {
+              "$ref": "#/$defs/identifier_array"
+            },
+            "series": {
+              "$ref": "#/$defs/identifier_array"
+            },
+            "condition": {
+              "$ref": "#/$defs/identifier_array"
+            },
+            "question": {
+              "$ref": "#/$defs/identifier_array"
+            },
+            "outcome": {
+              "$ref": "#/$defs/identifier_array"
+            },
+            "token": {
+              "$ref": "#/$defs/identifier_array"
+            }
+          }
+        },
+        "exact_text": {
+          "type": "object",
+          "required": [
+            "event_titles",
+            "market_titles",
+            "questions",
+            "subtitles",
+            "outcome_labels"
+          ],
+          "properties": {
+            "event_titles": {
+              "type": "array"
+            },
+            "market_titles": {
+              "type": "array"
+            },
+            "questions": {
+              "type": "array"
+            },
+            "subtitles": {
+              "type": "array"
+            },
+            "outcome_labels": {
+              "type": "array"
+            }
+          },
+          "additionalProperties": false
+        },
+        "polarity": {
+          "type": "object",
+          "required": [
+            "explicit",
+            "yes",
+            "no",
+            "source_fields"
+          ],
+          "properties": {
+            "explicit": {
+              "type": "boolean"
+            },
+            "yes": {},
+            "no": {},
+            "source_fields": {
+              "type": "array"
+            }
+          },
+          "additionalProperties": false
+        },
+        "market_structure": {
+          "type": "object",
+          "required": [
+            "market_type",
+            "binary",
+            "multivariate",
+            "mutually_exclusive",
+            "negative_risk",
+            "raw_flags",
+            "classification_basis"
+          ]
+        },
+        "times": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "opening",
+            "closing",
+            "expiration",
+            "earliest_resolution",
+            "original_timezone_text"
+          ],
+          "properties": {
+            "opening": {
+              "$ref": "#/$defs/time_array"
+            },
+            "closing": {
+              "$ref": "#/$defs/time_array"
+            },
+            "expiration": {
+              "$ref": "#/$defs/time_array"
+            },
+            "earliest_resolution": {
+              "$ref": "#/$defs/time_array"
+            },
+            "original_timezone_text": {
+              "$ref": "#/$defs/string_array"
+            }
+          }
+        },
+        "rules": {
+          "type": "object",
+          "required": [
+            "primary",
+            "secondary",
+            "additional",
+            "source_fields"
+          ]
+        },
+        "resolution": {
+          "type": "object",
+          "required": [
+            "source_text",
+            "source_urls",
+            "settlement_authority",
+            "oracle_process",
+            "raw_fields"
+          ]
+        },
+        "early_close": {
+          "type": "object",
+          "required": [
+            "can_close_early",
+            "conditions",
+            "rule_text_matches",
+            "raw_fields"
+          ]
+        },
+        "exceptional_outcomes": {
+          "type": "object",
+          "required": [
+            "void",
+            "cancel",
+            "refund",
+            "indeterminate",
+            "raw_fields"
+          ]
+        },
+        "revisions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "created",
+            "updated",
+            "clarification",
+            "revision"
+          ],
+          "properties": {
+            "created": {
+              "$ref": "#/$defs/time_array"
+            },
+            "updated": {
+              "$ref": "#/$defs/time_array"
+            },
+            "clarification": {
+              "$ref": "#/$defs/time_array"
+            },
+            "revision": {
+              "$ref": "#/$defs/time_array"
+            }
+          }
+        },
+        "fees": {
+          "type": "object"
+        },
+        "response_evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/response_evidence"
+          }
+        },
+        "immutable_raw_hash": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/sha256"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "normalized_rule_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "missing_requirements": {
+          "$ref": "#/$defs/string_array"
+        },
+        "issues": {
+          "$ref": "#/$defs/string_array"
+        }
+      }
+    }
+  }
+}

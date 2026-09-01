@@ -1,0 +1,53 @@
+{
+  "snapshot_id": "semantic-equivalence-v1-prechange",
+  "captured_at_utc": "2026-08-29T21:44:11.2359443Z",
+  "repository": {
+    "branch": "main",
+    "head": "2276382cb616107db8c8647803bffa4a0d7091f8",
+    "tracked_modified": 3,
+    "staged": 0,
+    "untracked_files": 549
+  },
+  "input_candidate_run": {
+    "run_id": "20260829T214011875577Z_33495fd8",
+    "path": "data/pmxt/runs/20260829T214011875577Z_33495fd8",
+    "status": "NO_VERIFIED_CANDIDATES",
+    "candidate_count": 25,
+    "files": [
+      {"path": "alerts.jsonl", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+      {"path": "calculations.jsonl", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+      {"path": "candidates.jsonl", "bytes": 80743, "sha256": "088b881abfbfebc8d4f8b0d20c9d4c1521356ea9ed2724bd34105a6c6cec206e"},
+      {"path": "manifest.json", "bytes": 2834, "sha256": "6fdbb063b78145028d9f395304ca00e0cd27f73fbe4853720bd740c1cc10c21d"},
+      {"path": "native_books.jsonl", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"},
+      {"path": "raw_native_metadata.jsonl", "bytes": 441261, "sha256": "0915e255f61eafb95e2ca8e96a43629d6c9f93518cb40c704a48b4254a5f4ee4"},
+      {"path": "raw_pmxt.json", "bytes": 142727, "sha256": "3904daf8cc1e1278793a6f9fe7595ae4d3ad391641678f19ceac4866a21cf44b"},
+      {"path": "rejections.jsonl", "bytes": 17225, "sha256": "1aa6584ebe365ca7b3785a0c39cf2ae7d677e1a6d48e69d312d8b563033adb5f"},
+      {"path": "semantic_decisions.jsonl", "bytes": 79611, "sha256": "d84b0f0441548ed41c63acfd450718354e6db5fe32ba343398bd2c7920c858ac"}
+    ]
+  },
+  "preexisting_pmxt_files": [
+    {"path": "docs/PMXT_INTEGRATION.md", "bytes": 6436, "sha256": "57af1164da52c086a55962c6c1d8f6bb6fc55f0ee08fcadf7447a283f56e2715"},
+    {"path": "src/indexers/pmxt/__init__.py", "bytes": 42, "sha256": "b0a60ac77335cf7524ff79c73189c0c9a36d84d1d259213f5f14d24c47e3e31d"},
+    {"path": "src/indexers/pmxt/artifacts.py", "bytes": 5924, "sha256": "1a78a5266ba438b0c3842dbf6bf1fc61822ee3936fe0018bf27046ddb5996306"},
+    {"path": "src/indexers/pmxt/candidates.py", "bytes": 18534, "sha256": "90b25ee81a97e5c2b53eab138eb34f463de4b22cf666906a56ea99a49bd16a7f"},
+    {"path": "src/indexers/pmxt/client.py", "bytes": 4649, "sha256": "354a0f879899c83436e370fa20904c3e5ed37625710b0b1cda838f5e581606d3"},
+    {"path": "src/indexers/pmxt/market_clusters.py", "bytes": 4373, "sha256": "3b17bfbe2a24416759d4b84bba38a9b064a7bff7150296c40505d9929d0ddde9"},
+    {"path": "src/indexers/pmxt/models.py", "bytes": 2742, "sha256": "8c9b8e1daea31e247fd8f0f0c823c67c8af3713c2bc5c0f252a35b7b43b2a6e3"},
+    {"path": "src/indexers/pmxt/monitor.py", "bytes": 24416, "sha256": "2e5f0ca8a8caafb71921495b0fb936973c0ed6fc835f3f5d4472fcffa8168710"},
+    {"path": "src/indexers/pmxt/native.py", "bytes": 35146, "sha256": "3460631ae36f252317154bb791d2310941e2ed6c91f4395aebf772aa37d7a20b"},
+    {"path": "src/indexers/pmxt/semantic.py", "bytes": 14011, "sha256": "78a01ed25baace2cb489d4bedfd72da0ce49100e066882662873517f14a26e00"},
+    {"path": "src/indexers/pmxt/shadow.py", "bytes": 29096, "sha256": "cab82bdef3b7203ec14dd35f5e81591a249912662cdf5a891d96a168449ab5dd"},
+    {"path": "tests/test_pmxt_artifacts.py", "bytes": 5846, "sha256": "1aeae2fbde38f96269e28be6769ca238f434ec6db7adc28129606e7b67143246"},
+    {"path": "tests/test_pmxt_candidates.py", "bytes": 12652, "sha256": "2f709cc531e691b2257d7d7df6104471e34bacfdea71e7b7995b580a74549f48"},
+    {"path": "tests/test_pmxt_monitor.py", "bytes": 14632, "sha256": "4741d8d639f4b197c440e0c7716ee3780c9ff0d46f1590e46e513077c5047fed"},
+    {"path": "tests/test_pmxt_native.py", "bytes": 17187, "sha256": "fda74a3197dac7f508b587a2bf0e9f5dfa45d213f02ecdebcf36f21c00cdb859"},
+    {"path": "tests/test_pmxt_semantic.py", "bytes": 6609, "sha256": "bbdca4f6a18bbd502e191f74141736c4eed9c649de55a278334cbab067f0a529"},
+    {"path": "tests/test_pmxt_shadow.py", "bytes": 8860, "sha256": "135fe48872b4f1318d35ea6eb0c005cf979bac3b037996703b7c8061dc03526f"}
+  ],
+  "target_state_before_change": {
+    "results/semantic_equivalence_v1": "absent",
+    "data/pmxt/semantic_equivalence/runs/capture_001": "absent",
+    "src/indexers/pmxt/semantic_equivalence.py": "absent",
+    "tests/test_pmxt_semantic_equivalence.py": "absent"
+  }
+}

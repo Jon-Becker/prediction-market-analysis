@@ -1,0 +1,172 @@
+{
+  "protocol_id": "pmxt-venue-native-semantic-equivalence-v1",
+  "schema_version": "1.0.0",
+  "frozen_scope": {
+    "purpose": "Capture venue-native semantic metadata and rules independently for every pair in one sealed PMXT candidate universe.",
+    "research_only": true,
+    "semantic_decisions_during_capture": false,
+    "cross_venue_inference": false,
+    "execution_or_economics": false,
+    "live_eligibility": false
+  },
+  "input": {
+    "path": "data/pmxt/runs/20260829T214011875577Z_33495fd8/candidates.jsonl",
+    "sha256": "088b881abfbfebc8d4f8b0d20c9d4c1521356ea9ed2724bd34105a6c6cec206e",
+    "pair_count": 25,
+    "candidate_status_at_source": "NEEDS_REVIEW",
+    "candidate_semantics": "proposals only; not semantic truth"
+  },
+  "run": {
+    "run_id": "capture_001",
+    "final_path": "data/pmxt/semantic_equivalence/runs/capture_001",
+    "staging_path": "data/pmxt/semantic_equivalence/runs/capture_001.inprogress",
+    "single_use": true,
+    "exclusive_writes": true,
+    "retry_count": 0,
+    "continue_after_individual_request_failure": true,
+    "retain_inprogress_directory_after_systemic_failure": true,
+    "do_not_reinvoke_after_any_attempt": true
+  },
+  "network_authority": {
+    "method": "GET",
+    "hosts": [
+      "api.elections.kalshi.com",
+      "gamma-api.polymarket.com"
+    ],
+    "public_metadata_only": true,
+    "authentication": false,
+    "cookies": false,
+    "environment_or_dotenv_reads": false,
+    "account_endpoints": false,
+    "book_or_trade_endpoints": false,
+    "orders_or_fills": false,
+    "paid_or_third_party_aggregators": false,
+    "timeout_seconds_per_request": 20.0,
+    "maximum_entity_body_bytes_per_request": 20000000,
+    "maximum_requests_per_pair": 6,
+    "maximum_requests_total": 150,
+    "accept_encoding": "identity",
+    "user_agent": "prediction-market-analysis/semantic-equivalence-v1"
+  },
+  "venue_requests": {
+    "kalshi": [
+      {
+        "resource": "market",
+        "path_template": "/trade-api/v2/markets/{market_ticker}"
+      },
+      {
+        "resource": "event",
+        "path_template": "/trade-api/v2/events/{event_ticker}",
+        "query": {
+          "with_nested_markets": "true"
+        },
+        "condition": "market response supplies event_ticker"
+      },
+      {
+        "resource": "event_metadata",
+        "path_template": "/trade-api/v2/events/{event_ticker}/metadata",
+        "condition": "market response supplies event_ticker"
+      },
+      {
+        "resource": "series",
+        "path_template": "/trade-api/v2/series/{series_ticker}",
+        "condition": "market or event response supplies series_ticker"
+      }
+    ],
+    "polymarket": [
+      {
+        "resource": "market",
+        "path": "/markets",
+        "query": {
+          "slug": "candidate market slug"
+        }
+      },
+      {
+        "resource": "event",
+        "path": "/events",
+        "query": {
+          "slug": "candidate event URL slug or sole nested event slug"
+        },
+        "condition": "an event slug is available"
+      }
+    ]
+  },
+  "raw_evidence": {
+    "body_semantics": "HTTP entity-body bytes returned by httpx.iter_raw before JSON decoding; compressed encodings are retained but rejected for normalization",
+    "header_semantics": "raw response header name/value byte pairs in received order, retaining duplicates and original casing, encoded both base64 and latin-1",
+    "request_metadata": [
+      "ordinal",
+      "candidate_id",
+      "venue",
+      "resource",
+      "method",
+      "path",
+      "query parameters",
+      "response URL",
+      "UTC start nanoseconds",
+      "UTC completion nanoseconds",
+      "monotonic duration nanoseconds",
+      "HTTP status",
+      "HTTP version",
+      "body byte length and SHA-256",
+      "header-document SHA-256",
+      "error",
+      "retry count",
+      "authorization/cookie-sent assertions"
+    ],
+    "json_decoding": "strict UTF-8 JSON; duplicate object keys and non-finite constants rejected",
+    "raw_hash": "SHA-256 over canonical ordered bindings of resource ordinal, resource name, raw body SHA-256, and raw header-document SHA-256",
+    "normalized_rule_hash": "separate SHA-256 over canonical UTF-8 JSON of the normalized rules object only",
+    "raw_and_normalized_hashes_are_not_interchangeable": true
+  },
+  "required_independent_venue_fields": [
+    "event, market, series, condition/question where native, outcome, and token identifiers",
+    "exact event title, market title/question, subtitles, and outcome labels",
+    "explicit YES/NO polarity mapping with native token or contract-side identifiers",
+    "market type, binary/multivariate status, mutually-exclusive and negative-risk flags",
+    "opening, closing, expiration, and earliest-resolution timestamps with raw text and normalized UTC",
+    "timezone abbreviations appearing in native rules",
+    "complete primary, secondary, and additional native rule fields",
+    "resolution source text/URLs, settlement authority, and oracle metadata",
+    "early-close fields and matching native rule paragraphs",
+    "void, cancel, refund, and indeterminate fields and matching native rule paragraphs",
+    "created, updated, clarification, and revision timestamps",
+    "fee metadata",
+    "response evidence references, immutable raw hash, normalized rule hash, explicit missing requirements, and issues"
+  ],
+  "normalization_rules": {
+    "venue_independence": "Never fill one venue's field from the other venue or from PMXT candidate prose.",
+    "missing_native_data": "Retain null or an empty collection and list the corresponding explicit missing requirement; never infer.",
+    "timestamps": "Retain the exact native value. Normalize only parseable timezone-aware ISO-8601 values to UTC; otherwise normalized_utc remains null.",
+    "yes_no": "Kalshi YES and NO contract sides are native outcome identifiers within a market. Polymarket polarity is explicit only when distinct case-insensitive Yes and No labels are present.",
+    "rule_excerpts": "Keyword-matched full native paragraphs are diagnostic indexes into retained raw rules, not invented policy.",
+    "settlement_authority": "Labels identify the native field and limited claim scope; they do not assert legal or execution equivalence.",
+    "completeness": "A venue record is COMPLETE only when every frozen requirement has native coverage and every requested resource response is successful. Otherwise it is PARTIAL.",
+    "pair_decision": "Every captured pair remains PENDING_SEMANTIC_REVIEW and live_eligible=false regardless of completeness."
+  },
+  "sealed_outputs": [
+    "input_candidates.jsonl",
+    "requests/*.body.bin",
+    "requests/*.response_headers.json",
+    "requests/*.request.json",
+    "venue_native_pairs.jsonl",
+    "capture_summary.json",
+    "manifest.json",
+    "manifest.sha256"
+  ],
+  "allowed_terminal_statuses": [
+    "COMPLETE",
+    "PARTIAL_NATIVE_METADATA_COVERAGE",
+    "CAPTURE_FAILED_NO_RETRY"
+  ],
+  "post_capture": {
+    "allowed": "read-only integrity and coverage verification",
+    "not_allowed": [
+      "editing sealed output",
+      "retrying or backfilling failed requests",
+      "declaring semantic equivalence from capture completeness",
+      "calculating execution economics",
+      "activating monitoring or trading"
+    ]
+  }
+}

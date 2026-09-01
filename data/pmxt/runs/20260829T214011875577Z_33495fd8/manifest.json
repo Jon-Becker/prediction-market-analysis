@@ -1,0 +1,100 @@
+{
+  "artifacts": {
+    "alerts": {
+      "byte_size": 0,
+      "path": "alerts.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "calculations": {
+      "byte_size": 0,
+      "path": "calculations.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "candidates": {
+      "byte_size": 80743,
+      "path": "candidates.jsonl",
+      "sha256": "088b881abfbfebc8d4f8b0d20c9d4c1521356ea9ed2724bd34105a6c6cec206e"
+    },
+    "native_books": {
+      "byte_size": 0,
+      "path": "native_books.jsonl",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "raw_native_metadata": {
+      "byte_size": 441261,
+      "path": "raw_native_metadata.jsonl",
+      "sha256": "0915e255f61eafb95e2ca8e96a43629d6c9f93518cb40c704a48b4254a5f4ee4"
+    },
+    "raw_pmxt": {
+      "byte_size": 142727,
+      "path": "raw_pmxt.json",
+      "sha256": "3904daf8cc1e1278793a6f9fe7595ae4d3ad391641678f19ceac4866a21cf44b"
+    },
+    "rejections": {
+      "byte_size": 17225,
+      "path": "rejections.jsonl",
+      "sha256": "1aa6584ebe365ca7b3785a0c39cf2ae7d677e1a6d48e69d312d8b563033adb5f"
+    },
+    "semantic_decisions": {
+      "byte_size": 79611,
+      "path": "semantic_decisions.jsonl",
+      "sha256": "d84b0f0441548ed41c63acfd450718354e6db5fe32ba343398bd2c7920c858ac"
+    }
+  },
+  "config": {
+    "alerts_only": true,
+    "annual_capital_rate": 0.05,
+    "discovery": {
+      "include_raw_matches": true,
+      "limit": 25,
+      "min_confidence": 0.8,
+      "min_venues": 2,
+      "offset": 0,
+      "relation": "identity",
+      "sort": "volume",
+      "venues": [
+        "kalshi",
+        "polymarket"
+      ]
+    },
+    "fee_assumptions_validated": false,
+    "identity_only": true,
+    "live_eligible": false,
+    "max_book_age_seconds": 15.0,
+    "max_cross_venue_skew_seconds": 3.0,
+    "native_book_depth": 100,
+    "net_residual_threshold": 0.05,
+    "requested_size": 10.0,
+    "timeout_seconds": 20.0,
+    "venue_fee_rates": {
+      "kalshi": null,
+      "polymarket": null
+    }
+  },
+  "counts": {
+    "alerts": 0,
+    "bounded_clusters": 25,
+    "calculations": 0,
+    "candidates": 25,
+    "cluster_bound_rejections": 0,
+    "native_books": 0,
+    "native_books_captured": 0,
+    "needs_review_candidates": 25,
+    "normalized_candidate_proposals": 25,
+    "normalized_candidates": 25,
+    "pmxt_clusters": 25,
+    "pmxt_rejections": 0,
+    "raw_native_metadata": 50,
+    "raw_pmxt": 1,
+    "rejected_candidates": 0,
+    "rejections": 25,
+    "semantic_decisions": 25,
+    "shadow_calculations": 0,
+    "verified_candidates": 0
+  },
+  "live_eligible": false,
+  "no_order_actions": true,
+  "run_id": "20260829T214011875577Z_33495fd8",
+  "schema_version": 1,
+  "status": "NO_VERIFIED_CANDIDATES"
+}

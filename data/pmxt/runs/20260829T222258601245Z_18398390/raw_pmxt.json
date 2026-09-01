@@ -1,0 +1,3222 @@
+{
+  "continued_at": "2026-08-29T22:22:58.601245Z",
+  "live_eligible": false,
+  "mode": "NATIVE_ONLY_CONTINUATION",
+  "payload": {
+    "data": [
+      {
+        "canonicalTitle": "Who will win the next presidential election?",
+        "category": "Elections",
+        "clusterId": "mcl_c51c5438a5273afe",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Nikki Haley is the next person inaugurated as President for the term beginning in 2029, then the market resolves to Yes.",
+            "eventId": "f0d49d83-6da4-4056-abb3-aaa46bf3b593",
+            "id": "b528b71f-0e19-4aa8-adc6-8ede23c6b065",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "b528b71f-0e19-4aa8-adc6-8ede23c6b065",
+            "openInterest": 585598.89,
+            "outcomes": [
+              {
+                "bestAsk": 0.998,
+                "bestBid": 0.997,
+                "label": "Not Nikki Haley",
+                "marketId": "b528b71f-0e19-4aa8-adc6-8ede23c6b065",
+                "metadata": {
+                  "ask": 0.999,
+                  "bid": 0.998
+                },
+                "outcomeId": "KXPRESPERSON-28-NHAL-NO",
+                "price": 0.9985,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.003,
+                "bestBid": 0.002,
+                "label": "Nikki Haley",
+                "marketId": "b528b71f-0e19-4aa8-adc6-8ede23c6b065",
+                "metadata": {
+                  "ask": 0.002,
+                  "bid": 0.001
+                },
+                "outcomeId": "KXPRESPERSON-28-NHAL",
+                "price": 0.002,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2029-11-07T15:00:00.000Z",
+            "slug": "KXPRESPERSON-28-NHAL",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "2028",
+              "US Elections"
+            ],
+            "tickSize": null,
+            "title": "Who will win the next presidential election?",
+            "url": "https://kalshi.com/events/KXPRESPERSON-28",
+            "volume": 644180.55,
+            "volume24h": 251022.36
+          },
+          {
+            "category": "World Elections",
+            "contractAddress": "0xe0173375b7eaccb836f7b92d28a9a2d1cc69e54e5a65fae89a5d7e49aadd332e",
+            "description": "The 2028 US Presidential Election is scheduled to take place on November 7, 2028.\n\nThis market will resolve to the person who wins the 2028 US Presidential Election.\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven’t called the race for the same candidate by the inauguration date (January 20, 2029) this market will resolve based on who is inaugurated.",
+            "eventId": "a49db286-39ca-4119-9de5-1335a92ef92a",
+            "id": "ee916d62-692e-4bb1-b7f4-39224668faec",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-nikki-haley-win-the-2028-us-presidential-election-pUzXkWs8--Wo.png",
+            "liquidity": 1893555.97091,
+            "marketId": "ee916d62-692e-4bb1-b7f4-39224668faec",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.995,
+                "bestBid": 0.994,
+                "label": "Not Nikki Haley",
+                "marketId": "ee916d62-692e-4bb1-b7f4-39224668faec",
+                "metadata": {
+                  "clobTokenId": "84386913213192310444216977895083273572419886997719576824320630372812149173320"
+                },
+                "outcomeId": "84386913213192310444216977895083273572419886997719576824320630372812149173320",
+                "price": 0.9935,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.006,
+                "bestBid": 0.005,
+                "label": "Nikki Haley",
+                "marketId": "ee916d62-692e-4bb1-b7f4-39224668faec",
+                "metadata": {
+                  "clobTokenId": "14253956839582698877884742930225331487593177635330318923853046874994118249367"
+                },
+                "outcomeId": "14253956839582698877884742930225331487593177635330318923853046874994118249367",
+                "price": 0.0065,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2028-11-07T00:00:00.000Z",
+            "slug": "will-nikki-haley-win-the-2028-us-presidential-election",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "World Elections",
+              "Global Elections",
+              "US Election",
+              "Elections",
+              "Politics",
+              "Earn 4%",
+              "President",
+              "United States",
+              "Main Election"
+            ],
+            "tickSize": 0.001,
+            "title": "Presidential Election Winner 2028 - Will Nikki Haley win the 2028 US Presidential Election?",
+            "url": "https://polymarket.com/event/presidential-election-winner-2028",
+            "volume": 27582078.580419302,
+            "volume24h": 119334.52548199998
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "b528b71f-0e19-4aa8-adc6-8ede23c6b065",
+            "marketBId": "ee916d62-692e-4bb1-b7f4-39224668faec",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 370356.88548199995
+      },
+      {
+        "canonicalTitle": "Will Kansas City win the 2026 Pro Baseball Championship?",
+        "category": "Sports",
+        "clusterId": "mcl_79f12c25b9d1fc2c",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Kansas City wins the 2026 Pro Baseball Championship, then the market resolves to Yes.",
+            "eventId": "517740dc-ec04-4187-8860-72de1e0c6fbb",
+            "id": "3c2a7112-93bd-493c-9c1e-de29fd48fcb9",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "3c2a7112-93bd-493c-9c1e-de29fd48fcb9",
+            "openInterest": 1211952.09,
+            "outcomes": [
+              {
+                "bestAsk": null,
+                "bestBid": 0.999,
+                "label": "Not Kansas City",
+                "marketId": "3c2a7112-93bd-493c-9c1e-de29fd48fcb9",
+                "metadata": {
+                  "ask": 1,
+                  "bid": 0.999
+                },
+                "outcomeId": "KXMLB-26-KC-NO",
+                "price": 0.9995,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.001,
+                "bestBid": null,
+                "label": "Kansas City",
+                "marketId": "3c2a7112-93bd-493c-9c1e-de29fd48fcb9",
+                "metadata": {
+                  "ask": 0.001,
+                  "bid": 0
+                },
+                "outcomeId": "KXMLB-26-KC",
+                "price": 0.001,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2028-10-31T04:00:00.000Z",
+            "slug": "KXMLB-26-KC",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Baseball"
+            ],
+            "tickSize": null,
+            "title": "Will Kansas City win the 2026 Pro Baseball Championship?",
+            "url": "https://kalshi.com/events/KXMLB-26",
+            "volume": 1297453.51,
+            "volume24h": 303190.84
+          },
+          {
+            "category": "MLB",
+            "contractAddress": "0xf134705aea567d66f664016d8522ef98e42aefe6a305c22447695a9462857ccd",
+            "description": "This market will resolve according to the team that wins the 2026 MLB World Series. \n\nIf at any point it becomes impossible for a listed team to win the 2026 MLB World Series per the rules of MLB (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2026 MLB season is cancelled, postponed after December 31, 2026 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from MLB (https://www.mlb.com/); however, a consensus of credible reporting may also be used.",
+            "eventId": "eb6aa890-8644-4e75-9ef8-2673346c92a0",
+            "id": "3643910c-c39a-422e-bec5-a2692883f42b",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/whatever-36cb809aa2.jpg",
+            "liquidity": 93192.56181,
+            "marketId": "3643910c-c39a-422e-bec5-a2692883f42b",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.999,
+                "bestBid": 0.998,
+                "label": "Not Kansas City Royals",
+                "marketId": "3643910c-c39a-422e-bec5-a2692883f42b",
+                "metadata": {
+                  "clobTokenId": "107883525595834562366993124426301706472341525445625248481090185796349787534570"
+                },
+                "outcomeId": "107883525595834562366993124426301706472341525445625248481090185796349787534570",
+                "price": 0.9935,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.002,
+                "bestBid": 0.001,
+                "label": "Kansas City Royals",
+                "marketId": "3643910c-c39a-422e-bec5-a2692883f42b",
+                "metadata": {
+                  "clobTokenId": "91634061490645811181653965731312608248831576918658803735251578126864075665673"
+                },
+                "outcomeId": "91634061490645811181653965731312608248831576918658803735251578126864075665673",
+                "price": 0.0065,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2026-10-31T23:55:00.000Z",
+            "slug": "will-the-kansas-city-royals-win-the-2026-world-series",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "MLB",
+              "Sports",
+              "MLB Playoffs",
+              "World Series",
+              "baseball"
+            ],
+            "tickSize": 0.001,
+            "title": "MLB World Series Champion 2026 - Will the Kansas City Royals win the 2026 World Series?",
+            "url": "https://polymarket.com/event/mlb-world-series-champion-2026",
+            "volume": 649605.7883440002,
+            "volume24h": 11215.947812000006
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "3643910c-c39a-422e-bec5-a2692883f42b",
+            "marketBId": "3c2a7112-93bd-493c-9c1e-de29fd48fcb9",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 314406.787812
+      },
+      {
+        "canonicalTitle": "Will Pete Hegseth be the nominee for the Presidency for the Republican party?",
+        "category": "Elections",
+        "clusterId": "mcl_afd8667fd44c167b",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Pete Hegseth wins and accepts the nomination for the Presidency for the Republican party in 2028, then the market resolves to Yes.",
+            "eventId": "88d0a8b2-ec8c-406a-a50d-e8735d4a5009",
+            "id": "f3a9e2e9-8c74-41ad-969b-7ae7c87e79b2",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "f3a9e2e9-8c74-41ad-969b-7ae7c87e79b2",
+            "openInterest": 1040915.69,
+            "outcomes": [
+              {
+                "bestAsk": 0.998,
+                "bestBid": 0.996,
+                "label": "Not Pete Hegseth",
+                "marketId": "f3a9e2e9-8c74-41ad-969b-7ae7c87e79b2",
+                "metadata": {
+                  "ask": 0.993,
+                  "bid": 0.986
+                },
+                "outcomeId": "KXPRESNOMR-28-PHEG-NO",
+                "price": 0.9895,
+                "priceChange24h": -0.008
+              },
+              {
+                "bestAsk": 0.004,
+                "bestBid": 0.003,
+                "label": "Pete Hegseth",
+                "marketId": "f3a9e2e9-8c74-41ad-969b-7ae7c87e79b2",
+                "metadata": {
+                  "ask": 0.014,
+                  "bid": 0.007
+                },
+                "outcomeId": "KXPRESNOMR-28-PHEG",
+                "price": 0.014,
+                "priceChange24h": 0.008
+              }
+            ],
+            "resolutionDate": "2028-11-07T15:00:00.000Z",
+            "slug": "KXPRESNOMR-28-PHEG",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "2028",
+              "US Elections"
+            ],
+            "tickSize": null,
+            "title": "Will Pete Hegseth be the nominee for the Presidency for the Republican party?",
+            "url": "https://kalshi.com/events/KXPRESNOMR-28",
+            "volume": 1196515.79,
+            "volume24h": 104387.89
+          },
+          {
+            "category": "Politics",
+            "contractAddress": "0x5f3b3456b2d6ef0d6f15d7492162725057be78d738d2465456e2835f1d89046c",
+            "description": "This market will resolve to “Yes” if the named individual wins and accepts the 2028 nomination of the Republican Party for U.S. president. Otherwise, this market will resolve to “No”.\n\nThe resolution source for this market will be a consensus of official Republican Party sources.\n\nAny replacement of the Republican nominee before election day will not change the resolution of the market.",
+            "eventId": "7c791d18-a3f7-41d2-ac90-9a0e9210b8e4",
+            "id": "e6dc4c47-bfb1-4c84-b5ed-22a1036fa397",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-pete-hegseth-win-the-2028-us-presidential-election-8zwmhreE7XKW.jpg",
+            "liquidity": 1688660.93149,
+            "marketId": "e6dc4c47-bfb1-4c84-b5ed-22a1036fa397",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.998,
+                "bestBid": 0.997,
+                "label": "Not Pete Hegseth",
+                "marketId": "e6dc4c47-bfb1-4c84-b5ed-22a1036fa397",
+                "metadata": {
+                  "clobTokenId": "9858445493903501648722765041195521587435370553699986326259923783724888628821"
+                },
+                "outcomeId": "9858445493903501648722765041195521587435370553699986326259923783724888628821",
+                "price": 0.9925,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.003,
+                "bestBid": 0.002,
+                "label": "Pete Hegseth",
+                "marketId": "e6dc4c47-bfb1-4c84-b5ed-22a1036fa397",
+                "metadata": {
+                  "clobTokenId": "98511916129081689027111328481059704559518789751071585689160934736837069796376"
+                },
+                "outcomeId": "98511916129081689027111328481059704559518789751071585689160934736837069796376",
+                "price": 0.0075,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2028-11-07T00:00:00.000Z",
+            "slug": "will-pete-hegseth-win-the-2028-republican-presidential-nomination",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Politics",
+              "US Election",
+              "Elections",
+              "World Elections",
+              "Global Elections",
+              "Earn 4%",
+              "Primaries",
+              "United States",
+              "International Election Props"
+            ],
+            "tickSize": 0.001,
+            "title": "Republican Presidential Nominee 2028 - Will Pete Hegseth win the 2028 Republican presidential nomination?",
+            "url": "https://polymarket.com/event/republican-presidential-nominee-2028",
+            "volume": 8152743.894236438,
+            "volume24h": 58790.433831
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "e6dc4c47-bfb1-4c84-b5ed-22a1036fa397",
+            "marketBId": "f3a9e2e9-8c74-41ad-969b-7ae7c87e79b2",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 163178.32383100002
+      },
+      {
+        "canonicalTitle": "Will Avigdor Lieberman become Prime Minister of Israel following the 2026 Israeli legislative election?",
+        "category": "Elections",
+        "clusterId": "mcl_58040db23102d9ad",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Avigdor Lieberman becomes Prime Minister of Israel as a result of government formation following the 2026 Israeli legislative election and meets all constitutional requirements before Oct 27, 2027, then the market resolves to Yes.",
+            "eventId": "f60b5abe-4119-40ad-b4c1-f82f986f08ba",
+            "id": "fba78e8d-12ce-4a2f-9708-829a1dc84337",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "fba78e8d-12ce-4a2f-9708-829a1dc84337",
+            "openInterest": 5445.91,
+            "outcomes": [
+              {
+                "bestAsk": 0.94,
+                "bestBid": 0.9,
+                "label": "Not Avigdor Lieberman",
+                "marketId": "fba78e8d-12ce-4a2f-9708-829a1dc84337",
+                "metadata": {
+                  "ask": 0.95,
+                  "bid": 0.94
+                },
+                "outcomeId": "KXISRAELPM-26OCT27-ALIE-NO",
+                "price": 0.945,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.07,
+                "bestBid": 0.04,
+                "label": "Avigdor Lieberman",
+                "marketId": "fba78e8d-12ce-4a2f-9708-829a1dc84337",
+                "metadata": {
+                  "ask": 0.06,
+                  "bid": 0.05
+                },
+                "outcomeId": "KXISRAELPM-26OCT27-ALIE",
+                "price": 0.05,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2027-10-27T14:00:00.000Z",
+            "slug": "KXISRAELPM-26OCT27-ALIE",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "International elections"
+            ],
+            "tickSize": null,
+            "title": "Will Avigdor Lieberman become Prime Minister of Israel following the 2026 Israeli legislative election?",
+            "url": "https://kalshi.com/events/KXISRAELPM-26OCT27",
+            "volume": 6592.97,
+            "volume24h": 0
+          },
+          {
+            "category": "Politics",
+            "contractAddress": "0xadffc96f54f350b3655f72fe2853c81bfd705e9703f62469e6a14782ad5d4ec0",
+            "description": "Legislative elections are schedule to be held in Israel on October 27, 2026. \n\nThis market will resolve to the next individual who is officially appointed and sworn in as Prime Minister of Israel following the 2026 parliamentary election. If an election is called early, this market will immediately resolve to the individual who is officially appointed and sworn in after that election.\n\nTo count for resolution, the individual must be formally sworn in. Any interim or caretaker Prime Minister will not count toward the resolution of this market.\n\nIf no such Prime Minister is sworn in by December 31, 2027, 11:59 PM ET, this market will resolve to “Other”.\n\nThe primary resolution source for this market will be official information from the Government of Israel; however, a consensus of credible reporting may also be used.",
+            "eventId": "5651f28d-f333-44be-9ad2-753a0801db67",
+            "id": "df7e21b9-96d2-42f5-8560-f6979b101fdf",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/who-will-be-the-next-prime-minister-of-israel-after-the-2026-election-lWDmU0z7U_Vj.png",
+            "liquidity": 58135.68704,
+            "marketId": "df7e21b9-96d2-42f5-8560-f6979b101fdf",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.959,
+                "bestBid": 0.958,
+                "label": "Not Avigdor Lieberman",
+                "marketId": "df7e21b9-96d2-42f5-8560-f6979b101fdf",
+                "metadata": {
+                  "clobTokenId": "13887896800265966487014179943559375403384011039339488276489274832989862323735"
+                },
+                "outcomeId": "13887896800265966487014179943559375403384011039339488276489274832989862323735",
+                "price": 0.953,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.042,
+                "bestBid": 0.041,
+                "label": "Avigdor Lieberman",
+                "marketId": "df7e21b9-96d2-42f5-8560-f6979b101fdf",
+                "metadata": {
+                  "clobTokenId": "105057524965982907913786325697426001538810836564004836999292309706852745390829"
+                },
+                "outcomeId": "105057524965982907913786325697426001538810836564004836999292309706852745390829",
+                "price": 0.047,
+                "priceChange24h": 0.0005
+              }
+            ],
+            "resolutionDate": "2026-12-31T00:00:00.000Z",
+            "slug": "will-avigdor-lieberman-be-the-next-prime-minister-of-israel",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Politics",
+              "Middle East",
+              "Israel",
+              "Geopolitics",
+              "Elections",
+              "Global Elections",
+              "World",
+              "Trump-Netanyahu",
+              "Main Election",
+              "rewards 100, 4.5, 100 Deprec"
+            ],
+            "tickSize": 0.001,
+            "title": "Who will be the next Prime Minister of Israel after the next election? - Will Avigdor Lieberman be the next Prime Minister of Israel?",
+            "url": "https://polymarket.com/event/who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+            "volume": 1481308.8785859991,
+            "volume24h": 147241.76261799995
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "df7e21b9-96d2-42f5-8560-f6979b101fdf",
+            "marketBId": "fba78e8d-12ce-4a2f-9708-829a1dc84337",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 147241.76261799995
+      },
+      {
+        "canonicalTitle": "Will Republicans win the House in 2026?",
+        "category": "Elections",
+        "clusterId": "mcl_5f3a3f8095d69ba4",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If the Republican Party has won control of the House in 2026, then the market resolves to Yes.",
+            "eventId": "0ba2f949-29ff-4428-bb9d-dd3fb3015712",
+            "id": "f09fc8e8-c973-48a3-bd5f-a6ca642da848",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "f09fc8e8-c973-48a3-bd5f-a6ca642da848",
+            "openInterest": 10532114.06,
+            "outcomes": [
+              {
+                "bestAsk": 0.85,
+                "bestBid": 0.84,
+                "label": "Not Republican Party",
+                "marketId": "f09fc8e8-c973-48a3-bd5f-a6ca642da848",
+                "metadata": {
+                  "ask": 0.85,
+                  "bid": 0.84
+                },
+                "outcomeId": "CONTROLH-2026-R-NO",
+                "price": 0.845,
+                "priceChange24h": -0.010000000000000009
+              },
+              {
+                "bestAsk": 0.16,
+                "bestBid": 0.15,
+                "label": "Republican Party",
+                "marketId": "f09fc8e8-c973-48a3-bd5f-a6ca642da848",
+                "metadata": {
+                  "ask": 0.16,
+                  "bid": 0.15
+                },
+                "outcomeId": "CONTROLH-2026-R",
+                "price": 0.16,
+                "priceChange24h": 0.010000000000000009
+              }
+            ],
+            "resolutionDate": "2027-02-01T15:00:00.000Z",
+            "slug": "CONTROLH-2026-R",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "US Elections"
+            ],
+            "tickSize": null,
+            "title": "Will Republicans win the House in 2026?",
+            "url": "https://kalshi.com/events/CONTROLH-2026",
+            "volume": 16575804.7,
+            "volume24h": 68618.53
+          },
+          {
+            "category": "US Election",
+            "contractAddress": "0x4e4f77e7dbf4cab666e9a1943674d7ae66348e862df03ea6f44b11eb95731928",
+            "description": "This market will resolve according to the party that controls the House of Representatives following the 2026 U.S. House elections scheduled for November 3, 2026.\n\nHouse control is defined as having more than half of the voting members of the U.S. House of Representatives.\n\nIf the outcome of this election is ambiguous given the above rules, this market will remain open until the Speaker of the House is selected following the 2026 U.S. general election, at which point it will resolve to the party the Speaker is affiliated with at the time of their election to that position. If the elected Speaker does not caucus with any listed party this market will resolve “Other”.\n\nDetermination of which party controls the House after the 2026 U.S. House elections will be based on a consensus of credible reporting, or if there is ambiguity, final federal and/or state election authority certification or other final official determination of the 2026 election results.",
+            "eventId": "ea4baa9f-fdc5-42fb-a75b-746f081dc236",
+            "id": "b23e95c2-2e17-484f-926f-6e0dfe950ab6",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-the-republican-party-control-the-senate-after-the-2026-midterm-elections-JSsqogfn0U0u.png",
+            "liquidity": 358067.3594,
+            "marketId": "b23e95c2-2e17-484f-926f-6e0dfe950ab6",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.89,
+                "bestBid": 0.88,
+                "label": "Not Republican Party",
+                "marketId": "b23e95c2-2e17-484f-926f-6e0dfe950ab6",
+                "metadata": {
+                  "clobTokenId": "17371217118862125782438074585166210555214661810823929795910191856905580975576"
+                },
+                "outcomeId": "17371217118862125782438074585166210555214661810823929795910191856905580975576",
+                "price": 0.815,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.12,
+                "bestBid": 0.11,
+                "label": "Republican Party",
+                "marketId": "b23e95c2-2e17-484f-926f-6e0dfe950ab6",
+                "metadata": {
+                  "clobTokenId": "65139230827417363158752884968303867495725894165574887635816574090175320800482"
+                },
+                "outcomeId": "65139230827417363158752884968303867495725894165574887635816574090175320800482",
+                "price": 0.185,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2026-11-03T00:00:00.000Z",
+            "slug": "will-the-republican-party-control-the-house-after-the-2026-midterm-elections",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "US Election",
+              "Politics",
+              "Midterms",
+              "World Elections",
+              "Elections",
+              "Global Elections",
+              "Earn 4%",
+              "Parent For Derivative",
+              "United States",
+              "Main Election"
+            ],
+            "tickSize": 0.01,
+            "title": "Which party will win the House in 2026? - Will the Republican Party control the House after the 2026 Midterm elections?",
+            "url": "https://polymarket.com/event/which-party-will-win-the-house-in-2026",
+            "volume": 3357742.1445129486,
+            "volume24h": 41457.108345
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "b23e95c2-2e17-484f-926f-6e0dfe950ab6",
+            "marketBId": "f09fc8e8-c973-48a3-bd5f-a6ca642da848",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 110075.638345
+      },
+      {
+        "canonicalTitle": "Will Freddy Peralta win NL Cy Young?",
+        "category": "Sports",
+        "clusterId": "mcl_bca95916c9d7e8d3",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Freddy Peralta wins the Pro Baseball National League Cy Young in the 2026 season, then the market resolves to Yes.",
+            "eventId": "951ba915-b6b9-425a-8f85-db8ec4acd872",
+            "id": "4da4b7e8-750d-4ce2-b4a0-c01e441c3111",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "4da4b7e8-750d-4ce2-b4a0-c01e441c3111",
+            "openInterest": 9377,
+            "outcomes": [
+              {
+                "bestAsk": null,
+                "bestBid": 0.99,
+                "label": "Not Freddy Peralta",
+                "marketId": "4da4b7e8-750d-4ce2-b4a0-c01e441c3111",
+                "metadata": {
+                  "ask": 1,
+                  "bid": 0.99
+                },
+                "outcomeId": "KXMLBNLCY-26-FPER-NO",
+                "price": 0.995,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.01,
+                "bestBid": null,
+                "label": "Freddy Peralta",
+                "marketId": "4da4b7e8-750d-4ce2-b4a0-c01e441c3111",
+                "metadata": {
+                  "ask": 0.01,
+                  "bid": 0
+                },
+                "outcomeId": "KXMLBNLCY-26-FPER",
+                "price": 0.01,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2026-12-08T15:00:00.000Z",
+            "slug": "KXMLBNLCY-26-FPER",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Baseball"
+            ],
+            "tickSize": null,
+            "title": "Will Freddy Peralta win NL Cy Young?",
+            "url": "https://kalshi.com/events/KXMLBNLCY-26",
+            "volume": 10237,
+            "volume24h": 0
+          },
+          {
+            "category": "Sports",
+            "contractAddress": "0x1c0408d969ca7245b8e8d671ba95e0e7062375ae185a124d1384fe5aa2608adb",
+            "description": "This market will resolve to the player who wins the 2026 National League Cy Young Award.\n\nIn the event of a tie, this market will resolve according to the official winner as determined by MLB rules. If multiple winners are announced then this market will resolve to the player whose listed last name comes first alphabetically.\n\nIf the 2026 MLB season is cancelled, postponed after December 31, 2026, 11:59 PM ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe resolution source for this market will be official information from Major League Baseball; however, a consensus of credible reporting may also be used.",
+            "eventId": "11f0c578-6ff1-46a4-9633-87c3740438ed",
+            "id": "5fa06885-9aa6-4755-bf91-75cf57677994",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/major-league-baseball-2026-nl-cy-young-winner-WajZzIOIGdtu.jpg",
+            "liquidity": 2507.6952,
+            "marketId": "5fa06885-9aa6-4755-bf91-75cf57677994",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.999,
+                "bestBid": 0.998,
+                "label": "Not Freddy Peralta",
+                "marketId": "5fa06885-9aa6-4755-bf91-75cf57677994",
+                "metadata": {
+                  "clobTokenId": "70147107117300352828530754578657203480333222333188127424805580614383018388404"
+                },
+                "outcomeId": "70147107117300352828530754578657203480333222333188127424805580614383018388404",
+                "price": 0.996,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.002,
+                "bestBid": 0.001,
+                "label": "Freddy Peralta",
+                "marketId": "5fa06885-9aa6-4755-bf91-75cf57677994",
+                "metadata": {
+                  "clobTokenId": "2844238309548371592889534638123020042418943196336861990471014414414748977381"
+                },
+                "outcomeId": "2844238309548371592889534638123020042418943196336861990471014414414748977381",
+                "price": 0.004,
+                "priceChange24h": 0.001
+              }
+            ],
+            "resolutionDate": "2026-11-12T00:00:00.000Z",
+            "slug": "will-freddy-peralta-win-the-2026-nl-cy-young-award",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "award",
+              "Cy young",
+              "National League",
+              "MLB",
+              "baseball",
+              "Rewards 50, 4.5, 20"
+            ],
+            "tickSize": 0.001,
+            "title": "MLB: 2026 NL Cy Young Winner - Will Freddy Peralta win the 2026 NL Cy Young Award?",
+            "url": "https://polymarket.com/event/mlb-2026-nl-cy-young-winner",
+            "volume": 110773.36,
+            "volume24h": 108964
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "4da4b7e8-750d-4ce2-b4a0-c01e441c3111",
+            "marketBId": "5fa06885-9aa6-4755-bf91-75cf57677994",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 108964
+      },
+      {
+        "canonicalTitle": "Will Baltimore win the 2027 Pro Football Championship?",
+        "category": "Sports",
+        "clusterId": "mcl_ec12cce28f8a7940",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Baltimore wins the 2027 Pro Football Championship, then the market resolves to Yes.",
+            "eventId": "04b8d34e-d60d-4b22-9dbd-f6642ba39288",
+            "id": "4d02f22d-0b8a-4cc0-a16f-8fefc1151323",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "4d02f22d-0b8a-4cc0-a16f-8fefc1151323",
+            "openInterest": 2227496.82,
+            "outcomes": [
+              {
+                "bestAsk": 0.94,
+                "bestBid": 0.93,
+                "label": "Not Baltimore",
+                "marketId": "4d02f22d-0b8a-4cc0-a16f-8fefc1151323",
+                "metadata": {
+                  "ask": 0.94,
+                  "bid": 0.93
+                },
+                "outcomeId": "KXSB-27-BAL-NO",
+                "price": 0.935,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.07,
+                "bestBid": 0.06,
+                "label": "Baltimore",
+                "marketId": "4d02f22d-0b8a-4cc0-a16f-8fefc1151323",
+                "metadata": {
+                  "ask": 0.07,
+                  "bid": 0.06
+                },
+                "outcomeId": "KXSB-27-BAL",
+                "price": 0.07,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2029-02-13T23:30:00.000Z",
+            "slug": "KXSB-27-BAL",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Football"
+            ],
+            "tickSize": null,
+            "title": "Will Baltimore win the 2027 Pro Football Championship?",
+            "url": "https://kalshi.com/events/KXSB-27",
+            "volume": 2513976.64,
+            "volume24h": 97965.11
+          },
+          {
+            "category": "Sports",
+            "contractAddress": "0xbd1d0889e5037c451bb1e45163749786fe4acc10af2ab40477e7052766054712",
+            "description": "This market will resolve according to the team that wins the 2027 NFL league championship. \n\nIf at any point it becomes impossible for a listed team to win the 2027 NFL league championship per the rules of the NFL (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2027 NFL league championship game is cancelled, postponed after March 31, 2027 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from NFL (https://www.nfl.com/); however, a consensus of credible reporting may also be used.",
+            "eventId": "676772bf-08be-40ba-80a5-0a76e0bbc717",
+            "id": "55ff5eb6-8875-4a4d-a70d-627769ef7071",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
+            "liquidity": 58324.11665,
+            "marketId": "55ff5eb6-8875-4a4d-a70d-627769ef7071",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.927,
+                "bestBid": 0.926,
+                "label": "Not Baltimore Ravens",
+                "marketId": "55ff5eb6-8875-4a4d-a70d-627769ef7071",
+                "metadata": {
+                  "clobTokenId": "22053271793248125256451687157287125154284715142130477499624815153763089628557"
+                },
+                "outcomeId": "22053271793248125256451687157287125154284715142130477499624815153763089628557",
+                "price": 0.933,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.074,
+                "bestBid": 0.073,
+                "label": "Baltimore Ravens",
+                "marketId": "55ff5eb6-8875-4a4d-a70d-627769ef7071",
+                "metadata": {
+                  "clobTokenId": "73903998640927437939889487883041380194034214913517653047704709946666153109395"
+                },
+                "outcomeId": "73903998640927437939889487883041380194034214913517653047704709946666153109395",
+                "price": 0.067,
+                "priceChange24h": 0.009
+              }
+            ],
+            "resolutionDate": "2027-03-31T23:55:00.000Z",
+            "slug": "will-the-baltimore-ravens-win-the-2027-nfl-league-championship",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "NFL",
+              "football",
+              "Super Bowl"
+            ],
+            "tickSize": 0.001,
+            "title": "NFL Champion 2027 - Will the Baltimore Ravens win the 2027 NFL league championship?",
+            "url": "https://polymarket.com/event/big-game-champion-2027",
+            "volume": 883604.9442319991,
+            "volume24h": 2224.488357
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "4d02f22d-0b8a-4cc0-a16f-8fefc1151323",
+            "marketBId": "55ff5eb6-8875-4a4d-a70d-627769ef7071",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 100189.598357
+      },
+      {
+        "canonicalTitle": "Will Josh Hawley be the nominee for the Presidency for the Republican party?",
+        "category": "Elections",
+        "clusterId": "mcl_fcf05d6ed6f619d7",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Josh Hawley wins and accepts the nomination for the Presidency for the Republican party in 2028, then the market resolves to Yes.",
+            "eventId": "88d0a8b2-ec8c-406a-a50d-e8735d4a5009",
+            "id": "147006b3-9b46-439e-a871-7f598a9aaa94",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "147006b3-9b46-439e-a871-7f598a9aaa94",
+            "openInterest": 1177757.89,
+            "outcomes": [
+              {
+                "bestAsk": 0.993,
+                "bestBid": 0.992,
+                "label": "Not Josh Hawley",
+                "marketId": "147006b3-9b46-439e-a871-7f598a9aaa94",
+                "metadata": {
+                  "ask": 0.993,
+                  "bid": 0.992
+                },
+                "outcomeId": "KXPRESNOMR-28-JH-NO",
+                "price": 0.9925,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.008,
+                "bestBid": 0.007,
+                "label": "Josh Hawley",
+                "marketId": "147006b3-9b46-439e-a871-7f598a9aaa94",
+                "metadata": {
+                  "ask": 0.008,
+                  "bid": 0.007
+                },
+                "outcomeId": "KXPRESNOMR-28-JH",
+                "price": 0.008,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2028-11-07T15:00:00.000Z",
+            "slug": "KXPRESNOMR-28-JH",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "2028",
+              "US Elections"
+            ],
+            "tickSize": null,
+            "title": "Will Josh Hawley be the nominee for the Presidency for the Republican party?",
+            "url": "https://kalshi.com/events/KXPRESNOMR-28",
+            "volume": 1377736.03,
+            "volume24h": 0
+          },
+          {
+            "category": "Politics",
+            "contractAddress": "0x4d4bceee5f59f75230c6438f69fc913a6da7afa4098ce0734655045c02a730fc",
+            "description": "This market will resolve to “Yes” if the named individual wins and accepts the 2028 nomination of the Republican Party for U.S. president. Otherwise, this market will resolve to “No”.\n\nThe resolution source for this market will be a consensus of official Republican Party sources.\n\nAny replacement of the Republican nominee before election day will not change the resolution of the market.",
+            "eventId": "7c791d18-a3f7-41d2-ac90-9a0e9210b8e4",
+            "id": "2937a08d-6e9e-4c94-9144-cfe6ad0f2b18",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/Josh_Hawley.png",
+            "liquidity": 816481.45393,
+            "marketId": "2937a08d-6e9e-4c94-9144-cfe6ad0f2b18",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.997,
+                "bestBid": 0.996,
+                "label": "Not Josh Hawley",
+                "marketId": "2937a08d-6e9e-4c94-9144-cfe6ad0f2b18",
+                "metadata": {
+                  "clobTokenId": "67257241906349232705880054817671247803154024437556078414309396160231441958063"
+                },
+                "outcomeId": "67257241906349232705880054817671247803154024437556078414309396160231441958063",
+                "price": 0.9915,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.004,
+                "bestBid": 0.003,
+                "label": "Josh Hawley",
+                "marketId": "2937a08d-6e9e-4c94-9144-cfe6ad0f2b18",
+                "metadata": {
+                  "clobTokenId": "16959950591508656523048029588253513417107455151269158025695062757254216051157"
+                },
+                "outcomeId": "16959950591508656523048029588253513417107455151269158025695062757254216051157",
+                "price": 0.0085,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2028-11-07T00:00:00.000Z",
+            "slug": "will-josh-hawley-win-the-2028-republican-presidential-nomination",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Politics",
+              "US Election",
+              "Elections",
+              "World Elections",
+              "Global Elections",
+              "Earn 4%",
+              "Primaries",
+              "United States",
+              "International Election Props"
+            ],
+            "tickSize": 0.001,
+            "title": "Republican Presidential Nominee 2028 - Will Josh Hawley win the 2028 Republican presidential nomination?",
+            "url": "https://polymarket.com/event/republican-presidential-nominee-2028",
+            "volume": 19798210.119447514,
+            "volume24h": 94003.94425
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "147006b3-9b46-439e-a871-7f598a9aaa94",
+            "marketBId": "2937a08d-6e9e-4c94-9144-cfe6ad0f2b18",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 94003.94425
+      },
+      {
+        "canonicalTitle": "Will Michelle Bolsonaro win the 2026 Brazilian presidential election?",
+        "category": "Elections",
+        "clusterId": "mcl_c6e1a71583b12dbd",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Michelle Bolsonaro has won the 2026 Brazilian presidential election, then the market resolves to Yes.",
+            "eventId": "616362f2-911b-4ad5-beb7-1bb6fe20ed81",
+            "id": "86eeb778-27d9-4aae-93d1-8b95b44b4f40",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "86eeb778-27d9-4aae-93d1-8b95b44b4f40",
+            "openInterest": 49120.83,
+            "outcomes": [
+              {
+                "bestAsk": 0.999,
+                "bestBid": 0.998,
+                "label": "Not Michelle Bolsonaro",
+                "marketId": "86eeb778-27d9-4aae-93d1-8b95b44b4f40",
+                "metadata": {
+                  "ask": 1,
+                  "bid": 0.999
+                },
+                "outcomeId": "KXBRPRES-26-MB-NO",
+                "price": 0.9995,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.003,
+                "bestBid": 0.002,
+                "label": "Michelle Bolsonaro",
+                "marketId": "86eeb778-27d9-4aae-93d1-8b95b44b4f40",
+                "metadata": {
+                  "ask": 0.001,
+                  "bid": 0
+                },
+                "outcomeId": "KXBRPRES-26-MB",
+                "price": 0.001,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2027-10-25T14:00:00.000Z",
+            "slug": "KXBRPRES-26-MB",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "Brazil"
+            ],
+            "tickSize": null,
+            "title": "Will Michelle Bolsonaro win the 2026 Brazilian presidential election?",
+            "url": "https://kalshi.com/events/KXBRPRES-26",
+            "volume": 76605.64,
+            "volume24h": 0
+          },
+          {
+            "category": "Brazil",
+            "contractAddress": "0x37ec4c6b57a18b16eed1241f6155ee7ff45bc1697d7848f15ac33d406e38ed00",
+            "description": "A presidential election is scheduled to take place in Brazil on October 4, 2026.\n\nThis market will resolve according to the listed candidate that wins this election.\n\nThis market includes any potential second round. If the result of this election isn't known by June 30, 2027, 11:59 PM ET, the market will resolve to \"Other\".\n\nThis market will resolve based on the result of the election as indicated by a consensus of credible reporting. If there is ambiguity, this market will resolve based solely on the official results as reported by the Brazilian government, specifically the Superior Electoral Court (Tribunal Superior Eleitoral, TSE) (e.g., https://dadosabertos.tse.jus.br/).",
+            "eventId": "5d2c5f68-b7b0-4628-9a3e-15d3b19ef03a",
+            "id": "aa0d70f3-b11d-4d63-b72f-c8be806e5078",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-michelle-bolsonaro-win-the-2026-brazilian-presidential-election-OZDFR-yhDTPO.jpg",
+            "liquidity": 234392.99626,
+            "marketId": "aa0d70f3-b11d-4d63-b72f-c8be806e5078",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": null,
+                "bestBid": 0.999,
+                "label": "Not Michelle Bolsonaro",
+                "marketId": "aa0d70f3-b11d-4d63-b72f-c8be806e5078",
+                "metadata": {
+                  "clobTokenId": "16879668974983992641795221456967869661599530861479349066809692639705609051027"
+                },
+                "outcomeId": "16879668974983992641795221456967869661599530861479349066809692639705609051027",
+                "price": 0.9835,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.001,
+                "bestBid": null,
+                "label": "Michelle Bolsonaro",
+                "marketId": "aa0d70f3-b11d-4d63-b72f-c8be806e5078",
+                "metadata": {
+                  "clobTokenId": "91154058715822908897619103072380844452822017332608583147987152526225529443892"
+                },
+                "outcomeId": "91154058715822908897619103072380844452822017332608583147987152526225529443892",
+                "price": 0.0165,
+                "priceChange24h": 0.007
+              }
+            ],
+            "resolutionDate": "2026-10-04T00:00:00.000Z",
+            "slug": "will-michelle-bolsonaro-win-the-2026-brazilian-presidential-election",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Brazil",
+              "Global Elections",
+              "World Elections",
+              "World",
+              "Politics",
+              "Macro Election 2",
+              "Main Election"
+            ],
+            "tickSize": 0.001,
+            "title": "Brazil Presidential Election - Will Michelle Bolsonaro win the 2026 Brazilian presidential election?",
+            "url": "https://polymarket.com/event/brazil-presidential-election",
+            "volume": 7663284.131857735,
+            "volume24h": 93452.57937699999
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "86eeb778-27d9-4aae-93d1-8b95b44b4f40",
+            "marketBId": "aa0d70f3-b11d-4d63-b72f-c8be806e5078",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 93452.57937699999
+      },
+      {
+        "canonicalTitle": "Will Pittsburgh win the 2026 Pro Baseball Championship?",
+        "category": "Sports",
+        "clusterId": "mcl_786dfcefadeaae1b",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Pittsburgh wins the 2026 Pro Baseball Championship, then the market resolves to Yes.",
+            "eventId": "517740dc-ec04-4187-8860-72de1e0c6fbb",
+            "id": "2d9314bf-f9db-4ecc-8aaa-c58b07dca5dc",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "2d9314bf-f9db-4ecc-8aaa-c58b07dca5dc",
+            "openInterest": 1782639.93,
+            "outcomes": [
+              {
+                "bestAsk": 0.999,
+                "bestBid": 0.998,
+                "label": "Not Pittsburgh",
+                "marketId": "2d9314bf-f9db-4ecc-8aaa-c58b07dca5dc",
+                "metadata": {
+                  "ask": 1,
+                  "bid": 0.999
+                },
+                "outcomeId": "KXMLB-26-PIT-NO",
+                "price": 0.9995,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.002,
+                "bestBid": 0.001,
+                "label": "Pittsburgh",
+                "marketId": "2d9314bf-f9db-4ecc-8aaa-c58b07dca5dc",
+                "metadata": {
+                  "ask": 0.001,
+                  "bid": 0
+                },
+                "outcomeId": "KXMLB-26-PIT",
+                "price": 0.001,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2028-10-31T04:00:00.000Z",
+            "slug": "KXMLB-26-PIT",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Baseball"
+            ],
+            "tickSize": null,
+            "title": "Will Pittsburgh win the 2026 Pro Baseball Championship?",
+            "url": "https://kalshi.com/events/KXMLB-26",
+            "volume": 2209994.74,
+            "volume24h": 80312.85
+          },
+          {
+            "category": "MLB",
+            "contractAddress": "0x598654e5e8ad06b44107cb541773c459580dfc208fc74e4694d1ada41d679c1d",
+            "description": "This market will resolve according to the team that wins the 2026 MLB World Series. \n\nIf at any point it becomes impossible for a listed team to win the 2026 MLB World Series per the rules of MLB (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2026 MLB season is cancelled, postponed after December 31, 2026 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from MLB (https://www.mlb.com/); however, a consensus of credible reporting may also be used.",
+            "eventId": "eb6aa890-8644-4e75-9ef8-2673346c92a0",
+            "id": "fcaf09bc-32b5-4965-8dfb-d014ca0f5073",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/whatever-36cb809aa2.jpg",
+            "liquidity": 96524.09687,
+            "marketId": "fcaf09bc-32b5-4965-8dfb-d014ca0f5073",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": null,
+                "bestBid": 0.999,
+                "label": "Not Pittsburgh Pirates",
+                "marketId": "fcaf09bc-32b5-4965-8dfb-d014ca0f5073",
+                "metadata": {
+                  "clobTokenId": "45135354508581693236939490756764503331230872857814881040298943197031096373315"
+                },
+                "outcomeId": "45135354508581693236939490756764503331230872857814881040298943197031096373315",
+                "price": 0.991,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.001,
+                "bestBid": null,
+                "label": "Pittsburgh Pirates",
+                "marketId": "fcaf09bc-32b5-4965-8dfb-d014ca0f5073",
+                "metadata": {
+                  "clobTokenId": "68148187469130365236681943682544881635278191262882781922055003569135329235835"
+                },
+                "outcomeId": "68148187469130365236681943682544881635278191262882781922055003569135329235835",
+                "price": 0.009,
+                "priceChange24h": -0.002
+              }
+            ],
+            "resolutionDate": "2026-10-31T23:55:00.000Z",
+            "slug": "will-the-pittsburgh-pirates-win-the-2026-world-series",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "MLB",
+              "Sports",
+              "MLB Playoffs",
+              "World Series",
+              "baseball"
+            ],
+            "tickSize": 0.001,
+            "title": "MLB World Series Champion 2026 - Will the Pittsburgh Pirates win the 2026 World Series?",
+            "url": "https://polymarket.com/event/mlb-world-series-champion-2026",
+            "volume": 554509.4212690007,
+            "volume24h": 5130.128705999999
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "2d9314bf-f9db-4ecc-8aaa-c58b07dca5dc",
+            "marketBId": "fcaf09bc-32b5-4965-8dfb-d014ca0f5073",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 85442.97870600001
+      },
+      {
+        "canonicalTitle": "Will Erika Kirk be the nominee for the Presidency for the Republican party?",
+        "category": "Elections",
+        "clusterId": "mcl_1ece555705ddc2f5",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Erika Kirk wins and accepts the nomination for the Presidency for the Republican party in 2028, then the market resolves to Yes.",
+            "eventId": "88d0a8b2-ec8c-406a-a50d-e8735d4a5009",
+            "id": "1ddd4a57-6024-4feb-88eb-20c34a884494",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "1ddd4a57-6024-4feb-88eb-20c34a884494",
+            "openInterest": 855838.78,
+            "outcomes": [
+              {
+                "bestAsk": 0.999,
+                "bestBid": 0.998,
+                "label": "Not Erika Kirk",
+                "marketId": "1ddd4a57-6024-4feb-88eb-20c34a884494",
+                "metadata": {
+                  "ask": 0.999,
+                  "bid": 0.998
+                },
+                "outcomeId": "KXPRESNOMR-28-EKIR-NO",
+                "price": 0.9985,
+                "priceChange24h": 0.001
+              },
+              {
+                "bestAsk": 0.002,
+                "bestBid": 0.001,
+                "label": "Erika Kirk",
+                "marketId": "1ddd4a57-6024-4feb-88eb-20c34a884494",
+                "metadata": {
+                  "ask": 0.002,
+                  "bid": 0.001
+                },
+                "outcomeId": "KXPRESNOMR-28-EKIR",
+                "price": 0.001,
+                "priceChange24h": -0.001
+              }
+            ],
+            "resolutionDate": "2028-11-07T15:00:00.000Z",
+            "slug": "KXPRESNOMR-28-EKIR",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "2028",
+              "US Elections"
+            ],
+            "tickSize": null,
+            "title": "Will Erika Kirk be the nominee for the Presidency for the Republican party?",
+            "url": "https://kalshi.com/events/KXPRESNOMR-28",
+            "volume": 958525.94,
+            "volume24h": 47364.58
+          },
+          {
+            "category": "Politics",
+            "contractAddress": "0x7abed80b88301210ee83b7b14ec41bc9a5161e1af07254fbb26c6e2bf7182766",
+            "description": "This market will resolve to “Yes” if the named individual wins and accepts the 2028 nomination of the Republican Party for U.S. president. Otherwise, this market will resolve to “No”.\n\nThe resolution source for this market will be a consensus of official Republican Party sources.\n\nAny replacement of the Republican nominee before election day will not change the resolution of the market.",
+            "eventId": "7c791d18-a3f7-41d2-ac90-9a0e9210b8e4",
+            "id": "0dbeaed5-33a2-4e38-92e7-519dfda2c9b3",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/erica_kirk.png-deceba2f2c.png",
+            "liquidity": 1864658.67766,
+            "marketId": "0dbeaed5-33a2-4e38-92e7-519dfda2c9b3",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.998,
+                "bestBid": 0.997,
+                "label": "Not Erika Kirk",
+                "marketId": "0dbeaed5-33a2-4e38-92e7-519dfda2c9b3",
+                "metadata": {
+                  "clobTokenId": "100798539333257155804503755544697952331380694697499428407950484702163979829576"
+                },
+                "outcomeId": "100798539333257155804503755544697952331380694697499428407950484702163979829576",
+                "price": 0.9925,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.003,
+                "bestBid": 0.002,
+                "label": "Erika Kirk",
+                "marketId": "0dbeaed5-33a2-4e38-92e7-519dfda2c9b3",
+                "metadata": {
+                  "clobTokenId": "36725157385158152303355940271421346899386884953712631735038848833359115722560"
+                },
+                "outcomeId": "36725157385158152303355940271421346899386884953712631735038848833359115722560",
+                "price": 0.0075,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2028-11-07T00:00:00.000Z",
+            "slug": "will-erika-kirk-win-the-2028-republican-presidential-nomination",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Politics",
+              "US Election",
+              "Elections",
+              "World Elections",
+              "Global Elections",
+              "Earn 4%",
+              "Primaries",
+              "United States",
+              "International Election Props"
+            ],
+            "tickSize": 0.001,
+            "title": "Republican Presidential Nominee 2028 - Will Erika Kirk win the 2028 Republican presidential nomination?",
+            "url": "https://polymarket.com/event/republican-presidential-nominee-2028",
+            "volume": 18126807.79807569,
+            "volume24h": 33106.243556
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "0dbeaed5-33a2-4e38-92e7-519dfda2c9b3",
+            "marketBId": "1ddd4a57-6024-4feb-88eb-20c34a884494",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 80470.823556
+      },
+      {
+        "canonicalTitle": "Will Milwaukee win the 2026 Pro Baseball Championship?",
+        "category": "Sports",
+        "clusterId": "mcl_ac088de97b549112",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Milwaukee wins the 2026 Pro Baseball Championship, then the market resolves to Yes.",
+            "eventId": "517740dc-ec04-4187-8860-72de1e0c6fbb",
+            "id": "3b519863-3d56-49b9-a080-868a5c0b8bec",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "3b519863-3d56-49b9-a080-868a5c0b8bec",
+            "openInterest": 2146285.38,
+            "outcomes": [
+              {
+                "bestAsk": 0.915,
+                "bestBid": 0.912,
+                "label": "Not Milwaukee",
+                "marketId": "3b519863-3d56-49b9-a080-868a5c0b8bec",
+                "metadata": {
+                  "ask": 0.869,
+                  "bid": 0.864
+                },
+                "outcomeId": "KXMLB-26-MIL-NO",
+                "price": 0.8665,
+                "priceChange24h": -0.007000000000000006
+              },
+              {
+                "bestAsk": 0.093,
+                "bestBid": 0.09,
+                "label": "Milwaukee",
+                "marketId": "3b519863-3d56-49b9-a080-868a5c0b8bec",
+                "metadata": {
+                  "ask": 0.136,
+                  "bid": 0.131
+                },
+                "outcomeId": "KXMLB-26-MIL",
+                "price": 0.136,
+                "priceChange24h": 0.007000000000000006
+              }
+            ],
+            "resolutionDate": "2028-10-31T04:00:00.000Z",
+            "slug": "KXMLB-26-MIL",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Baseball"
+            ],
+            "tickSize": null,
+            "title": "Will Milwaukee win the 2026 Pro Baseball Championship?",
+            "url": "https://kalshi.com/events/KXMLB-26",
+            "volume": 3167556.76,
+            "volume24h": 72262.06
+          },
+          {
+            "category": "MLB",
+            "contractAddress": "0x3db74f14fa0c4d8acb19ff4ffa18d523597a8e553ec565d494290a908d99395a",
+            "description": "This market will resolve according to the team that wins the 2026 MLB World Series. \n\nIf at any point it becomes impossible for a listed team to win the 2026 MLB World Series per the rules of MLB (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2026 MLB season is cancelled, postponed after December 31, 2026 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from MLB (https://www.mlb.com/); however, a consensus of credible reporting may also be used.",
+            "eventId": "eb6aa890-8644-4e75-9ef8-2673346c92a0",
+            "id": "5edefb86-368b-4373-98cc-016922287c94",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/whatever-36cb809aa2.jpg",
+            "liquidity": 78938.6154,
+            "marketId": "5edefb86-368b-4373-98cc-016922287c94",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.88,
+                "bestBid": 0.879,
+                "label": "Not Milwaukee Brewers",
+                "marketId": "5edefb86-368b-4373-98cc-016922287c94",
+                "metadata": {
+                  "clobTokenId": "57520402764714032701152091698531154935574080954582774395654458078727078499164"
+                },
+                "outcomeId": "57520402764714032701152091698531154935574080954582774395654458078727078499164",
+                "price": 0.942,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.121,
+                "bestBid": 0.12,
+                "label": "Milwaukee Brewers",
+                "marketId": "5edefb86-368b-4373-98cc-016922287c94",
+                "metadata": {
+                  "clobTokenId": "68495273029336552259622116656826978391613637593537133254546205487243272235948"
+                },
+                "outcomeId": "68495273029336552259622116656826978391613637593537133254546205487243272235948",
+                "price": 0.058,
+                "priceChange24h": 0.0015
+              }
+            ],
+            "resolutionDate": "2026-10-31T23:55:00.000Z",
+            "slug": "will-the-milwaukee-brewers-win-the-2026-world-series",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "MLB",
+              "Sports",
+              "MLB Playoffs",
+              "World Series",
+              "baseball"
+            ],
+            "tickSize": 0.001,
+            "title": "MLB World Series Champion 2026 - Will the Milwaukee Brewers win the 2026 World Series?",
+            "url": "https://polymarket.com/event/mlb-world-series-champion-2026",
+            "volume": 1155139.6803269999,
+            "volume24h": 1139.4370299999998
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "3b519863-3d56-49b9-a080-868a5c0b8bec",
+            "marketBId": "5edefb86-368b-4373-98cc-016922287c94",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 73401.49703
+      },
+      {
+        "canonicalTitle": "Will Jacksonville win the 2027 Pro Football Championship?",
+        "category": "Sports",
+        "clusterId": "mcl_3ff07fa01bdbf36c",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Jacksonville wins the 2027 Pro Football Championship, then the market resolves to Yes.",
+            "eventId": "04b8d34e-d60d-4b22-9dbd-f6642ba39288",
+            "id": "d02abc25-c823-4682-be9c-10cd7ffeae46",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "d02abc25-c823-4682-be9c-10cd7ffeae46",
+            "openInterest": 720982,
+            "outcomes": [
+              {
+                "bestAsk": 0.98,
+                "bestBid": 0.97,
+                "label": "Not Jacksonville",
+                "marketId": "d02abc25-c823-4682-be9c-10cd7ffeae46",
+                "metadata": {
+                  "ask": 0.98,
+                  "bid": 0.97
+                },
+                "outcomeId": "KXSB-27-JAC-NO",
+                "price": 0.975,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.03,
+                "bestBid": 0.02,
+                "label": "Jacksonville",
+                "marketId": "d02abc25-c823-4682-be9c-10cd7ffeae46",
+                "metadata": {
+                  "ask": 0.03,
+                  "bid": 0.02
+                },
+                "outcomeId": "KXSB-27-JAC",
+                "price": 0.03,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2029-02-13T23:30:00.000Z",
+            "slug": "KXSB-27-JAC",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Football"
+            ],
+            "tickSize": null,
+            "title": "Will Jacksonville win the 2027 Pro Football Championship?",
+            "url": "https://kalshi.com/events/KXSB-27",
+            "volume": 837424.68,
+            "volume24h": 61593.59
+          },
+          {
+            "category": "Sports",
+            "contractAddress": "0xdd6df6bc49de64cf38b2059cea20d00b86ef0c01b4c146e8930471d20f599cef",
+            "description": "This market will resolve according to the team that wins the 2027 NFL league championship. \n\nIf at any point it becomes impossible for a listed team to win the 2027 NFL league championship per the rules of the NFL (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2027 NFL league championship game is cancelled, postponed after March 31, 2027 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from NFL (https://www.nfl.com/); however, a consensus of credible reporting may also be used.",
+            "eventId": "676772bf-08be-40ba-80a5-0a76e0bbc717",
+            "id": "85865fc7-6229-4e07-b841-d280cdb21b6d",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
+            "liquidity": 89537.47497,
+            "marketId": "85865fc7-6229-4e07-b841-d280cdb21b6d",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.972,
+                "bestBid": 0.971,
+                "label": "Not Jacksonville Jaguars",
+                "marketId": "85865fc7-6229-4e07-b841-d280cdb21b6d",
+                "metadata": {
+                  "clobTokenId": "86427949314446016001743793858451012568674284615309776891307407664549152095607"
+                },
+                "outcomeId": "86427949314446016001743793858451012568674284615309776891307407664549152095607",
+                "price": 0.9745,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.029,
+                "bestBid": 0.028,
+                "label": "Jacksonville Jaguars",
+                "marketId": "85865fc7-6229-4e07-b841-d280cdb21b6d",
+                "metadata": {
+                  "clobTokenId": "974996339434137274969205706934098681831948949675083560493538609289838899860"
+                },
+                "outcomeId": "974996339434137274969205706934098681831948949675083560493538609289838899860",
+                "price": 0.0255,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2027-03-31T23:55:00.000Z",
+            "slug": "will-the-jacksonville-jaguars-win-the-2027-nfl-league-championship",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "NFL",
+              "football",
+              "Super Bowl"
+            ],
+            "tickSize": 0.001,
+            "title": "NFL Champion 2027 - Will the Jacksonville Jaguars win the 2027 NFL league championship?",
+            "url": "https://polymarket.com/event/big-game-champion-2027",
+            "volume": 840706.5827460013,
+            "volume24h": 6890.745761000001
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "85865fc7-6229-4e07-b841-d280cdb21b6d",
+            "marketBId": "d02abc25-c823-4682-be9c-10cd7ffeae46",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 68484.335761
+      },
+      {
+        "canonicalTitle": "Who will win the governorship in Alaska?",
+        "category": "Elections",
+        "clusterId": "mcl_5ddf1b9cc471ff38",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Tom Begich is elected the governor of Alaska pursuant to the election in 2026, then the market resolves to Yes.",
+            "eventId": "91f58d43-eb43-4286-ad27-9fc6982de8fe",
+            "id": "9be3af6d-b667-4968-8c17-6e9cdca42a20",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "9be3af6d-b667-4968-8c17-6e9cdca42a20",
+            "openInterest": 79626.7,
+            "outcomes": [
+              {
+                "bestAsk": 0.75,
+                "bestBid": 0.72,
+                "label": "Not Tom Begich",
+                "marketId": "9be3af6d-b667-4968-8c17-6e9cdca42a20",
+                "metadata": {
+                  "ask": 0.997,
+                  "bid": 0.99
+                },
+                "outcomeId": "KXGOVAK-26-TBEG-NO",
+                "price": 0.9935,
+                "priceChange24h": 0.005999999999999998
+              },
+              {
+                "bestAsk": 0.012,
+                "bestBid": 0.005,
+                "label": "Tom Begich",
+                "marketId": "9be3af6d-b667-4968-8c17-6e9cdca42a20",
+                "metadata": {
+                  "ask": 0.01,
+                  "bid": 0.003
+                },
+                "outcomeId": "KXGOVAK-26-TBEG",
+                "price": 0.012,
+                "priceChange24h": -0.005999999999999998
+              }
+            ],
+            "resolutionDate": "2027-11-03T15:00:00.000Z",
+            "slug": "KXGOVAK-26-TBEG",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "US Elections",
+              "Governor"
+            ],
+            "tickSize": null,
+            "title": "Who will win the governorship in Alaska?",
+            "url": "https://kalshi.com/events/KXGOVAK-26",
+            "volume": 225397.32,
+            "volume24h": 67313.07
+          },
+          {
+            "category": "Midterms",
+            "contractAddress": "0xb120cb1c26ad4568844f8e7ee7a91487d5cf4d246fd40410c1f3d4061bfd3587",
+            "description": "This market will resolve according to the candidate who wins the 2026 Alaska gubernatorial election currently scheduled for November 3, 2026.  \n\nIf the results of the election are not confirmed by July 31, 2027, this market will resolve to \"Other\".  \n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven’t called the race in Alaska for the same candidate, this market will resolve based on official certification.",
+            "eventId": "d836378d-6b32-40d2-a41b-02e5780919a2",
+            "id": "2aae61f3-fb67-4652-ab58-8e41b2b6491b",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-tom-begich-win-the-2026-alaska-governor-election-IiCkvtUHdJiX.png",
+            "liquidity": 7889.7141,
+            "marketId": "2aae61f3-fb67-4652-ab58-8e41b2b6491b",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.987,
+                "bestBid": 0.985,
+                "label": "Not Tom Begich",
+                "marketId": "2aae61f3-fb67-4652-ab58-8e41b2b6491b",
+                "metadata": {
+                  "clobTokenId": "39720463685457026846596900903719403712373357015082509595546409524414612455841"
+                },
+                "outcomeId": "39720463685457026846596900903719403712373357015082509595546409524414612455841",
+                "price": 0.7,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.015,
+                "bestBid": 0.013,
+                "label": "Tom Begich",
+                "marketId": "2aae61f3-fb67-4652-ab58-8e41b2b6491b",
+                "metadata": {
+                  "clobTokenId": "88923835626751439335001852098823598444201043849577093630790185644778054232354"
+                },
+                "outcomeId": "88923835626751439335001852098823598444201043849577093630790185644778054232354",
+                "price": 0.3,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2026-11-03T00:00:00.000Z",
+            "slug": "will-tom-begich-win-the-2026-alaska-governor-election",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Midterms",
+              "Politics",
+              "Elections",
+              "US Election",
+              "Governor midterms",
+              "Alaska Midterm",
+              "Rewards 50, 4.5, 20"
+            ],
+            "tickSize": 0.01,
+            "title": "Alaska Governor Election Winner   - Will Tom Begich win the 2026 Alaska governor election?",
+            "url": "https://polymarket.com/event/alaska-governor-election-winner",
+            "volume": 125493.04448899967,
+            "volume24h": 0
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "2aae61f3-fb67-4652-ab58-8e41b2b6491b",
+            "marketBId": "9be3af6d-b667-4968-8c17-6e9cdca42a20",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 67313.07
+      },
+      {
+        "canonicalTitle": "Who will win the governorship in California?",
+        "category": "Elections",
+        "clusterId": "mcl_d0bd23a62dc74d35",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Steve Hilton is elected to the governorship of California pursuant to the election in 2026, then the market resolves to Yes.",
+            "eventId": "8caef3d3-4a74-4b50-82cf-7b76da9c17e4",
+            "id": "ee491458-6993-4500-a49f-17f7ef1a64b0",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "ee491458-6993-4500-a49f-17f7ef1a64b0",
+            "openInterest": 3790615.52,
+            "outcomes": [
+              {
+                "bestAsk": 0.925,
+                "bestBid": 0.921,
+                "label": "Not Steve Hilton",
+                "marketId": "ee491458-6993-4500-a49f-17f7ef1a64b0",
+                "metadata": {
+                  "ask": 0.969,
+                  "bid": 0.966
+                },
+                "outcomeId": "KXGOVCA-26-SHIL-NO",
+                "price": 0.9675,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.033,
+                "bestBid": 0.031,
+                "label": "Steve Hilton",
+                "marketId": "ee491458-6993-4500-a49f-17f7ef1a64b0",
+                "metadata": {
+                  "ask": 0.034,
+                  "bid": 0.031
+                },
+                "outcomeId": "KXGOVCA-26-SHIL",
+                "price": 0.034,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2027-11-03T15:00:00.000Z",
+            "slug": "KXGOVCA-26-SHIL",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "US Elections",
+              "Governor"
+            ],
+            "tickSize": null,
+            "title": "Who will win the governorship in California?",
+            "url": "https://kalshi.com/events/KXGOVCA-26",
+            "volume": 7792184.29,
+            "volume24h": 35570.36
+          },
+          {
+            "category": "Elections",
+            "contractAddress": "0x119b6b3b744ac3239c7a71100165d254234eaecea401abde5a3d303bef21d19e",
+            "description": "This market will resolve to according to the candidate who wins the 2026 California gubernatorial election currently scheduled for November 3, 2026.\n\nIf the results of the election are not confirmed by July 31, 2027, this market will resolve to \"Other\".\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven’t called the race in this state for the same candidate, this market will resolve based on official certification.",
+            "eventId": "ba85793f-1f42-4f04-905c-b3e2f1ffd4a1",
+            "id": "9ca2b28d-fbb1-42b0-be52-12cd29d0098b",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-steve-hilton-win-the-california-governor-election-in-2026-88UifmFLZdts.png",
+            "liquidity": 193920.67677,
+            "marketId": "9ca2b28d-fbb1-42b0-be52-12cd29d0098b",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.951,
+                "bestBid": 0.947,
+                "label": "Not Steve Hilton",
+                "marketId": "9ca2b28d-fbb1-42b0-be52-12cd29d0098b",
+                "metadata": {
+                  "clobTokenId": "63644763464034691367428527733393916036342796100129702980469514153898496549749"
+                },
+                "outcomeId": "63644763464034691367428527733393916036342796100129702980469514153898496549749",
+                "price": 0.9045,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.053,
+                "bestBid": 0.049,
+                "label": "Steve Hilton",
+                "marketId": "9ca2b28d-fbb1-42b0-be52-12cd29d0098b",
+                "metadata": {
+                  "clobTokenId": "82742036522262670996662794097029680950132682539859985097974842241612036171395"
+                },
+                "outcomeId": "82742036522262670996662794097029680950132682539859985097974842241612036171395",
+                "price": 0.0955,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2026-11-03T00:00:00.000Z",
+            "slug": "will-steve-hilton-win-the-california-governor-election-in-2026",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "US Election",
+              "Politics",
+              "Governor midterms",
+              "California Midterm",
+              "California Governor"
+            ],
+            "tickSize": 0.001,
+            "title": "California Governor Election Winner - Will Steve Hilton win the California Governor Election in 2026?",
+            "url": "https://polymarket.com/event/california-governor-election-2026",
+            "volume": 2279451.0768580236,
+            "volume24h": 21733.885860000002
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "9ca2b28d-fbb1-42b0-be52-12cd29d0098b",
+            "marketBId": "ee491458-6993-4500-a49f-17f7ef1a64b0",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 57304.24586
+      },
+      {
+        "canonicalTitle": "Who will win the next presidential election?",
+        "category": "Elections",
+        "clusterId": "mcl_5f6f6083e0727fdb",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Thomas Massie is the next person inaugurated as President for the term beginning in 2029, then the market resolves to Yes.",
+            "eventId": "f0d49d83-6da4-4056-abb3-aaa46bf3b593",
+            "id": "02f43107-093b-4673-8f09-a5baf28415c2",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "02f43107-093b-4673-8f09-a5baf28415c2",
+            "openInterest": 847228.06,
+            "outcomes": [
+              {
+                "bestAsk": null,
+                "bestBid": 0.99,
+                "label": "Not Thomas Massie",
+                "marketId": "02f43107-093b-4673-8f09-a5baf28415c2",
+                "metadata": {
+                  "ask": 1,
+                  "bid": 0.99
+                },
+                "outcomeId": "KXPRESPERSON-28-TMAS-NO",
+                "price": 0.995,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.01,
+                "bestBid": null,
+                "label": "Thomas Massie",
+                "marketId": "02f43107-093b-4673-8f09-a5baf28415c2",
+                "metadata": {
+                  "ask": 0.01,
+                  "bid": 0
+                },
+                "outcomeId": "KXPRESPERSON-28-TMAS",
+                "price": 0.01,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2029-11-07T15:00:00.000Z",
+            "slug": "KXPRESPERSON-28-TMAS",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "2028",
+              "US Elections"
+            ],
+            "tickSize": null,
+            "title": "Who will win the next presidential election?",
+            "url": "https://kalshi.com/events/KXPRESPERSON-28",
+            "volume": 935093.45,
+            "volume24h": 1676.72
+          },
+          {
+            "category": "World Elections",
+            "contractAddress": "0x32903694997a5c09afee30904970f9fab2a5fb4ec45f572f194341185574f1a4",
+            "description": "The 2028 US Presidential Election is scheduled to take place on November 7, 2028.\n\nThis market will resolve to the person who wins the 2028 US Presidential Election.\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven’t called the race for the same candidate by the inauguration date (January 20, 2029) this market will resolve based on who is inaugurated.",
+            "eventId": "a49db286-39ca-4119-9de5-1335a92ef92a",
+            "id": "05b21956-ba07-4561-b1b2-0dab12944634",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/ThomasMassie-54e1a2ddf6.png",
+            "liquidity": 842765.90567,
+            "marketId": "05b21956-ba07-4561-b1b2-0dab12944634",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.992,
+                "bestBid": 0.991,
+                "label": "Not Thomas Massie",
+                "marketId": "05b21956-ba07-4561-b1b2-0dab12944634",
+                "metadata": {
+                  "clobTokenId": "18620821165547265880582330532076859546462061138941862890257010665389427790094"
+                },
+                "outcomeId": "18620821165547265880582330532076859546462061138941862890257010665389427790094",
+                "price": 0.9885,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.009,
+                "bestBid": 0.008,
+                "label": "Thomas Massie",
+                "marketId": "05b21956-ba07-4561-b1b2-0dab12944634",
+                "metadata": {
+                  "clobTokenId": "89071282556584199015490241074221756662667488270789034763702585258138302536112"
+                },
+                "outcomeId": "89071282556584199015490241074221756662667488270789034763702585258138302536112",
+                "price": 0.0115,
+                "priceChange24h": -0.002
+              }
+            ],
+            "resolutionDate": "2028-11-07T00:00:00.000Z",
+            "slug": "will-thomas-massie-win-the-2028-us-presidential-election",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "World Elections",
+              "Global Elections",
+              "US Election",
+              "Elections",
+              "Politics",
+              "Earn 4%",
+              "President",
+              "United States",
+              "Main Election"
+            ],
+            "tickSize": 0.001,
+            "title": "Presidential Election Winner 2028 - Will Thomas Massie win the 2028 US Presidential Election?",
+            "url": "https://polymarket.com/event/presidential-election-winner-2028",
+            "volume": 6783853.4914999455,
+            "volume24h": 55117.757295
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "02f43107-093b-4673-8f09-a5baf28415c2",
+            "marketBId": "05b21956-ba07-4561-b1b2-0dab12944634",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 56794.477295000004
+      },
+      {
+        "canonicalTitle": "Will Shohei Ohtani win NL MVP?",
+        "category": "Sports",
+        "clusterId": "mcl_53bc4f3ce8912418",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Shohei Ohtani wins the Pro Baseball National League MVP in the 2026 season, then the market resolves to Yes.",
+            "eventId": "12e7e571-6e64-4516-8af3-070d2ab4ba8a",
+            "id": "d21fa110-77fe-4307-940f-ddfe340095df",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "d21fa110-77fe-4307-940f-ddfe340095df",
+            "openInterest": 419646.99,
+            "outcomes": [
+              {
+                "bestAsk": 0.48,
+                "bestBid": 0.47,
+                "label": "Not Shohei Ohtani",
+                "marketId": "d21fa110-77fe-4307-940f-ddfe340095df",
+                "metadata": {
+                  "ask": 0.91,
+                  "bid": 0.9
+                },
+                "outcomeId": "KXMLBNLMVP-26-SOHT-NO",
+                "price": 0.905,
+                "priceChange24h": 0.30000000000000004
+              },
+              {
+                "bestAsk": 0.83,
+                "bestBid": 0.82,
+                "label": "Shohei Ohtani",
+                "marketId": "d21fa110-77fe-4307-940f-ddfe340095df",
+                "metadata": {
+                  "ask": 0.1,
+                  "bid": 0.09
+                },
+                "outcomeId": "KXMLBNLMVP-26-SOHT",
+                "price": 0.09,
+                "priceChange24h": -0.30000000000000004
+              }
+            ],
+            "resolutionDate": "2026-12-08T15:00:00.000Z",
+            "slug": "KXMLBNLMVP-26-SOHT",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Baseball"
+            ],
+            "tickSize": null,
+            "title": "Will Shohei Ohtani win NL MVP?",
+            "url": "https://kalshi.com/events/KXMLBNLMVP-26",
+            "volume": 956478.3,
+            "volume24h": 56373.55
+          },
+          {
+            "category": "Awards",
+            "contractAddress": "0x5244e82400ae4fb15981580bd5d6782f00ee0451c6d9b1dd04ac355f9ba76e53",
+            "description": "This market will resolve to the player who wins the 2026 National League Most Valuable Player Award.\n\nIn the event of a tie, this market will resolve according to the official winner as determined by MLB rules. If multiple winners are announced then this market will resolve to the player whose listed last name comes first alphabetically.\n\nIf the 2026 MLB season is cancelled, postponed after December 31, 2026, 11:59 PM ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe resolution source for this market will be official information from Major League Baseball; however, a consensus of credible reporting may also be used.",
+            "eventId": "f844e4c5-e922-474e-ae94-c6c386279b89",
+            "id": "819f65f7-bf71-4cae-bb97-f9bca3ad8711",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/major-league-baseball-2026-nl-mvp-upM_-zblMmSO.jpg",
+            "liquidity": 35385.2289,
+            "marketId": "819f65f7-bf71-4cae-bb97-f9bca3ad8711",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.1,
+                "bestBid": 0.06,
+                "label": "Shohei Ohtani",
+                "marketId": "819f65f7-bf71-4cae-bb97-f9bca3ad8711",
+                "metadata": {
+                  "clobTokenId": "60384423866031184678290594238742960311610445395425380345882318544287651767723"
+                },
+                "outcomeId": "60384423866031184678290594238742960311610445395425380345882318544287651767723",
+                "price": 0.845,
+                "priceChange24h": 0.005
+              },
+              {
+                "bestAsk": 0.94,
+                "bestBid": 0.9,
+                "label": "Not Shohei Ohtani",
+                "marketId": "819f65f7-bf71-4cae-bb97-f9bca3ad8711",
+                "metadata": {
+                  "clobTokenId": "18021836088022723103465795962727931659114322040690446936819078504776260806832"
+                },
+                "outcomeId": "18021836088022723103465795962727931659114322040690446936819078504776260806832",
+                "price": 0.155,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2026-11-13T00:00:00.000Z",
+            "slug": "will-shohei-ohtani-win-the-2026-national-league-mvp-award",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Awards",
+              "Sports",
+              "mvp",
+              "National League",
+              "baseball",
+              "MLB",
+              "nl MVP",
+              "Rewards 50, 4.5, 20"
+            ],
+            "tickSize": 0.01,
+            "title": "MLB: 2026 NL MVP - Will Shohei Ohtani win the 2026 National League MVP Award?",
+            "url": "https://polymarket.com/event/mlb-2026-nl-mvp",
+            "volume": 27985.890524999966,
+            "volume24h": 0
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "819f65f7-bf71-4cae-bb97-f9bca3ad8711",
+            "marketBId": "d21fa110-77fe-4307-940f-ddfe340095df",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 56373.55
+      },
+      {
+        "canonicalTitle": "Will Naftali Bennett become Prime Minister of Israel following the 2026 Israeli legislative election?",
+        "category": "Elections",
+        "clusterId": "mcl_e31f367e2df938e3",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Naftali Bennett becomes Prime Minister of Israel as a result of government formation following the 2026 Israeli legislative election and meets all constitutional requirements before Oct 27, 2027, then the market resolves to Yes.",
+            "eventId": "f60b5abe-4119-40ad-b4c1-f82f986f08ba",
+            "id": "1b2b55fd-b208-4c05-803e-658a4f2bc0f4",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "1b2b55fd-b208-4c05-803e-658a4f2bc0f4",
+            "openInterest": 8649.9,
+            "outcomes": [
+              {
+                "bestAsk": 0.97,
+                "bestBid": 0.93,
+                "label": "Not Naftali Bennett",
+                "marketId": "1b2b55fd-b208-4c05-803e-658a4f2bc0f4",
+                "metadata": {
+                  "ask": 0.97,
+                  "bid": 0.93
+                },
+                "outcomeId": "KXISRAELPM-26OCT27-NBEN-NO",
+                "price": 0.95,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.07,
+                "bestBid": 0.02,
+                "label": "Naftali Bennett",
+                "marketId": "1b2b55fd-b208-4c05-803e-658a4f2bc0f4",
+                "metadata": {
+                  "ask": 0.07,
+                  "bid": 0.03
+                },
+                "outcomeId": "KXISRAELPM-26OCT27-NBEN",
+                "price": 0.05,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2027-10-27T14:00:00.000Z",
+            "slug": "KXISRAELPM-26OCT27-NBEN",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "International elections"
+            ],
+            "tickSize": null,
+            "title": "Will Naftali Bennett become Prime Minister of Israel following the 2026 Israeli legislative election?",
+            "url": "https://kalshi.com/events/KXISRAELPM-26OCT27",
+            "volume": 15292.43,
+            "volume24h": 0
+          },
+          {
+            "category": "Politics",
+            "contractAddress": "0x9ed0ecc8b8589e67967d44c4420944a41b6a6806419019a1581d514174eee9b1",
+            "description": "Legislative elections are schedule to be held in Israel on October 27, 2026. \n\nThis market will resolve to the next individual who is officially appointed and sworn in as Prime Minister of Israel following the 2026 parliamentary election. If an election is called early, this market will immediately resolve to the individual who is officially appointed and sworn in after that election.\n\nTo count for resolution, the individual must be formally sworn in. Any interim or caretaker Prime Minister will not count toward the resolution of this market.\n\nIf no such Prime Minister is sworn in by December 31, 2027, 11:59 PM ET, this market will resolve to “Other”.\n\nThe primary resolution source for this market will be official information from the Government of Israel; however, a consensus of credible reporting may also be used.",
+            "eventId": "5651f28d-f333-44be-9ad2-753a0801db67",
+            "id": "8360cdef-7e97-4bff-bfcd-433e544e8c82",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/who-will-be-the-next-prime-minister-of-israel-after-the-2026-election-lWDmU0z7U_Vj.png",
+            "liquidity": 50133.07,
+            "marketId": "8360cdef-7e97-4bff-bfcd-433e544e8c82",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.93,
+                "bestBid": 0.92,
+                "label": "Not Naftali Bennett",
+                "marketId": "8360cdef-7e97-4bff-bfcd-433e544e8c82",
+                "metadata": {
+                  "clobTokenId": "39409206330527880169507414405291721950884951005340760541937649898052386499519"
+                },
+                "outcomeId": "39409206330527880169507414405291721950884951005340760541937649898052386499519",
+                "price": 0.86,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.08,
+                "bestBid": 0.07,
+                "label": "Naftali Bennett",
+                "marketId": "8360cdef-7e97-4bff-bfcd-433e544e8c82",
+                "metadata": {
+                  "clobTokenId": "58945936829392654397399777214757608864525173988558750256164021442231118224154"
+                },
+                "outcomeId": "58945936829392654397399777214757608864525173988558750256164021442231118224154",
+                "price": 0.14,
+                "priceChange24h": -0.015
+              }
+            ],
+            "resolutionDate": "2026-12-31T00:00:00.000Z",
+            "slug": "will-naftali-bennett-be-the-next-prime-minister-of-israel",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Politics",
+              "Middle East",
+              "Israel",
+              "Geopolitics",
+              "Elections",
+              "Global Elections",
+              "World",
+              "Trump-Netanyahu",
+              "Main Election",
+              "rewards 100, 4.5, 100 Deprec"
+            ],
+            "tickSize": 0.01,
+            "title": "Who will be the next Prime Minister of Israel after the next election? - Will Naftali Bennett be the next Prime Minister of Israel?",
+            "url": "https://polymarket.com/event/who-will-be-the-next-prime-minister-of-israel-after-the-next-election",
+            "volume": 1694520.7501429936,
+            "volume24h": 55305.656936
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "1b2b55fd-b208-4c05-803e-658a4f2bc0f4",
+            "marketBId": "8360cdef-7e97-4bff-bfcd-433e544e8c82",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 55305.656936
+      },
+      {
+        "canonicalTitle": "Will Houston win the 2026 Pro Baseball Championship?",
+        "category": "Sports",
+        "clusterId": "mcl_d8a91f67231652ed",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Houston wins the 2026 Pro Baseball Championship, then the market resolves to Yes.",
+            "eventId": "517740dc-ec04-4187-8860-72de1e0c6fbb",
+            "id": "5cec1863-7866-4635-8720-b0d5d0dd5a77",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "5cec1863-7866-4635-8720-b0d5d0dd5a77",
+            "openInterest": 1379194.92,
+            "outcomes": [
+              {
+                "bestAsk": 0.979,
+                "bestBid": 0.974,
+                "label": "Not Houston",
+                "marketId": "5cec1863-7866-4635-8720-b0d5d0dd5a77",
+                "metadata": {
+                  "ask": 0.979,
+                  "bid": 0.978
+                },
+                "outcomeId": "KXMLB-26-HOU-NO",
+                "price": 0.9785,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.026,
+                "bestBid": 0.025,
+                "label": "Houston",
+                "marketId": "5cec1863-7866-4635-8720-b0d5d0dd5a77",
+                "metadata": {
+                  "ask": 0.022,
+                  "bid": 0.021
+                },
+                "outcomeId": "KXMLB-26-HOU",
+                "price": 0.02,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2028-10-31T04:00:00.000Z",
+            "slug": "KXMLB-26-HOU",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Baseball"
+            ],
+            "tickSize": null,
+            "title": "Will Houston win the 2026 Pro Baseball Championship?",
+            "url": "https://kalshi.com/events/KXMLB-26",
+            "volume": 1825388.01,
+            "volume24h": 46174.8
+          },
+          {
+            "category": "MLB",
+            "contractAddress": "0x6470402973d292487fba2f61fd46967707b8327b9eab38a759da5ca5dc9ccec4",
+            "description": "This market will resolve according to the team that wins the 2026 MLB World Series. \n\nIf at any point it becomes impossible for a listed team to win the 2026 MLB World Series per the rules of MLB (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2026 MLB season is cancelled, postponed after December 31, 2026 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from MLB (https://www.mlb.com/); however, a consensus of credible reporting may also be used.",
+            "eventId": "eb6aa890-8644-4e75-9ef8-2673346c92a0",
+            "id": "0eb3eb95-45bc-40bb-afff-e5caf1d04b0b",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/whatever-36cb809aa2.jpg",
+            "liquidity": 84391.01654,
+            "marketId": "0eb3eb95-45bc-40bb-afff-e5caf1d04b0b",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.978,
+                "bestBid": 0.977,
+                "label": "Not Houston Astros",
+                "marketId": "0eb3eb95-45bc-40bb-afff-e5caf1d04b0b",
+                "metadata": {
+                  "clobTokenId": "55720742868739164905995622488230016036664947423270652001663302508770446397284"
+                },
+                "outcomeId": "55720742868739164905995622488230016036664947423270652001663302508770446397284",
+                "price": 0.9915,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.023,
+                "bestBid": 0.022,
+                "label": "Houston Astros",
+                "marketId": "0eb3eb95-45bc-40bb-afff-e5caf1d04b0b",
+                "metadata": {
+                  "clobTokenId": "12405032278435739429869831881260155009376889991681874342969262166150128334633"
+                },
+                "outcomeId": "12405032278435739429869831881260155009376889991681874342969262166150128334633",
+                "price": 0.0085,
+                "priceChange24h": 0.001
+              }
+            ],
+            "resolutionDate": "2026-10-31T23:55:00.000Z",
+            "slug": "will-the-houston-astros-win-the-2026-world-series",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "MLB",
+              "Sports",
+              "MLB Playoffs",
+              "World Series",
+              "baseball"
+            ],
+            "tickSize": 0.001,
+            "title": "MLB World Series Champion 2026 - Will the Houston Astros win the 2026 World Series?",
+            "url": "https://polymarket.com/event/mlb-world-series-champion-2026",
+            "volume": 1393764.462335,
+            "volume24h": 7176.427551999996
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "0eb3eb95-45bc-40bb-afff-e5caf1d04b0b",
+            "marketBId": "5cec1863-7866-4635-8720-b0d5d0dd5a77",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 53351.227552
+      },
+      {
+        "canonicalTitle": "Who will win the next presidential election?",
+        "category": "Elections",
+        "clusterId": "mcl_25eff5f99e7959a4",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Donald J. Trump is the next person inaugurated as President for the term beginning in 2029, then the market resolves to Yes.",
+            "eventId": "f0d49d83-6da4-4056-abb3-aaa46bf3b593",
+            "id": "2cb2a86e-8ccd-4845-9bec-9648cce228c5",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "2cb2a86e-8ccd-4845-9bec-9648cce228c5",
+            "openInterest": 2442372.05,
+            "outcomes": [
+              {
+                "bestAsk": 0.971,
+                "bestBid": 0.969,
+                "label": "Not Donald J. Trump",
+                "marketId": "2cb2a86e-8ccd-4845-9bec-9648cce228c5",
+                "metadata": {
+                  "ask": 0.971,
+                  "bid": 0.969
+                },
+                "outcomeId": "KXPRESPERSON-28-DTRU-NO",
+                "price": 0.97,
+                "priceChange24h": -0.0019999999999999983
+              },
+              {
+                "bestAsk": 0.031,
+                "bestBid": 0.029,
+                "label": "Donald J. Trump",
+                "marketId": "2cb2a86e-8ccd-4845-9bec-9648cce228c5",
+                "metadata": {
+                  "ask": 0.031,
+                  "bid": 0.029
+                },
+                "outcomeId": "KXPRESPERSON-28-DTRU",
+                "price": 0.031,
+                "priceChange24h": 0.0019999999999999983
+              }
+            ],
+            "resolutionDate": "2029-11-07T15:00:00.000Z",
+            "slug": "KXPRESPERSON-28-DTRU",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "2028",
+              "US Elections"
+            ],
+            "tickSize": null,
+            "title": "Who will win the next presidential election?",
+            "url": "https://kalshi.com/events/KXPRESPERSON-28",
+            "volume": 3421483.88,
+            "volume24h": 11606.87
+          },
+          {
+            "category": "World Elections",
+            "contractAddress": "0xce9a5fa30fe74e323b4a8f15afbb0b7a41a537aa880779ddf7dee22223b2f34a",
+            "description": "The 2028 US Presidential Election is scheduled to take place on November 7, 2028.\n\nThis market will resolve to the person who wins the 2028 US Presidential Election.\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven’t called the race for the same candidate by the inauguration date (January 20, 2029) this market will resolve based on who is inaugurated.",
+            "eventId": "a49db286-39ca-4119-9de5-1335a92ef92a",
+            "id": "0626ba74-7039-4310-9fd0-50b888b13e28",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-donald-trump-win-the-2028-us-presidential-election-4gVusUQRi_GG.png",
+            "liquidity": 759928.62805,
+            "marketId": "0626ba74-7039-4310-9fd0-50b888b13e28",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.981,
+                "bestBid": 0.98,
+                "label": "Not Donald Trump",
+                "marketId": "0626ba74-7039-4310-9fd0-50b888b13e28",
+                "metadata": {
+                  "clobTokenId": "72656506786460378316387284276713856836841708169262528054985577978493419440428"
+                },
+                "outcomeId": "72656506786460378316387284276713856836841708169262528054985577978493419440428",
+                "price": 0.9845,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.02,
+                "bestBid": 0.019,
+                "label": "Donald Trump",
+                "marketId": "0626ba74-7039-4310-9fd0-50b888b13e28",
+                "metadata": {
+                  "clobTokenId": "11807691644868166983390207408868795383945915035851758101409310535538572683733"
+                },
+                "outcomeId": "11807691644868166983390207408868795383945915035851758101409310535538572683733",
+                "price": 0.0155,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2028-11-07T00:00:00.000Z",
+            "slug": "will-donald-trump-win-the-2028-us-presidential-election",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "World Elections",
+              "Global Elections",
+              "US Election",
+              "Elections",
+              "Politics",
+              "Earn 4%",
+              "President",
+              "United States",
+              "Main Election"
+            ],
+            "tickSize": 0.001,
+            "title": "Presidential Election Winner 2028 - Will Donald Trump win the 2028 US Presidential Election?",
+            "url": "https://polymarket.com/event/presidential-election-winner-2028",
+            "volume": 8486297.661489222,
+            "volume24h": 36876.104995
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "0626ba74-7039-4310-9fd0-50b888b13e28",
+            "marketBId": "2cb2a86e-8ccd-4845-9bec-9648cce228c5",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 48482.974995000004
+      },
+      {
+        "canonicalTitle": "Will Chicago win the 2027 Pro Football Championship?",
+        "category": "Sports",
+        "clusterId": "mcl_63f3c095bc2c16b5",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Chicago wins the 2027 Pro Football Championship, then the market resolves to Yes.",
+            "eventId": "04b8d34e-d60d-4b22-9dbd-f6642ba39288",
+            "id": "cdb732ed-555a-4d77-8f8d-a886bd912004",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "cdb732ed-555a-4d77-8f8d-a886bd912004",
+            "openInterest": 2578584.47,
+            "outcomes": [
+              {
+                "bestAsk": 0.97,
+                "bestBid": 0.96,
+                "label": "Not Chicago",
+                "marketId": "cdb732ed-555a-4d77-8f8d-a886bd912004",
+                "metadata": {
+                  "ask": 0.97,
+                  "bid": 0.96
+                },
+                "outcomeId": "KXSB-27-CHI-NO",
+                "price": 0.965,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.04,
+                "bestBid": 0.03,
+                "label": "Chicago",
+                "marketId": "cdb732ed-555a-4d77-8f8d-a886bd912004",
+                "metadata": {
+                  "ask": 0.04,
+                  "bid": 0.03
+                },
+                "outcomeId": "KXSB-27-CHI",
+                "price": 0.04,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2029-02-13T23:30:00.000Z",
+            "slug": "KXSB-27-CHI",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Football"
+            ],
+            "tickSize": null,
+            "title": "Will Chicago win the 2027 Pro Football Championship?",
+            "url": "https://kalshi.com/events/KXSB-27",
+            "volume": 2993559.08,
+            "volume24h": 37883.2
+          },
+          {
+            "category": "Sports",
+            "contractAddress": "0x87f0b061076a7309abeb719136246303ce17fe40b4e9c65aca4149bbdbdd3236",
+            "description": "This market will resolve according to the team that wins the 2027 NFL league championship. \n\nIf at any point it becomes impossible for a listed team to win the 2027 NFL league championship per the rules of the NFL (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2027 NFL league championship game is cancelled, postponed after March 31, 2027 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from NFL (https://www.nfl.com/); however, a consensus of credible reporting may also be used.",
+            "eventId": "676772bf-08be-40ba-80a5-0a76e0bbc717",
+            "id": "0472b0f0-e9a9-4f86-b483-9c2b502d62d4",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
+            "liquidity": 83999.97567,
+            "marketId": "0472b0f0-e9a9-4f86-b483-9c2b502d62d4",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.967,
+                "bestBid": 0.966,
+                "label": "Not Chicago Bears",
+                "marketId": "0472b0f0-e9a9-4f86-b483-9c2b502d62d4",
+                "metadata": {
+                  "clobTokenId": "58391467081855327160506735992195157760163010112382131578233801495091502400832"
+                },
+                "outcomeId": "58391467081855327160506735992195157760163010112382131578233801495091502400832",
+                "price": 0.9765,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.034,
+                "bestBid": 0.033,
+                "label": "Chicago Bears",
+                "marketId": "0472b0f0-e9a9-4f86-b483-9c2b502d62d4",
+                "metadata": {
+                  "clobTokenId": "20782101138359830353373339924745258800328483049130539494636298430311546419943"
+                },
+                "outcomeId": "20782101138359830353373339924745258800328483049130539494636298430311546419943",
+                "price": 0.0235,
+                "priceChange24h": -0.003
+              }
+            ],
+            "resolutionDate": "2027-03-31T23:55:00.000Z",
+            "slug": "will-the-chicago-bears-win-the-2027-nfl-league-championship",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "NFL",
+              "football",
+              "Super Bowl"
+            ],
+            "tickSize": 0.001,
+            "title": "NFL Champion 2027 - Will the Chicago Bears win the 2027 NFL league championship?",
+            "url": "https://polymarket.com/event/big-game-champion-2027",
+            "volume": 804651.5085870022,
+            "volume24h": 10478.729940000001
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "0472b0f0-e9a9-4f86-b483-9c2b502d62d4",
+            "marketBId": "cdb732ed-555a-4d77-8f8d-a886bd912004",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 48361.92994
+      },
+      {
+        "canonicalTitle": "Will Las Vegas win the 2027 Pro Football Championship?",
+        "category": "Sports",
+        "clusterId": "mcl_a6ef45dae3c88918",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Las Vegas wins the 2027 Pro Football Championship, then the market resolves to Yes.",
+            "eventId": "04b8d34e-d60d-4b22-9dbd-f6642ba39288",
+            "id": "01d6addc-02c0-4ea0-9b36-2915a35d9838",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "01d6addc-02c0-4ea0-9b36-2915a35d9838",
+            "openInterest": 2995664.01,
+            "outcomes": [
+              {
+                "bestAsk": null,
+                "bestBid": 0.99,
+                "label": "Not Las Vegas",
+                "marketId": "01d6addc-02c0-4ea0-9b36-2915a35d9838",
+                "metadata": {
+                  "ask": 1,
+                  "bid": 0.99
+                },
+                "outcomeId": "KXSB-27-LV-NO",
+                "price": 0.995,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.01,
+                "bestBid": null,
+                "label": "Las Vegas",
+                "marketId": "01d6addc-02c0-4ea0-9b36-2915a35d9838",
+                "metadata": {
+                  "ask": 0.01,
+                  "bid": 0
+                },
+                "outcomeId": "KXSB-27-LV",
+                "price": 0.01,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2029-02-13T23:30:00.000Z",
+            "slug": "KXSB-27-LV",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Football"
+            ],
+            "tickSize": null,
+            "title": "Will Las Vegas win the 2027 Pro Football Championship?",
+            "url": "https://kalshi.com/events/KXSB-27",
+            "volume": 3076250.38,
+            "volume24h": 34625.85
+          },
+          {
+            "category": "Sports",
+            "contractAddress": "0xc771628162ee0100dc74e1c71c14ed067c3cc0f90e85e9f2c1038a33967c52a5",
+            "description": "This market will resolve according to the team that wins the 2027 NFL league championship. \n\nIf at any point it becomes impossible for a listed team to win the 2027 NFL league championship per the rules of the NFL (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2027 NFL league championship game is cancelled, postponed after March 31, 2027 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from NFL (https://www.nfl.com/); however, a consensus of credible reporting may also be used.",
+            "eventId": "676772bf-08be-40ba-80a5-0a76e0bbc717",
+            "id": "3d7cd03b-8a23-4fbd-9da7-c489b81985f9",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
+            "liquidity": 123291.63179,
+            "marketId": "3d7cd03b-8a23-4fbd-9da7-c489b81985f9",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.997,
+                "bestBid": 0.996,
+                "label": "Not Las Vegas Raiders",
+                "marketId": "3d7cd03b-8a23-4fbd-9da7-c489b81985f9",
+                "metadata": {
+                  "clobTokenId": "100405605635057175830292429276520208790943702328776842569003871296192726958839"
+                },
+                "outcomeId": "100405605635057175830292429276520208790943702328776842569003871296192726958839",
+                "price": 0.9925,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.004,
+                "bestBid": 0.003,
+                "label": "Las Vegas Raiders",
+                "marketId": "3d7cd03b-8a23-4fbd-9da7-c489b81985f9",
+                "metadata": {
+                  "clobTokenId": "59226162751411958698158426899722532714096625688096542121038780675009172335910"
+                },
+                "outcomeId": "59226162751411958698158426899722532714096625688096542121038780675009172335910",
+                "price": 0.0075,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2027-03-31T23:55:00.000Z",
+            "slug": "will-the-las-vegas-raiders-win-the-2027-nfl-league-championship",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "NFL",
+              "football",
+              "Super Bowl"
+            ],
+            "tickSize": 0.001,
+            "title": "NFL Champion 2027 - Will the Las Vegas Raiders win the 2027 NFL league championship?",
+            "url": "https://polymarket.com/event/big-game-champion-2027",
+            "volume": 942344.0506950002,
+            "volume24h": 11932.749694000004
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "01d6addc-02c0-4ea0-9b36-2915a35d9838",
+            "marketBId": "3d7cd03b-8a23-4fbd-9da7-c489b81985f9",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 46558.599694000004
+      },
+      {
+        "canonicalTitle": "Who will win the next presidential election?",
+        "category": "Elections",
+        "clusterId": "mcl_52162e388cf303e9",
+        "confidence": 1,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If Alexandria Ocasio-Cortez is the next person inaugurated as President for the term beginning in 2029, then the market resolves to Yes.",
+            "eventId": "f0d49d83-6da4-4056-abb3-aaa46bf3b593",
+            "id": "64b73a52-9602-432e-8124-6ba8871bfef9",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "64b73a52-9602-432e-8124-6ba8871bfef9",
+            "openInterest": 2364442.21,
+            "outcomes": [
+              {
+                "bestAsk": 0.89,
+                "bestBid": 0.88,
+                "label": "Not Alexandria Ocasio-Cortez",
+                "marketId": "64b73a52-9602-432e-8124-6ba8871bfef9",
+                "metadata": {
+                  "ask": 0.89,
+                  "bid": 0.88
+                },
+                "outcomeId": "KXPRESPERSON-28-AOCA-NO",
+                "price": 0.885,
+                "priceChange24h": -0.009999999999999995
+              },
+              {
+                "bestAsk": 0.12,
+                "bestBid": 0.11,
+                "label": "Alexandria Ocasio-Cortez",
+                "marketId": "64b73a52-9602-432e-8124-6ba8871bfef9",
+                "metadata": {
+                  "ask": 0.12,
+                  "bid": 0.11
+                },
+                "outcomeId": "KXPRESPERSON-28-AOCA",
+                "price": 0.12,
+                "priceChange24h": 0.009999999999999995
+              }
+            ],
+            "resolutionDate": "2029-11-07T15:00:00.000Z",
+            "slug": "KXPRESPERSON-28-AOCA",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "2028",
+              "US Elections"
+            ],
+            "tickSize": null,
+            "title": "Who will win the next presidential election?",
+            "url": "https://kalshi.com/events/KXPRESPERSON-28",
+            "volume": 3988084.64,
+            "volume24h": 32685.69
+          },
+          {
+            "category": "World Elections",
+            "contractAddress": "0xf232b565995e4b3a3e7fa6cef775eeff1cecd20ad7c013cb9fc8dadabfe279a9",
+            "description": "The 2028 US Presidential Election is scheduled to take place on November 7, 2028.\n\nThis market will resolve to the person who wins the 2028 US Presidential Election.\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven’t called the race for the same candidate by the inauguration date (January 20, 2029) this market will resolve based on who is inaugurated.",
+            "eventId": "a49db286-39ca-4119-9de5-1335a92ef92a",
+            "id": "4eab93b2-0157-4b3d-a262-21eabb09454e",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-alexandria-ocasio-cortez-win-the-2028-us-presidential-election-eX2nG09sPJUu.png",
+            "liquidity": 410560.70841,
+            "marketId": "4eab93b2-0157-4b3d-a262-21eabb09454e",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.898,
+                "bestBid": 0.897,
+                "label": "Not Alexandria Ocasio-Cortez",
+                "marketId": "4eab93b2-0157-4b3d-a262-21eabb09454e",
+                "metadata": {
+                  "clobTokenId": "11493926619286817179231142642565394485790380952577225820901334479399429951651"
+                },
+                "outcomeId": "11493926619286817179231142642565394485790380952577225820901334479399429951651",
+                "price": 0.9445,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.103,
+                "bestBid": 0.102,
+                "label": "Alexandria Ocasio-Cortez",
+                "marketId": "4eab93b2-0157-4b3d-a262-21eabb09454e",
+                "metadata": {
+                  "clobTokenId": "8113830512143065501177519557124858581375945005490796772950589720955457782465"
+                },
+                "outcomeId": "8113830512143065501177519557124858581375945005490796772950589720955457782465",
+                "price": 0.0555,
+                "priceChange24h": -0.001
+              }
+            ],
+            "resolutionDate": "2028-11-07T00:00:00.000Z",
+            "slug": "will-alexandria-ocasio-cortez-win-the-2028-us-presidential-election",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "World Elections",
+              "Global Elections",
+              "US Election",
+              "Elections",
+              "Politics",
+              "Earn 4%",
+              "President",
+              "United States",
+              "Main Election"
+            ],
+            "tickSize": 0.001,
+            "title": "Presidential Election Winner 2028 - Will Alexandria Ocasio-Cortez win the 2028 US Presidential Election?",
+            "url": "https://polymarket.com/event/presidential-election-winner-2028",
+            "volume": 12069371.397781862,
+            "volume24h": 12437.357405
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 1,
+            "marketAId": "4eab93b2-0157-4b3d-a262-21eabb09454e",
+            "marketBId": "64b73a52-9602-432e-8124-6ba8871bfef9",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 45123.047405
+      },
+      {
+        "canonicalTitle": "Will Democrats win the House in 2026?",
+        "category": "Elections",
+        "clusterId": "mcl_29c172d66066ecd8",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Elections",
+            "contractAddress": null,
+            "description": "If the Democratic Party has won control of the House in 2026, then the market resolves to Yes.",
+            "eventId": "0ba2f949-29ff-4428-bb9d-dd3fb3015712",
+            "id": "02e7458e-2399-4c40-a70f-51bdfa299d25",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "02e7458e-2399-4c40-a70f-51bdfa299d25",
+            "openInterest": 6140160.22,
+            "outcomes": [
+              {
+                "bestAsk": 0.85,
+                "bestBid": 0.84,
+                "label": "Democratic Party",
+                "marketId": "02e7458e-2399-4c40-a70f-51bdfa299d25",
+                "metadata": {
+                  "ask": 0.85,
+                  "bid": 0.84
+                },
+                "outcomeId": "CONTROLH-2026-D",
+                "price": 0.85,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.16,
+                "bestBid": 0.15,
+                "label": "Not Democratic Party",
+                "marketId": "02e7458e-2399-4c40-a70f-51bdfa299d25",
+                "metadata": {
+                  "ask": 0.16,
+                  "bid": 0.15
+                },
+                "outcomeId": "CONTROLH-2026-D-NO",
+                "price": 0.155,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2027-02-01T15:00:00.000Z",
+            "slug": "CONTROLH-2026-D",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Elections",
+              "US Elections"
+            ],
+            "tickSize": null,
+            "title": "Will Democrats win the House in 2026?",
+            "url": "https://kalshi.com/events/CONTROLH-2026",
+            "volume": 9765454.71,
+            "volume24h": 20601.88
+          },
+          {
+            "category": "US Election",
+            "contractAddress": "0xd5d9fc47718bd553592d126b1fa5e87183d27f3936975b0c04cc0f2dec1f1bb4",
+            "description": "This market will resolve according to the party that controls the House of Representatives following the 2026 U.S. House elections scheduled for November 3, 2026.\n\nHouse control is defined as having more than half of the voting members of the U.S. House of Representatives.\n\nIf the outcome of this election is ambiguous given the above rules, this market will remain open until the Speaker of the House is selected following the 2026 U.S. general election, at which point it will resolve to the party the Speaker is affiliated with at the time of their election to that position. If the elected Speaker does not caucus with any listed party this market will resolve “Other”.\n\nDetermination of which party controls the House after the 2026 U.S. House elections will be based on a consensus of credible reporting, or if there is ambiguity, final federal and/or state election authority certification or other final official determination of the 2026 election results.",
+            "eventId": "ea4baa9f-fdc5-42fb-a75b-746f081dc236",
+            "id": "7ba39b04-a31b-42c6-a821-611fa2a87433",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-the-democratic-party-control-the-senate-after-the-2026-midterm-elections-JJ9h02JGR09z.png",
+            "liquidity": 303598.251,
+            "marketId": "7ba39b04-a31b-42c6-a821-611fa2a87433",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.89,
+                "bestBid": 0.88,
+                "label": "Democratic Party",
+                "marketId": "7ba39b04-a31b-42c6-a821-611fa2a87433",
+                "metadata": {
+                  "clobTokenId": "83247781037352156539108067944461291821683755894607244160607042790356561625563"
+                },
+                "outcomeId": "83247781037352156539108067944461291821683755894607244160607042790356561625563",
+                "price": 0.815,
+                "priceChange24h": -0.01
+              },
+              {
+                "bestAsk": 0.12,
+                "bestBid": 0.11,
+                "label": "Not Democratic Party",
+                "marketId": "7ba39b04-a31b-42c6-a821-611fa2a87433",
+                "metadata": {
+                  "clobTokenId": "33156410999665902694791064431724433042010245771106314074312009703157423879038"
+                },
+                "outcomeId": "33156410999665902694791064431724433042010245771106314074312009703157423879038",
+                "price": 0.185,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2026-11-03T00:00:00.000Z",
+            "slug": "will-the-democratic-party-control-the-house-after-the-2026-midterm-elections",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "US Election",
+              "Politics",
+              "Midterms",
+              "World Elections",
+              "Elections",
+              "Global Elections",
+              "Earn 4%",
+              "Parent For Derivative",
+              "United States",
+              "Main Election"
+            ],
+            "tickSize": 0.01,
+            "title": "Which party will win the House in 2026? - Will the Democratic Party control the House after the 2026 Midterm elections?",
+            "url": "https://polymarket.com/event/which-party-will-win-the-house-in-2026",
+            "volume": 4002798.7920839516,
+            "volume24h": 23071.83790799998
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "02e7458e-2399-4c40-a70f-51bdfa299d25",
+            "marketBId": "7ba39b04-a31b-42c6-a821-611fa2a87433",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 43673.71790799998
+      },
+      {
+        "canonicalTitle": "Will Green Bay win the 2027 Pro Football Championship?",
+        "category": "Sports",
+        "clusterId": "mcl_75259874c439e9f3",
+        "confidence": 0.95,
+        "markets": [
+          {
+            "category": "Sports",
+            "contractAddress": null,
+            "description": "If Green Bay wins the 2027 Pro Football Championship, then the market resolves to Yes.",
+            "eventId": "04b8d34e-d60d-4b22-9dbd-f6642ba39288",
+            "id": "896bb85a-8f9c-4ab2-a48c-042d9078331b",
+            "image": null,
+            "liquidity": 0,
+            "marketId": "896bb85a-8f9c-4ab2-a48c-042d9078331b",
+            "openInterest": 1616901.89,
+            "outcomes": [
+              {
+                "bestAsk": 0.97,
+                "bestBid": 0.96,
+                "label": "Not Green Bay",
+                "marketId": "896bb85a-8f9c-4ab2-a48c-042d9078331b",
+                "metadata": {
+                  "ask": 0.97,
+                  "bid": 0.96
+                },
+                "outcomeId": "KXSB-27-GB-NO",
+                "price": 0.965,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.04,
+                "bestBid": 0.03,
+                "label": "Green Bay",
+                "marketId": "896bb85a-8f9c-4ab2-a48c-042d9078331b",
+                "metadata": {
+                  "ask": 0.04,
+                  "bid": 0.03
+                },
+                "outcomeId": "KXSB-27-GB",
+                "price": 0.04,
+                "priceChange24h": 0
+              }
+            ],
+            "resolutionDate": "2029-02-13T23:30:00.000Z",
+            "slug": "KXSB-27-GB",
+            "sourceExchange": "kalshi",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "Football"
+            ],
+            "tickSize": null,
+            "title": "Will Green Bay win the 2027 Pro Football Championship?",
+            "url": "https://kalshi.com/events/KXSB-27",
+            "volume": 2005152.58,
+            "volume24h": 39249.36
+          },
+          {
+            "category": "Sports",
+            "contractAddress": "0x04816f7f30a810111bd4e3d7e06952889f81f280f23370f2ff59323d9a202cca",
+            "description": "This market will resolve according to the team that wins the 2027 NFL league championship. \n\nIf at any point it becomes impossible for a listed team to win the 2027 NFL league championship per the rules of the NFL (e.g., they are eliminated in the playoffs), the corresponding market will resolve to “No”.\n\nIf the 2027 NFL league championship game is cancelled, postponed after March 31, 2027 ET, or there is otherwise no winner declared within that timeframe, this market will resolve to “Other”.\n\nThe primary resolution source will be official information from NFL (https://www.nfl.com/); however, a consensus of credible reporting may also be used.",
+            "eventId": "676772bf-08be-40ba-80a5-0a76e0bbc717",
+            "id": "a8085190-79a1-416b-8b8e-8e2d9e24f525",
+            "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
+            "liquidity": 76008.99781,
+            "marketId": "a8085190-79a1-416b-8b8e-8e2d9e24f525",
+            "openInterest": 0,
+            "outcomes": [
+              {
+                "bestAsk": 0.97,
+                "bestBid": 0.969,
+                "label": "Not Green Bay Packers",
+                "marketId": "a8085190-79a1-416b-8b8e-8e2d9e24f525",
+                "metadata": {
+                  "clobTokenId": "82255638606220786577449013244706201455514306812358731329024536871238621188820"
+                },
+                "outcomeId": "82255638606220786577449013244706201455514306812358731329024536871238621188820",
+                "price": 0.968,
+                "priceChange24h": 0
+              },
+              {
+                "bestAsk": 0.031,
+                "bestBid": 0.03,
+                "label": "Green Bay Packers",
+                "marketId": "a8085190-79a1-416b-8b8e-8e2d9e24f525",
+                "metadata": {
+                  "clobTokenId": "35735014075537072843409037792992988369227546626755131549045738083250548567488"
+                },
+                "outcomeId": "35735014075537072843409037792992988369227546626755131549045738083250548567488",
+                "price": 0.032,
+                "priceChange24h": 0.0015
+              }
+            ],
+            "resolutionDate": "2027-03-31T23:55:00.000Z",
+            "slug": "will-the-green-bay-packers-win-the-2027-nfl-league-championship",
+            "sourceExchange": "polymarket",
+            "status": "active",
+            "tags": [
+              "Sports",
+              "NFL",
+              "football",
+              "Super Bowl"
+            ],
+            "tickSize": 0.001,
+            "title": "NFL Champion 2027 - Will the Green Bay Packers win the 2027 NFL league championship?",
+            "url": "https://polymarket.com/event/big-game-champion-2027",
+            "volume": 892597.7909809992,
+            "volume24h": 4198.3190620000005
+          }
+        ],
+        "rawMatches": [
+          {
+            "confidence": 0.95,
+            "marketAId": "896bb85a-8f9c-4ab2-a48c-042d9078331b",
+            "marketBId": "a8085190-79a1-416b-8b8e-8e2d9e24f525",
+            "relation": "identity"
+          }
+        ],
+        "relations": [
+          "identity"
+        ],
+        "volume24h": 43447.679062
+      }
+    ],
+    "pagination": {
+      "hasMore": true,
+      "limit": 25,
+      "offset": 0
+    }
+  },
+  "payload_sha256": "22b63266a46a425d7a955975abe73392b30695699c59032b45882b6e2d9a5944",
+  "pmxt_network_requests": 0,
+  "query": {
+    "include_raw_matches": true,
+    "limit": 25,
+    "min_confidence": 0.8,
+    "min_venues": 2,
+    "offset": 0,
+    "relation": "identity",
+    "sort": "volume",
+    "venues": [
+      "kalshi",
+      "polymarket"
+    ]
+  },
+  "received_at": "2026-08-29T21:40:16.196022Z",
+  "requested_at": "2026-08-29T21:40:11.875577Z",
+  "run_id": "20260829T222258601245Z_18398390",
+  "schema_version": 1,
+  "source": "pmxt_router",
+  "source_run_id": "20260829T214011875577Z_33495fd8"
+}

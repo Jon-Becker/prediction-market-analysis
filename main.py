@@ -3,8 +3,6 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from simple_term_menu import TerminalMenu
-
 from src.common.analysis import Analysis
 from src.common.indexer import Indexer
 from src.common.util import package_data
@@ -53,6 +51,8 @@ def analyze(name: str | None = None):
         sys.exit(1)
 
     # Interactive menu mode
+    from simple_term_menu import TerminalMenu
+
     options = ["[All] Run all analyses"]
     for analysis_cls in analyses:
         instance = analysis_cls()
@@ -94,6 +94,8 @@ def analyze(name: str | None = None):
 
 def index():
     """Interactive indexer selection menu."""
+    from simple_term_menu import TerminalMenu
+
     indexers = Indexer.load()
 
     if not indexers:
@@ -133,9 +135,9 @@ def package():
 
 
 def main():
-    if len(sys.argv) < 2:
+    if len(sys.argv) < 2 or sys.argv[1] in {"-h", "--help"}:
         print("\nUsage: uv run main.py <command>")
-        print("Commands: analyze, index, package")
+        print("Commands: analyze, index, pmxt-sync, pmxt-monitor, package")
         sys.exit(0)
 
     command = sys.argv[1]
@@ -149,12 +151,22 @@ def main():
         index()
         sys.exit(0)
 
+    if command == "pmxt-sync":
+        from src.indexers.pmxt.market_clusters import cli
+
+        sys.exit(cli(sys.argv[2:]))
+
+    if command == "pmxt-monitor":
+        from src.indexers.pmxt.monitor import cli
+
+        sys.exit(cli(sys.argv[2:]))
+
     if command == "package":
         package()
         sys.exit(0)
 
     print(f"Unknown command: {command}")
-    print("Commands: analyze, index, package")
+    print("Commands: analyze, index, pmxt-sync, pmxt-monitor, package")
     sys.exit(1)
 
 

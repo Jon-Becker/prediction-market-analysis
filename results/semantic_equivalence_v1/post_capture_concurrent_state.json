@@ -1,0 +1,69 @@
+{
+  "observed_at_utc": "2026-08-29T21:56:27.9630927Z",
+  "classification": "CONCURRENT_UNRELATED_DIRTY_WORK_PRESERVED",
+  "capture_validity": "UNCHANGED_ALL_IMPLEMENTATION_FREEZE_BINDINGS_MATCH",
+  "action_taken": "none; files were not edited, reverted, staged, or incorporated",
+  "prechange_snapshot": "results/semantic_equivalence_v1/prechange_snapshot.json",
+  "files_changed_after_prechange_snapshot": [
+    {
+      "path": "src/indexers/pmxt/artifacts.py",
+      "prechange_bytes": 5924,
+      "prechange_sha256": "1a78a5266ba438b0c3842dbf6bf1fc61822ee3936fe0018bf27046ddb5996306",
+      "observed_bytes": 19984,
+      "observed_sha256": "df6e1a3ef5dc5031bda3b91ac36dc7fee1d69e00803a41fb0ffb3fe4a2f38530",
+      "observed_last_write_utc": "2026-08-29T21:52:45.6975412Z"
+    },
+    {
+      "path": "src/indexers/pmxt/monitor.py",
+      "prechange_bytes": 24416,
+      "prechange_sha256": "2e5f0ca8a8caafb71921495b0fb936973c0ed6fc835f3f5d4472fcffa8168710",
+      "observed_bytes": 26603,
+      "observed_sha256": "29a260efd09cab46471eda62ee2170f4220d6bbad82f6c5dd9c140e2b72a2383",
+      "observed_last_write_utc": "2026-08-29T21:54:39.0938213Z"
+    },
+    {
+      "path": "src/indexers/pmxt/native.py",
+      "prechange_bytes": 35146,
+      "prechange_sha256": "3460631ae36f252317154bb791d2310941e2ed6c91f4395aebf772aa37d7a20b",
+      "observed_bytes": 56220,
+      "observed_sha256": "eaa2a78a8d04639c7639d30bbc67255b3036432e4c1319bca32e3ca1469f6c77",
+      "observed_last_write_utc": "2026-08-29T21:54:13.6380723Z"
+    },
+    {
+      "path": "src/indexers/pmxt/semantic.py",
+      "prechange_bytes": 14011,
+      "prechange_sha256": "78a01ed25baace2cb489d4bedfd72da0ce49100e066882662873517f14a26e00",
+      "observed_bytes": 16796,
+      "observed_sha256": "0594a41a06f6d61d021d6320de19960e71bdce5b0689f20cf2f0a7264a5f5540",
+      "observed_last_write_utc": "2026-08-29T21:53:32.4601880Z"
+    },
+    {
+      "path": "src/indexers/pmxt/shadow.py",
+      "prechange_bytes": 29096,
+      "prechange_sha256": "cab82bdef3b7203ec14dd35f5e81591a249912662cdf5a891d96a168449ab5dd",
+      "observed_bytes": 36114,
+      "observed_sha256": "41113b6e1d1c67c2d0c093f97918e59b5eb64b679f1b84eccd4074291690acf5",
+      "observed_last_write_utc": "2026-08-29T21:53:20.2507646Z"
+    },
+    {
+      "path": "tests/test_pmxt_native.py",
+      "prechange_bytes": 17187,
+      "prechange_sha256": "fda74a3197dac7f508b587a2bf0e9f5dfa45d213f02ecdebcf36f21c00cdb859",
+      "observed_bytes": 23140,
+      "observed_sha256": "155e8876e445522e6f4556ed8720df3d9891740474b3ddef56f7b1ea63116ceb",
+      "observed_last_write_utc": "2026-08-29T21:55:00.7975751Z"
+    }
+  ],
+  "tests": {
+    "collector_focused": "5 passed",
+    "collector_ruff": "passed",
+    "collector_python_compile": "passed",
+    "broader_pmxt_after_concurrent_changes": "68 passed, 16 failed",
+    "broader_failure_scope": [
+      "tests/test_pmxt_semantic.py",
+      "tests/test_pmxt_monitor.py",
+      "tests/test_pmxt_shadow.py"
+    ],
+    "interpretation": "The broader suite had passed 82 tests immediately before the implementation freeze. The later failures appeared only after the listed pre-existing untracked files were rewritten. They were not repaired because they are outside this capture's owned files."
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:prediction-market-analysis:pmxt:offline-adjudication:1",
+  "title": "Offline PMXT semantic adjudication decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_type",
+    "candidate_id",
+    "decision",
+    "review_group",
+    "review_summary",
+    "reason_codes",
+    "source_rows",
+    "automated_decision_evidence",
+    "material_mismatches",
+    "evidence_gaps",
+    "reviewed",
+    "semantic_verified",
+    "profitability_evaluation_eligible",
+    "network_requests",
+    "orders_submitted",
+    "economics_computed",
+    "live_eligible"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "record_type": {"const": "pmxt_offline_adjudication"},
+    "candidate_id": {"type": "string", "minLength": 1},
+    "decision": {"enum": ["REJECTED", "NEEDS_REVIEW"]},
+    "review_group": {"type": "string", "minLength": 1},
+    "review_summary": {"type": "string", "minLength": 1},
+    "reason_codes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{2,127}$"}
+    },
+    "source_rows": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "candidate",
+        "automated_decision",
+        "kalshi_metadata",
+        "polymarket_metadata"
+      ],
+      "properties": {
+        "candidate": {"$ref": "#/$defs/sourceRowReference"},
+        "automated_decision": {"$ref": "#/$defs/sourceRowReference"},
+        "kalshi_metadata": {"$ref": "#/$defs/nativeSourceRowReference"},
+        "polymarket_metadata": {"$ref": "#/$defs/nativeSourceRowReference"}
+      }
+    },
+    "automated_decision_evidence": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"$ref": "#/$defs/pointerReference"}
+    },
+    "material_mismatches": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/materialMismatch"}
+    },
+    "evidence_gaps": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/evidenceGap"}
+    },
+    "reviewed": {"const": true},
+    "semantic_verified": {"const": false},
+    "profitability_evaluation_eligible": {"const": false},
+    "network_requests": {"const": 0},
+    "orders_submitted": {"const": 0},
+    "economics_computed": {"const": false},
+    "live_eligible": {"const": false}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"decision": {"const": "REJECTED"}}},
+      "then": {
+        "properties": {
+          "material_mismatches": {"minItems": 1}
+        }
+      },
+      "else": {
+        "properties": {
+          "material_mismatches": {"maxItems": 0},
+          "evidence_gaps": {"minItems": 1}
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "sourceRowReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact", "line", "row_sha256"],
+      "properties": {
+        "artifact": {
+          "enum": ["candidates", "raw_native_metadata", "semantic_decisions"]
+        },
+        "line": {"type": "integer", "minimum": 1},
+        "row_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "nativeSourceRowReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact", "line", "row_sha256", "raw_sha256", "rule_hash"],
+      "properties": {
+        "artifact": {"const": "raw_native_metadata"},
+        "line": {"type": "integer", "minimum": 1},
+        "row_sha256": {"$ref": "#/$defs/sha256"},
+        "raw_sha256": {"$ref": "#/$defs/sha256"},
+        "rule_hash": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "pointerReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_row", "json_pointer"],
+      "properties": {
+        "source_row": {
+          "enum": [
+            "candidate",
+            "automated_decision",
+            "kalshi_metadata",
+            "polymarket_metadata"
+          ]
+        },
+        "json_pointer": {"type": "string", "pattern": "^/"}
+      }
+    },
+    "clauseReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_row", "json_pointer", "clause_sha256"],
+      "properties": {
+        "source_row": {"enum": ["kalshi_metadata", "polymarket_metadata"]},
+        "json_pointer": {"type": "string", "pattern": "^/normalized_rules/"},
+        "clause_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "materialMismatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["axis", "summary", "kalshi_clause", "polymarket_clause"],
+      "properties": {
+        "axis": {"type": "string", "minLength": 1},
+        "summary": {"type": "string", "minLength": 1},
+        "kalshi_clause": {"$ref": "#/$defs/clauseReference"},
+        "polymarket_clause": {"$ref": "#/$defs/clauseReference"}
+      }
+    },
+    "evidenceGap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["axis", "summary", "evidence"],
+      "properties": {
+        "axis": {"type": "string", "minLength": 1},
+        "summary": {"type": "string", "minLength": 1},
+        "evidence": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/pointerReference"}
+        }
+      }
+    }
+  }
+}

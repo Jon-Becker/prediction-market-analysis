@@ -1,0 +1,157 @@
+{
+  "report_id": "semantic-equivalence-v1-capture-001-verification",
+  "verified_at_utc": "2026-08-29T21:54:57.7919393Z",
+  "capture_interpretation": "SUCCESSFUL_BOUNDED_CAPTURE_WITH_PARTIAL_NATIVE_METADATA_COVERAGE",
+  "semantic_equivalence_verdict": "NOT_EVALUATED_PENDING_REVIEW",
+  "live_eligible": false,
+  "capture": {
+    "run_id": "capture_001",
+    "path": "data/pmxt/semantic_equivalence/runs/capture_001",
+    "status": "PARTIAL_NATIVE_METADATA_COVERAGE",
+    "first_request_utc": "2026-08-29T21:52:50.169665Z",
+    "last_response_utc": "2026-08-29T21:53:05.493627Z",
+    "sealed_at_utc": "2026-08-29T21:53:09.879761Z",
+    "pair_count": 25,
+    "venue_record_count": 50,
+    "complete_pair_count": 0,
+    "complete_venue_record_count": 0,
+    "request_count": 150,
+    "failed_request_count": 0,
+    "retry_count": 0,
+    "http_status_counts": {
+      "200": 150
+    },
+    "requests_by_venue_resource": {
+      "kalshi_market": 25,
+      "kalshi_event": 25,
+      "kalshi_event_metadata": 25,
+      "kalshi_series": 25,
+      "polymarket_market": 25,
+      "polymarket_event": 25
+    }
+  },
+  "frozen_bindings": {
+    "prechange_snapshot_sha256": "181f1aa40e51cc495641b184f192736e69039d0f4b825c5663fa7d4cb153d97f",
+    "candidate_input_sha256": "088b881abfbfebc8d4f8b0d20c9d4c1521356ea9ed2724bd34105a6c6cec206e",
+    "protocol_sha256": "de5afe52bfde3565f646636290ac9c4ac038bcabd3c4edf08d514340aaf26f51",
+    "venue_record_schema_sha256": "f3f79dc584a0fd582b4ac23374d347f3060a9fac0208c7079df0caf35c56a557",
+    "implementation_freeze_sha256": "efc2f4f15171456cf1289c4af6a20d172cb6aa765f42313c50a49a0f2a7bd0f8",
+    "capture_manifest_sha256": "0cbea50860b7e4bd6c7128c17f1ccfc2c3018da89413bc7773a40b428da04278",
+    "capture_summary_sha256": "a8eaff8c714de1af0c5f3cf4010a49baa6df34a3129d5d3bd5a24b7dc8418b45",
+    "venue_native_pairs_sha256": "2170f9fb626a3f294c776f941704e89e8bb9e651192bb349d8e6701d18cf9584"
+  },
+  "integrity_verification": {
+    "actual_file_count": 455,
+    "actual_total_bytes": 7411479,
+    "manifest_listed_file_count": 453,
+    "manifest_and_sidecar_are_the_two_unlisted_files": true,
+    "all_manifest_listed_size_and_sha256_bindings_match": true,
+    "manifest_sidecar_matches": true,
+    "candidate_rows_match_pair_ids_in_order": true,
+    "request_ordinals_are_exactly_1_through_150": true,
+    "request_body_files_verified": 150,
+    "response_header_files_verified": 150,
+    "request_metadata_files_verified": 150,
+    "raw_header_pair_base64_and_latin1_round_trips_verified": 150,
+    "venue_immutable_raw_hashes_recomputed": 50,
+    "normalized_rule_hashes_recomputed": 50,
+    "all_pairs_pending_semantic_review": true,
+    "all_pairs_live_ineligible": true,
+    "all_requests_get_only": true,
+    "all_requests_on_frozen_hosts": true,
+    "all_requests_assert_no_authorization_or_cookie_headers": true
+  },
+  "raw_evidence": {
+    "raw_body_file_count": 150,
+    "raw_body_bytes_total": 6295421,
+    "raw_body_bytes_min": 3,
+    "raw_body_bytes_median": 5050,
+    "raw_body_bytes_max": 449013,
+    "semantics": "HTTP entity-body bytes returned by the client before JSON decoding, plus ordered raw header name/value byte pairs; this is not a TCP/TLS transcript or a preserved status-line/header-delimiter block."
+  },
+  "field_coverage_records_out_of_25": {
+    "kalshi": {
+      "event_id": 25,
+      "market_id": 25,
+      "series_id": 25,
+      "outcome_contract_side_ids": 25,
+      "exact_title_or_question": 25,
+      "outcome_labels": 25,
+      "explicit_yes_no_polarity": 25,
+      "binary": 25,
+      "multivariate_event": 25,
+      "mutually_exclusive_event": 25,
+      "primary_rules": 25,
+      "secondary_rules": 17,
+      "resolution_source_url": 25,
+      "settlement_authority": 25,
+      "early_close_provisions": 25,
+      "exception_behavior": 4,
+      "revision_or_update_timestamp": 25,
+      "immutable_raw_hash": 25,
+      "normalized_rule_hash": 25
+    },
+    "polymarket": {
+      "event_id": 25,
+      "market_id": 25,
+      "series_id": 2,
+      "outcome_ids": 25,
+      "token_ids": 25,
+      "exact_title_or_question": 25,
+      "outcome_labels": 25,
+      "explicit_yes_no_polarity": 25,
+      "binary": 25,
+      "multivariate_event": 25,
+      "negative_risk_event": 25,
+      "primary_rules": 25,
+      "secondary_rules": 25,
+      "resolution_source_url": 10,
+      "settlement_authority": 25,
+      "early_close_provisions": 0,
+      "exception_behavior": 23,
+      "revision_or_update_timestamp": 25,
+      "immutable_raw_hash": 25,
+      "normalized_rule_hash": 25
+    }
+  },
+  "explicit_missing_requirement_counts_out_of_25": {
+    "kalshi": {
+      "earliest_resolution_time": 25,
+      "secondary_rules": 8,
+      "void_cancel_refund_indeterminate_behavior": 21
+    },
+    "polymarket": {
+      "earliest_resolution_time": 25,
+      "expiration_time": 25,
+      "early_close_provisions": 25,
+      "series_id": 23,
+      "resolution_source_urls": 15,
+      "void_cancel_refund_indeterminate_behavior": 2
+    }
+  },
+  "native_lookup_diagnostics": {
+    "polymarket_event_slug_no_exact_result_count": 5,
+    "polymarket_event_slug": "big-game-champion-2027",
+    "affected_pair_ids": [
+      "pmxt_candidate_690e0d3c9bf11cf77133",
+      "pmxt_candidate_47e1a797ca569a3e085d",
+      "pmxt_candidate_5f2429d1c418b0b9e5f3",
+      "pmxt_candidate_7bb4f3faaa25fc57c4ee",
+      "pmxt_candidate_cf808058738e89a67c1a"
+    ],
+    "interpretation": "The event endpoint returned an empty list. The independently captured market object still contained one nested event with native event id 202857; the empty event response and nested event are both retained, and the issue remains explicit."
+  },
+  "authority_and_non_actions": {
+    "public_metadata_get_only": true,
+    "credentials_read": false,
+    "environment_files_read": false,
+    "account_accessed": false,
+    "books_or_trades_requested": false,
+    "orders_submitted": 0,
+    "fills_inferred": false,
+    "economics_computed": false,
+    "network_collection_scheduled": false,
+    "semantic_pairs_approved": 0
+  },
+  "conclusion": "The requested venue-native evidence is stored independently with explicit native absences. Capture completeness cannot establish semantic equivalence; all 25 proposals remain PENDING_SEMANTIC_REVIEW and live-ineligible."
+}

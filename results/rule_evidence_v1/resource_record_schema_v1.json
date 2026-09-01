@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:prediction-market-analysis:pmxt:rule-evidence-resource:1",
+  "title": "PMXT native rule-evidence capture resource record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "record_type",
+    "ordinal",
+    "resource_id",
+    "venue",
+    "kind",
+    "url",
+    "candidate_ids",
+    "gap_axes",
+    "expected_event_id",
+    "expected_market_ids",
+    "request_started_at_utc",
+    "response_completed_at_utc",
+    "duration_monotonic_ns",
+    "attempt_count",
+    "status_code",
+    "final_url",
+    "redirect_count",
+    "media_type",
+    "content_length",
+    "content_length_agrees",
+    "byte_count",
+    "raw",
+    "headers",
+    "intent",
+    "receipt",
+    "raw_byte_semantics",
+    "validation_status",
+    "books_requested",
+    "credentials_read",
+    "economics_computed",
+    "fees_requested",
+    "live_eligible",
+    "orders_submitted",
+    "pmxt_requests",
+    "positions_requested",
+    "semantic_promotions"
+  ],
+  "properties": {
+    "schema_version": {"const": 1},
+    "record_type": {"const": "pmxt_rule_evidence_resource"},
+    "ordinal": {"type": "integer", "minimum": 1, "maximum": 8},
+    "resource_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9_-]{0,63}$"},
+    "venue": {"enum": ["kalshi", "polymarket"]},
+    "kind": {"enum": ["pdf", "json"]},
+    "url": {"type": "string", "pattern": "^https://(assets\\.kalshi\\.com|gamma-api\\.polymarket\\.com)/"},
+    "candidate_ids": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "#/$defs/candidateId"}
+    },
+    "gap_axes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "expected_event_id": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "string", "pattern": "^[0-9]+$"}
+      ]
+    },
+    "expected_market_ids": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[0-9]+$"}
+    },
+    "request_started_at_utc": {"$ref": "#/$defs/utcTimestamp"},
+    "response_completed_at_utc": {"$ref": "#/$defs/utcTimestamp"},
+    "duration_monotonic_ns": {"type": "integer", "minimum": 0},
+    "attempt_count": {"const": 1},
+    "status_code": {"const": 200},
+    "final_url": {"type": "string", "minLength": 1},
+    "redirect_count": {"const": 0},
+    "media_type": {"enum": ["application/pdf", "application/json"]},
+    "content_length": {
+      "anyOf": [
+        {"type": "null"},
+        {"type": "integer", "minimum": 0, "maximum": 5000000}
+      ]
+    },
+    "content_length_agrees": {"const": true},
+    "byte_count": {"type": "integer", "minimum": 1, "maximum": 5000000},
+    "raw": {"$ref": "#/$defs/artifact"},
+    "headers": {"$ref": "#/$defs/artifact"},
+    "intent": {"$ref": "#/$defs/artifact"},
+    "receipt": {"$ref": "#/$defs/artifact"},
+    "raw_byte_semantics": {
+      "const": "HTTP response content octets after transfer framing, before content decoding"
+    },
+    "validation_status": {"const": "VALIDATED"},
+    "books_requested": {"const": false},
+    "credentials_read": {"const": false},
+    "economics_computed": {"const": false},
+    "fees_requested": {"const": false},
+    "live_eligible": {"const": false},
+    "orders_submitted": {"const": 0},
+    "pmxt_requests": {"const": 0},
+    "positions_requested": {"const": false},
+    "semantic_promotions": {"const": 0}
+  },
+  "$defs": {
+    "candidateId": {
+      "type": "string",
+      "pattern": "^pmxt_candidate_[0-9a-f]{20}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "utcTimestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}\\.[0-9]{6}Z$"
+    },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "byte_size", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "byte_size": {"type": "integer", "minimum": 0},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}

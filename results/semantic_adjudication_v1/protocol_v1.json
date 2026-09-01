@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "protocol_id": "pmxt-offline-semantic-adjudication-v1",
+  "adjudication_provenance": {
+    "method": "offline_native_rule_clause_review",
+    "version": 1,
+    "review_completed_at_utc": "2026-08-29T23:08:00.0168762Z"
+  },
+  "authority": {
+    "offline_only": true,
+    "network_requests": 0,
+    "credentials_read": false,
+    "books_requested": false,
+    "orders_submitted": 0,
+    "economics_computed": false,
+    "live_eligible": false
+  },
+  "expected_counts": {
+    "total": 25,
+    "rejected": 11,
+    "needs_review": 14
+  },
+  "source_monitor_run": {
+    "run_id": "20260829T222258601245Z_18398390",
+    "manifest": {
+      "path": "data/pmxt/runs/20260829T222258601245Z_18398390/manifest.json",
+      "sha256": "25886c6e30598a99423047755ac2b7850945839d0909fb802e2762cc4c4c5cbf"
+    },
+    "artifacts": {
+      "candidates": {
+        "path": "data/pmxt/runs/20260829T222258601245Z_18398390/candidates.jsonl",
+        "sha256": "088b881abfbfebc8d4f8b0d20c9d4c1521356ea9ed2724bd34105a6c6cec206e"
+      },
+      "raw_native_metadata": {
+        "path": "data/pmxt/runs/20260829T222258601245Z_18398390/raw_native_metadata.jsonl",
+        "sha256": "d0ee2715cbb41f977c7a4b5b5cde79f5783abc0e4c52aa673c5d8bccc9dc7586"
+      },
+      "semantic_decisions": {
+        "path": "data/pmxt/runs/20260829T222258601245Z_18398390/semantic_decisions.jsonl",
+        "sha256": "8f4ac5ece330ae6b12799ba2fe07d4fb0f297a5bc087bb7ebb24269e3d3811e5"
+      }
+    }
+  },
+  "decision_schema": {
+    "path": "results/semantic_adjudication_v1/decision_schema_v1.json",
+    "sha256": "4e0f7ab19de9fdbb4a007cd2c04fb1ae221870155aac426c47cde50a530a2869"
+  },
+  "review_input": {
+    "path": "results/semantic_adjudication_v1/reviewed_decisions_v1.jsonl",
+    "sha256": "69aae0d28dd2fcb6c49cf2b93b9e69e417579d4219f64ab2e02d308a41e38ce8"
+  },
+  "output": {
+    "run_id": "20260829T222258601245Z_18398390_adjudication_v1",
+    "path": "data/pmxt/semantic_adjudication/runs/20260829T222258601245Z_18398390_adjudication_v1"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "protocol_id": "pmxt-venue-native-semantic-equivalence-v1",
+  "schema_version": "1.0.0",
+  "frozen_at_utc": "2026-08-29T21:52:16.4136629Z",
+  "repository_head": "2276382cb616107db8c8647803bffa4a0d7091f8",
+  "repository_branch": "main",
+  "dirty_checkout_preserved": true,
+  "capture_not_yet_invoked": true,
+  "fixed_output_path": "data/pmxt/semantic_equivalence/runs/capture_001",
+  "fixed_input_pair_count": 25,
+  "fixed_maximum_request_count": 150,
+  "retry_count": 0,
+  "authority": {
+    "research_only": true,
+    "public_metadata_get_only": true,
+    "credentials_or_environment_files": false,
+    "accounts_books_trades_orders_fills_or_economics": false,
+    "third_party_or_paid_data": false,
+    "semantic_approval": false,
+    "live_eligibility": false
+  },
+  "files": [
+    {
+      "path": "src/indexers/pmxt/semantic_equivalence.py",
+      "bytes": 57988,
+      "sha256": "4a37e4412391495d794a39c1380d8a91b952f029e6ef36c4444b4303f59ba071"
+    },
+    {
+      "path": "tests/test_pmxt_semantic_equivalence.py",
+      "bytes": 13705,
+      "sha256": "3b8253f9b2a346e34402790815baafced8f1363e3c266cc02d8ce51e33bc34f3"
+    },
+    {
+      "path": "results/semantic_equivalence_v1/protocol_v1.json",
+      "bytes": 7287,
+      "sha256": "de5afe52bfde3565f646636290ac9c4ac038bcabd3c4edf08d514340aaf26f51"
+    },
+    {
+      "path": "results/semantic_equivalence_v1/venue_record_schema_v1.json",
+      "bytes": 12433,
+      "sha256": "f3f79dc584a0fd582b4ac23374d347f3060a9fac0208c7079df0caf35c56a557"
+    },
+    {
+      "path": "results/semantic_equivalence_v1/prechange_snapshot.json",
+      "bytes": 4352,
+      "sha256": "181f1aa40e51cc495641b184f192736e69039d0f4b825c5663fa7d4cb153d97f"
+    },
+    {
+      "path": "data/pmxt/runs/20260829T214011875577Z_33495fd8/candidates.jsonl",
+      "bytes": 80743,
+      "sha256": "088b881abfbfebc8d4f8b0d20c9d4c1521356ea9ed2724bd34105a6c6cec206e"
+    }
+  ],
+  "verification": {
+    "focused_pytest": {
+      "result": "82 passed",
+      "command": ".venv/Scripts/python.exe -m pytest -q -o pythonpath=. tests/test_pmxt_semantic_equivalence.py tests/test_pmxt_native.py tests/test_pmxt_semantic.py tests/test_pmxt_candidates.py tests/test_pmxt_artifacts.py tests/test_pmxt_monitor.py tests/test_pmxt_shadow.py"
+    },
+    "ruff": {
+      "result": "All checks passed",
+      "paths": [
+        "src/indexers/pmxt/semantic_equivalence.py",
+        "tests/test_pmxt_semantic_equivalence.py"
+      ]
+    },
+    "python_compile": {
+      "result": "passed",
+      "path": "src/indexers/pmxt/semantic_equivalence.py"
+    },
+    "protocol_and_schema_json": "parsed and fixture required-key coverage passed"
+  },
+  "immutability_rule": "Any change to a bound file invalidates this freeze and forbids capture under this freeze hash."
+}

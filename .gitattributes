@@ -1,0 +1,6 @@
+# PMXT evidence is byte-hash-bound; never rewrite line endings on checkout.
+data/pmxt/** -text
+results/rule_evidence_v1/** -text
+results/rule_review_v1/** -text
+results/semantic_adjudication_v1/** -text
+results/semantic_equivalence_v1/** -text

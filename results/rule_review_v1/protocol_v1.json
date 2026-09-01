@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "protocol_id": "pmxt-offline-native-rule-review-v1",
+  "implementation": {
+    "identifier": "pmxt-offline-native-rule-review-v1",
+    "path": "src/indexers/pmxt/rule_review.py",
+    "byte_size": 59011,
+    "sha256": "7de56f40ff7a0dc26d75d62aedeae972a94feaf32908dc06ee9f957faa299e45"
+  },
+  "source_rule_evidence_run": {
+    "run_id": "20260829T235900000000Z_rule_evidence_v1",
+    "manifest": {
+      "path": "data/pmxt/rule_evidence/runs/20260829T235900000000Z_rule_evidence_v1/manifest.json",
+      "byte_size": 6490,
+      "sha256": "90ae288640416381ca515e4cb30f8da4862497c4d2b9c32213a0155b8e2119f7"
+    }
+  },
+  "reviewed_decisions": {
+    "path": "results/rule_review_v1/reviewed_decisions_v1.jsonl",
+    "byte_size": 42177,
+    "sha256": "1c14ac928a05f76a861346601db4d5163aea7533c13b781f2f2475fa5a40daac"
+  },
+  "expected_counts": {
+    "source_total": 25,
+    "source_rejected": 11,
+    "reviewed_total": 14,
+    "newly_rejected": 14,
+    "final_rejected": 25,
+    "needs_review": 0,
+    "verified_equivalent": 0
+  },
+  "output": {
+    "run_id": "20260830T002000000000Z_rule_review_v1",
+    "path": "data/pmxt/rule_review/runs/20260830T002000000000Z_rule_review_v1"
+  },
+  "authority": {
+    "offline_only": true,
+    "network_requests": 0,
+    "credentials_read": false,
+    "books_requested": false,
+    "fees_requested": false,
+    "orders_submitted": 0,
+    "positions_requested": false,
+    "economics_computed": false,
+    "profitability_established": false,
+    "live_eligible": false,
+    "pmxt_requests": 0
+  }
+}

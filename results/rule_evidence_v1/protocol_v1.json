@@ -1,0 +1,274 @@
+{
+  "schema_version": 1,
+  "protocol_id": "pmxt-native-rule-evidence-capture-v1",
+  "implementation": {
+    "identifier": "pmxt-rule-evidence-capture-v1",
+    "path": "src/indexers/pmxt/rule_evidence.py",
+    "sha256": "6549d500b99038a3cc6d1a0a066b2848153564ea5636b2d1ef5e786b2f59d89f",
+    "byte_size": 80208
+  },
+  "resource_record_schema": {
+    "path": "results/rule_evidence_v1/resource_record_schema_v1.json",
+    "sha256": "1392b851ba0f4d2b0a9755001eeb09e92d1f6f40681356b9df96ccfd44a1e044",
+    "byte_size": 4147
+  },
+  "authority": {
+    "books_requested": false,
+    "credentials_read": false,
+    "economics_computed": false,
+    "fees_requested": false,
+    "live_eligible": false,
+    "orders_submitted": 0,
+    "pmxt_requests": 0,
+    "positions_requested": false,
+    "semantic_promotions": 0
+  },
+  "runtime_dependencies": {
+    "httpcore": "1.0.9",
+    "httpx": "0.28.1"
+  },
+  "limits": {
+    "inactivity_timeout_seconds": 20,
+    "max_resource_bytes": 5000000,
+    "resource_elapsed_checkpoint_seconds": 30,
+    "run_elapsed_checkpoint_seconds": 240,
+    "max_total_bytes": 40000000,
+    "request_count": 8,
+    "retries": 0,
+    "sequential": true
+  },
+  "source_adjudication_run": {
+    "run_id": "20260829T222258601245Z_18398390_adjudication_v1",
+    "manifest": {
+      "path": "data/pmxt/semantic_adjudication/runs/20260829T222258601245Z_18398390_adjudication_v1/manifest.json",
+      "sha256": "72f013cb68ba604083153c7e81b03cb2e977232f66e25f5a7c405440321ffad6",
+      "byte_size": 1184
+    },
+    "artifacts": {
+      "decisions": {
+        "path": "data/pmxt/semantic_adjudication/runs/20260829T222258601245Z_18398390_adjudication_v1/decisions.jsonl",
+        "sha256": "69aae0d28dd2fcb6c49cf2b93b9e69e417579d4219f64ab2e02d308a41e38ce8",
+        "byte_size": 65814
+      },
+      "source_bindings": {
+        "path": "data/pmxt/semantic_adjudication/runs/20260829T222258601245Z_18398390_adjudication_v1/source_bindings.json",
+        "sha256": "bbc940c4a555acdb8426347eb0a5d25d282801d0715ae40cd2d10bd7a4804924",
+        "byte_size": 1802
+      },
+      "summary": {
+        "path": "data/pmxt/semantic_adjudication/runs/20260829T222258601245Z_18398390_adjudication_v1/summary.json",
+        "sha256": "fd38fa4963d56bf607c762d4848ff66f2c9f13ad12025fcbd21f44311c95a230",
+        "byte_size": 642
+      }
+    }
+  },
+  "source_monitor_run": {
+    "run_id": "20260829T222258601245Z_18398390",
+    "manifest": {
+      "path": "data/pmxt/runs/20260829T222258601245Z_18398390/manifest.json",
+      "sha256": "25886c6e30598a99423047755ac2b7850945839d0909fb802e2762cc4c4c5cbf",
+      "byte_size": 4324
+    },
+    "artifacts": {
+      "candidates": {
+        "path": "data/pmxt/runs/20260829T222258601245Z_18398390/candidates.jsonl",
+        "sha256": "088b881abfbfebc8d4f8b0d20c9d4c1521356ea9ed2724bd34105a6c6cec206e",
+        "byte_size": 80743
+      },
+      "raw_native_metadata": {
+        "path": "data/pmxt/runs/20260829T222258601245Z_18398390/raw_native_metadata.jsonl",
+        "sha256": "d0ee2715cbb41f977c7a4b5b5cde79f5783abc0e4c52aa673c5d8bccc9dc7586",
+        "byte_size": 4403481
+      },
+      "semantic_decisions": {
+        "path": "data/pmxt/runs/20260829T222258601245Z_18398390/semantic_decisions.jsonl",
+        "sha256": "8f4ac5ece330ae6b12799ba2fe07d4fb0f297a5bc087bb7ebb24269e3d3811e5",
+        "byte_size": 216722
+      }
+    }
+  },
+  "candidate_bindings": [
+    {
+      "candidate_id": "pmxt_candidate_8d5742f402659dabd733",
+      "adjudication_decision_row": {"line": 2, "row_sha256": "beb541c4c0698ab7c1b7caba525cb82ac82593eb1bcaf679ce174715980aa8d4"},
+      "candidate_row": {"line": 2, "row_sha256": "795ccd8a15a2be83607376a5f5fefd487a1751eea0e51b81d14eb0c63672079b"},
+      "automated_decision_row": {"line": 2, "row_sha256": "ccb3f9e641451a1b5c9f079b7bc2c4e74162021ac6bff5d116cad661fae08246"},
+      "kalshi_metadata_row": {"line": 3, "row_sha256": "234c95f439a282057dd3643a6c3906af1dcfa5f24e5cf4e5a8967bd5e9dc26b1", "raw_sha256": "d194c0d6388e1493a7ae02c2a71155ae5fe40b47bd31b789e618837f423a0a69", "rule_hash": "600a1ee982201f04394e63b8a9bd7d5ef8c516bcc30ee87fe36f09bfae080842"},
+      "polymarket_metadata_row": {"line": 4, "row_sha256": "dbe31d2a9ff38d8dae24e48c1e8e445d1ced7e22e0ff08365cdf793f7861583f", "raw_sha256": "c050a82f2b4f2752f284541deb9b93a06b2a64805312c12a10ae529ada2244ca", "rule_hash": "da5d125ac13189b2f4f87217e9f2b15cc5e7ca16ee6630bd739f8efe7ace1cf0"},
+      "native_ids": {"kalshi_market_id": "KXMLB-26-KC", "kalshi_event_id": "KXMLB-26", "kalshi_series_id": "KXMLB", "polymarket_market_id": "1235556", "polymarket_event_id": "179312"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/TITLE.pdf",
+      "gap_axes": ["terminal_no_winner_treatment"],
+      "resource_ids": ["kalshi-title-terms", "polymarket-event-179312"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_68f36067448490a9ed48",
+      "adjudication_decision_row": {"line": 3, "row_sha256": "8fa9e1cf116bb9aa8c411baa9df96568ef7b9784a4404f79e66923f73ba42470"},
+      "candidate_row": {"line": 3, "row_sha256": "d110dc5a0cc8a4824ff5c496e74796e75350d1af828a74186313d21b571fee44"},
+      "automated_decision_row": {"line": 3, "row_sha256": "e32b93df18f0e019aac8011f202bbdef4c2b0bd98abe39e3c91fcfd527c6de47"},
+      "kalshi_metadata_row": {"line": 5, "row_sha256": "8e23f0d9b1d47869f378cf35bdcaef95f1c014112b21789f81ded2f57fa2b7f7", "raw_sha256": "10b5a6998f83c826cb1e657575cdfe61a73ca2eff5b827628348de24bff90d79", "rule_hash": "d24c1cf86200ca5a8943338ee01bb0ba77d52683ec2ccb35baf7fcd99100c403"},
+      "polymarket_metadata_row": {"line": 6, "row_sha256": "75f2bc9879e881ae2f03e38773010c250750c928ca2f40c5f189d2dabb6d51d3", "raw_sha256": "014c5980d0de5013a6ced502f6cfa1535d45bcbab286ad2c0288c0f27bf6e443", "rule_hash": "e25021320ec16502652405ef6f7a6410f3512e7845481623b52d402e73ac16ed"},
+      "native_ids": {"kalshi_market_id": "KXPRESNOMR-28-PHEG", "kalshi_event_id": "KXPRESNOMR-28", "kalshi_series_id": "KXPRESNOMR", "polymarket_market_id": "562008", "polymarket_event_id": "31875"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/PRESNOM.pdf",
+      "gap_axes": ["deadline_role", "external_terms", "terminal_rules", "resolution_authority", "group_set_and_other"],
+      "resource_ids": ["kalshi-presnom-terms", "polymarket-event-31875"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_690e0d3c9bf11cf77133",
+      "adjudication_decision_row": {"line": 7, "row_sha256": "16fa87166cf63e999384be98f76b604d303a759fd5c7910ec999948bad63c169"},
+      "candidate_row": {"line": 7, "row_sha256": "9373924e3a1649cd1dc917db251b816a83ed802209f09da6f96ccbbe4bbfa3d7"},
+      "automated_decision_row": {"line": 7, "row_sha256": "0d977dbc3324cf341661d2ff4c37a0314a9cd4ca3419297c662258fcbd83d166"},
+      "kalshi_metadata_row": {"line": 13, "row_sha256": "f7c7217310b28daf33ec2ea6ca42266e9e51b8654bbc8ca4429d88a43b3e93ca", "raw_sha256": "7e3a5e1633cc9e5144b6896d31f3916573bb78ac20966399fa2aae27c39b4af4", "rule_hash": "21dc824e844b7218219f77207df09cb2630c3e1838209249fa45f24c9d8d3e6c"},
+      "polymarket_metadata_row": {"line": 14, "row_sha256": "75a7afffc0e2862392794d49d51a55229abb2bb06e64a1012fb85c438bd3f988", "raw_sha256": "8e05feba410a37d43c04c6bbfd275977e398f500983e6f4c6f09d7c71799e0f7", "rule_hash": "ac4b5664a598347547dd0ccb6bfba6bd827558b41ab1b00f2279ab55f674431b"},
+      "native_ids": {"kalshi_market_id": "KXSB-27-BAL", "kalshi_event_id": "KXSB-27", "kalshi_series_id": "KXSB", "polymarket_market_id": "1357373", "polymarket_event_id": "202857"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/TITLE.pdf",
+      "gap_axes": ["terminal_no_winner_treatment"],
+      "resource_ids": ["kalshi-title-terms", "polymarket-event-202857"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_093b3d59fde18b10a289",
+      "adjudication_decision_row": {"line": 8, "row_sha256": "c754197688d9a0dbe6094e4db3d57f35606bc6f93ea6b65b354edd99b825c505"},
+      "candidate_row": {"line": 8, "row_sha256": "12e22c81a0625111f35d4655e3810f657908b4902fcbeb5ec36aecbaec49cdfc"},
+      "automated_decision_row": {"line": 8, "row_sha256": "6cbb66e0cf7cc0b760116b3bced470fb3629b3dfbfb170f0eb24cf8d77ef3ca6"},
+      "kalshi_metadata_row": {"line": 15, "row_sha256": "855fe9e01a63ec85ea64142ca55caaaa0229d2a05cea61aed7b9aba0feb7d1cb", "raw_sha256": "eea4733fe1f0df66297af8e2b153f3e01748d4df288736f3b61263bd48459d41", "rule_hash": "e40543bdf48025af0280b4a51cb82b646846f16913f957b8b346c8f7d146ddc0"},
+      "polymarket_metadata_row": {"line": 16, "row_sha256": "36a47345313460f42513067672c2091f07f1858e267e684c2d9996b4835a449b", "raw_sha256": "3a67b3b8dc1957b245efd7094a26b126e9972f5b9ee1fb96ee21ae71b4ff26f8", "rule_hash": "af0b258184b1748637c79249ebc99622ca4a7471a65bebae406c398ba514ed2f"},
+      "native_ids": {"kalshi_market_id": "KXPRESNOMR-28-JH", "kalshi_event_id": "KXPRESNOMR-28", "kalshi_series_id": "KXPRESNOMR", "polymarket_market_id": "561988", "polymarket_event_id": "31875"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/PRESNOM.pdf",
+      "gap_axes": ["deadline_role", "external_terms", "terminal_rules", "resolution_authority", "group_set_and_other"],
+      "resource_ids": ["kalshi-presnom-terms", "polymarket-event-31875"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_721ba66cd3a45a1b0671",
+      "adjudication_decision_row": {"line": 10, "row_sha256": "7e6596166620e5ce2c61d4e727405734aacec616bf86aab2d908b0d2faac6370"},
+      "candidate_row": {"line": 10, "row_sha256": "7752c23a617b491d6e5d4840af531ba862f7d9b122308760f86a2d0e25e7cad2"},
+      "automated_decision_row": {"line": 10, "row_sha256": "0cbd405355b7eba34cfb330a29c71f2fc6d71103ae88c19bb254f096f78c6188"},
+      "kalshi_metadata_row": {"line": 19, "row_sha256": "114d292bfdae8779d8d937b50b836720ef37f572d43d855302c900ee1ffd96b0", "raw_sha256": "12f9ef0c852cf824940c1a6c1525dd8a573001741e8da38b5f1528c6d8ea2fc1", "rule_hash": "d9b998932fc1167957a67ebe986af9aac658bc929bc0ed39429939d0c838eff3"},
+      "polymarket_metadata_row": {"line": 20, "row_sha256": "f67f471adb34adc581e97469917a4fb9c68ffc621d655421991604dc9ef90f46", "raw_sha256": "81d3fd0f4d3dbc64bae823be450fba1a0c8b47b96fd1951a0a24a4d76efb8d80", "rule_hash": "2ce6d688d73f1c9d5c0f6b6fd1b6305e10475f8cac4d85f8cba96d4ed13a7113"},
+      "native_ids": {"kalshi_market_id": "KXMLB-26-PIT", "kalshi_event_id": "KXMLB-26", "kalshi_series_id": "KXMLB", "polymarket_market_id": "1235571", "polymarket_event_id": "179312"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/TITLE.pdf",
+      "gap_axes": ["terminal_no_winner_treatment"],
+      "resource_ids": ["kalshi-title-terms", "polymarket-event-179312"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_154820cbf06559e5b7c1",
+      "adjudication_decision_row": {"line": 11, "row_sha256": "d894900092aefb582c0fcfa6d263939d6f7b0aee6d9279284fe2e62518cfd533"},
+      "candidate_row": {"line": 11, "row_sha256": "25b9e7f885278e83ca4d4bec6a7c27cea6e5bc0dedbb5a6101846466412f0616"},
+      "automated_decision_row": {"line": 11, "row_sha256": "b6b9379bdae80b36df773f79490c5ae7553368a95e08c56ae4b6c49bcf3019da"},
+      "kalshi_metadata_row": {"line": 21, "row_sha256": "6842e571c48eba23c0d751a1b0ec2c145be3784092f051a1e8f4f770330a596c", "raw_sha256": "8aa1ed64a58183ddcd3686567296a46beeccecdaf28f434514bfef9a54b6e318", "rule_hash": "586ee401f6ec19ecc41a9b3b5bd28a9009571634165640a073fe3f72def08ada"},
+      "polymarket_metadata_row": {"line": 22, "row_sha256": "d003a61b0c849eb998f206338bdf00813db93bbc113a4867ae674fd2668dcc07", "raw_sha256": "c85bb74c280472f192c3ea2c6082bf10876d7fbccf7cb0888e45757c87d212a6", "rule_hash": "7efa0d4cdd4950a2ffa04fc31b0dc88b926dda6346c02429145a0537c41b77dd"},
+      "native_ids": {"kalshi_market_id": "KXPRESNOMR-28-EKIR", "kalshi_event_id": "KXPRESNOMR-28", "kalshi_series_id": "KXPRESNOMR", "polymarket_market_id": "562002", "polymarket_event_id": "31875"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/PRESNOM.pdf",
+      "gap_axes": ["deadline_role", "external_terms", "terminal_rules", "resolution_authority", "group_set_and_other"],
+      "resource_ids": ["kalshi-presnom-terms", "polymarket-event-31875"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_fd848ee9c295396e2f3a",
+      "adjudication_decision_row": {"line": 12, "row_sha256": "033d41f973ce242ab16703296226d97cc903b3a4b88f596afe43394b3d7fdefb"},
+      "candidate_row": {"line": 12, "row_sha256": "82bd55378208977ed9364f27f82065d14c2a2d87ea69e23b6584fd7b39b135ac"},
+      "automated_decision_row": {"line": 12, "row_sha256": "7ab71d5de2163b7feed0bbeb3c41265617cd1db8eed55427ab30d56cec2ac85c"},
+      "kalshi_metadata_row": {"line": 23, "row_sha256": "782cb9691f5c874d941f150ae286304f38c7ed8efe1c498e900a72d77dc6d316", "raw_sha256": "b09090a6c1a8b2c1a8f30c6aed7124e29c0416bdd5032479db1b773147598198", "rule_hash": "e8786b5860e54ba78f418319cc983d50f7dcabf6eeab897a27980f8b1fc05cec"},
+      "polymarket_metadata_row": {"line": 24, "row_sha256": "51ee03057cb5940a5ed4386078b51050ff09d4e7bd9b66028a6426d3c9e616eb", "raw_sha256": "21b3eae11de6c937e0ab52fb2218266903200aadc60ab165932abf59bdf2a587", "rule_hash": "77886fc370b9bbce26a5dc67e7c05c39c0e9ffd4c27f99e96870534230eaf949"},
+      "native_ids": {"kalshi_market_id": "KXMLB-26-MIL", "kalshi_event_id": "KXMLB-26", "kalshi_series_id": "KXMLB", "polymarket_market_id": "1235568", "polymarket_event_id": "179312"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/TITLE.pdf",
+      "gap_axes": ["terminal_no_winner_treatment"],
+      "resource_ids": ["kalshi-title-terms", "polymarket-event-179312"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_47e1a797ca569a3e085d",
+      "adjudication_decision_row": {"line": 13, "row_sha256": "722ef74d8638f189e96f72725f129ec4f7fc52b6d8e53860cad70a4e5bf1e94d"},
+      "candidate_row": {"line": 13, "row_sha256": "f951527090cd929f7ed7e7c39df7cfc278ee77dfc960630f45ac8dfe543a739c"},
+      "automated_decision_row": {"line": 13, "row_sha256": "6b3238aa144a6600dfbe5d8719a464ce1553d8d24559b31431f2ded86131866c"},
+      "kalshi_metadata_row": {"line": 25, "row_sha256": "c429ec5cfd14b071d95288661c2da481380154c62401fc2c0e08b3bfeb8b943d", "raw_sha256": "9718a80d8c7c247d25b987df8e89cabf1256c9d8f38238541785f67eda0b3156", "rule_hash": "9586c45935cc953e579fffbf1b145bce1961a99a020f13c14a63e2b8ef9f1434"},
+      "polymarket_metadata_row": {"line": 26, "row_sha256": "af6178de6908e479f37b41c280cd99f49672c7ee5c72b5a983a72f48ecda0a63", "raw_sha256": "da81fe7378ae4586ce39745eb2e13f314a2a6f01c45c39365c8ff55b34ee346b", "rule_hash": "ac506ef89f4323a9126b4b1a19e90ba488fe5d38658535a10678c2cf72253016"},
+      "native_ids": {"kalshi_market_id": "KXSB-27-JAC", "kalshi_event_id": "KXSB-27", "kalshi_series_id": "KXSB", "polymarket_market_id": "1357385", "polymarket_event_id": "202857"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/TITLE.pdf",
+      "gap_axes": ["terminal_no_winner_treatment"],
+      "resource_ids": ["kalshi-title-terms", "polymarket-event-202857"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_8756452d08adab8a6bdb",
+      "adjudication_decision_row": {"line": 14, "row_sha256": "d288e3d3ac7db5e169ad7dd8a370bf516eff9c77d5e919176f4519d15fa5fc4d"},
+      "candidate_row": {"line": 14, "row_sha256": "ea372b66aaabc326d08180fd030d781b1c4c1cbe18f55200f2fe654ea86f25c3"},
+      "automated_decision_row": {"line": 14, "row_sha256": "e5af6f1d1e4bf60a3d77ffee0868535cd8f76ad9e25a4fde1b0a2a7c44121d76"},
+      "kalshi_metadata_row": {"line": 27, "row_sha256": "4216998c9893ae9a50ab7b3458a4270f5f516bd4d894f3c48c0a50d2376baeba", "raw_sha256": "0ac68a3510445973dd6e21c95ba2040c1911781419c0636219a7827e8c8e552b", "rule_hash": "5dc6be4600eb804eec22bf4213f4e3180bdf57d966bed337198999643fd7edb9"},
+      "polymarket_metadata_row": {"line": 28, "row_sha256": "9090c87a0b1f2c58f43195d57e6b03278bf07500dcdc27405080c2a6b3621772", "raw_sha256": "2da5a5958a0973fa8d192a6fbcc44213a59376cae8a889dc27305783bdfbcab6", "rule_hash": "32e93a6e53a1fd39079e8910ddd0e6271d7d4ea9e3b1939db6231d95ba554a5c"},
+      "native_ids": {"kalshi_market_id": "KXGOVAK-26-TBEG", "kalshi_event_id": "KXGOVAK-26", "kalshi_series_id": "KXGOVAK", "polymarket_market_id": "635014", "polymarket_event_id": "59234"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/GOV.pdf",
+      "gap_axes": ["accelerated_trigger_and_source_set", "deadline_role", "terminal_and_void_cancel", "resolution_authority_and_fallback"],
+      "resource_ids": ["kalshi-gov-terms", "polymarket-event-59234"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_b8aef6caa557ab7b4434",
+      "adjudication_decision_row": {"line": 15, "row_sha256": "1485eae326efaa881072951b6e2e810c82cb4633efb41b30964f17103a1332e3"},
+      "candidate_row": {"line": 15, "row_sha256": "a9b67efb5d23907433f87cf6465f29fadc0b2f23c83344e1e059339ebaef6a9f"},
+      "automated_decision_row": {"line": 15, "row_sha256": "1491c337bb5abf1918a2690e9ac2368fe3040c90893be6fd7d8d3433a1c5a49b"},
+      "kalshi_metadata_row": {"line": 29, "row_sha256": "9d92bda97384e559db1fe542acef1d1be369cd49455963f082e54780b377b4d8", "raw_sha256": "1a552fa3ae422d992ed09dba2c19af939dca57001ca49402fb3f0fc70bdc9168", "rule_hash": "529e78f0709411ae3c50fd459f69577af656b63cdbb66935fa2cf6a6573228d4"},
+      "polymarket_metadata_row": {"line": 30, "row_sha256": "67350de25736a746c3f22c6a072e002d69faf3ea73955774b776db333e3c72ec", "raw_sha256": "f88dfa3cf448d032a26eb48f1397368d20557ee3580a002cd9ba6b6f2a08fbd7", "rule_hash": "aa76bd3bbee47c653a4414a24f88ab1c2cb9535f1f8c986eed4ffd070ef8b5c2"},
+      "native_ids": {"kalshi_market_id": "KXGOVCA-26-SHIL", "kalshi_event_id": "KXGOVCA-26", "kalshi_series_id": "KXGOVCA", "polymarket_market_id": "628940", "polymarket_event_id": "57096"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/GOV.pdf",
+      "gap_axes": ["accelerated_trigger_and_source_set", "deadline_role", "terminal_and_void_cancel", "resolution_authority_and_fallback"],
+      "resource_ids": ["kalshi-gov-terms", "polymarket-event-57096"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_57ae4edbdd1c3c89ac81",
+      "adjudication_decision_row": {"line": 19, "row_sha256": "1b76384de7baad656f699a0900823d303bfde5e6aa5c6cb846af19f842552db0"},
+      "candidate_row": {"line": 19, "row_sha256": "b218bd2089cdc9de3fc7ec10eeb1f3c63a582cc4f85e80a767ca477b91f931b7"},
+      "automated_decision_row": {"line": 19, "row_sha256": "45e444eaa1f3c0f6f63f9a930f115d814f9515803be0a51a761dc0c757954185"},
+      "kalshi_metadata_row": {"line": 37, "row_sha256": "71d89088bec95ff24300a70965cccbd59202eba62cdd843ac2f6bc3d19dbf7f9", "raw_sha256": "084889290869132d9e7559a4ce49facd11c33fa7aa1a78acd8d88e77f7ba200b", "rule_hash": "ce653fad74991728ba255de6b020c4188f0d250abfe8605ffa777ea7c1a54a96"},
+      "polymarket_metadata_row": {"line": 38, "row_sha256": "32e9d557cc230592dd963f409ec269bdb32efbf5f0c04ac4434d754bc32f3bf1", "raw_sha256": "e4ff844757c54463971459b0f545c06a87bf69479d28293d5dd4f69815c478db", "rule_hash": "93aad887c3cfd46e5e7c034489fbdde80284f782c40ebcb735ae59842206979d"},
+      "native_ids": {"kalshi_market_id": "KXMLB-26-HOU", "kalshi_event_id": "KXMLB-26", "kalshi_series_id": "KXMLB", "polymarket_market_id": "1235557", "polymarket_event_id": "179312"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/TITLE.pdf",
+      "gap_axes": ["terminal_no_winner_treatment"],
+      "resource_ids": ["kalshi-title-terms", "polymarket-event-179312"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_5f2429d1c418b0b9e5f3",
+      "adjudication_decision_row": {"line": 21, "row_sha256": "ce7408cdab3fa938e871b100c30fda36dfd154a45e05615f2ce1fad73c59b15d"},
+      "candidate_row": {"line": 21, "row_sha256": "d677f1b3c1679390bb7cab3a4e8b39939d88bcc9535f36f88083a24857387093"},
+      "automated_decision_row": {"line": 21, "row_sha256": "b66efe19e9f76afce56d3293a98ec482148cc32c696f11a7325ca1d334123191"},
+      "kalshi_metadata_row": {"line": 41, "row_sha256": "4950c3840ccb1767aaa54c2f312cd2e9d52afded42b8050c002de381f12f3846", "raw_sha256": "963acb5dc411b31cf68f242ffa14b3c8b6f26ecc4b6a82d9c00b453fc8fe6207", "rule_hash": "2fda65a106e62dee72bb395916ba94b846bf1cd0d65002391dc28d8592b78703"},
+      "polymarket_metadata_row": {"line": 42, "row_sha256": "10037ed0b089ec1ae152db0b8db2647f10b095449a2a03043d841c18edb12e03", "raw_sha256": "a1e89638596cbb977d5419bd49e41d8a3505b3550523071881794c5327bc3751", "rule_hash": "a2dc94ddf2940ed77ebd86034bfc3afb8bcd59eecd5cd104de645aa4d1bdc1bd"},
+      "native_ids": {"kalshi_market_id": "KXSB-27-CHI", "kalshi_event_id": "KXSB-27", "kalshi_series_id": "KXSB", "polymarket_market_id": "1357376", "polymarket_event_id": "202857"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/TITLE.pdf",
+      "gap_axes": ["terminal_no_winner_treatment"],
+      "resource_ids": ["kalshi-title-terms", "polymarket-event-202857"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_7bb4f3faaa25fc57c4ee",
+      "adjudication_decision_row": {"line": 22, "row_sha256": "cd1d90c60a3297c8accf585d27bf809e5b05121f9f6f8feecf587b1496a48b2a"},
+      "candidate_row": {"line": 22, "row_sha256": "d1f90c08451d4ece5b5492861c659da971cfe7064e772d5dcf66610a933044c6"},
+      "automated_decision_row": {"line": 22, "row_sha256": "573eba448006e1daf4047784b4c16a5f0f34e2f68fe8aa209f9d8e37753415ee"},
+      "kalshi_metadata_row": {"line": 43, "row_sha256": "c3b3d2d16fd817e8a03bf2a58bb977f945958fe7ee459bab66c94ea4ca608a73", "raw_sha256": "665c533bc6f46fa5d34648ee9ffb1b07bdd8a42dd110a54cd5164d7d65b3e4b4", "rule_hash": "e9d934ed3f63ad22dc85fbcfa716d3274de2218deb76f40b187381424acc5535"},
+      "polymarket_metadata_row": {"line": 44, "row_sha256": "4351ccb19142873bc77fec3110831541ce9b633f5677acce7f42b224a7696568", "raw_sha256": "fa22edcd00c55d481edae436c7790729a5778e21ebc63607e79a079eb47728be", "rule_hash": "1d55ff2ba8f11aaa1e3cca4e3e339e9e156fb5c0dbe6989393c01207d9af609d"},
+      "native_ids": {"kalshi_market_id": "KXSB-27-LV", "kalshi_event_id": "KXSB-27", "kalshi_series_id": "KXSB", "polymarket_market_id": "1357387", "polymarket_event_id": "202857"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/TITLE.pdf",
+      "gap_axes": ["terminal_no_winner_treatment"],
+      "resource_ids": ["kalshi-title-terms", "polymarket-event-202857"]
+    },
+    {
+      "candidate_id": "pmxt_candidate_cf808058738e89a67c1a",
+      "adjudication_decision_row": {"line": 25, "row_sha256": "c8179b510852557af04b58fd0b63180661e300098c3da9c1e74093efe548e796"},
+      "candidate_row": {"line": 25, "row_sha256": "29d7e867d569f9a9bc7c29753d5d340c41b4a8af5a23615abb660309d5e80ff1"},
+      "automated_decision_row": {"line": 25, "row_sha256": "9aec3a38fcf7e87b3848418b4653a871ee548c60ebe9d4cd36f2a386bf0667fe"},
+      "kalshi_metadata_row": {"line": 49, "row_sha256": "e3360cbd3907088c2f64ced9c1a7a606a214e78852a54ddf22b0f18751a784c2", "raw_sha256": "24bd1d900794f85daebb88776bfe862250b9baee6b48b05fed032d810cc8e629", "rule_hash": "b79460d0f16d7b311c9aa23f10193bc5ea21e16d035f68198fa5c8e3cddc3872"},
+      "polymarket_metadata_row": {"line": 50, "row_sha256": "37ef426f394a9b78c5bf6e52027efefa0ab8434acfeb59758806e49d934f44ae", "raw_sha256": "bb310af93223d7bc5b0f4ed79cc4f428338b01b5922e1265a72bccb6a9dfb138", "rule_hash": "b08e6b8088f9c14df50419886a62bb35efe0278100b5886b3f2029402b6e8cb9"},
+      "native_ids": {"kalshi_market_id": "KXSB-27-GB", "kalshi_event_id": "KXSB-27", "kalshi_series_id": "KXSB", "polymarket_market_id": "1357382", "polymarket_event_id": "202857"},
+      "kalshi_contract_terms_url": "https://assets.kalshi.com/contract_terms/TITLE.pdf",
+      "gap_axes": ["terminal_no_winner_treatment"],
+      "resource_ids": ["kalshi-title-terms", "polymarket-event-202857"]
+    }
+  ],
+  "resources": [
+    {"ordinal": 1, "resource_id": "kalshi-title-terms", "venue": "kalshi", "kind": "pdf", "url": "https://assets.kalshi.com/contract_terms/TITLE.pdf", "expected_media_type": "application/pdf", "expected_event_id": null, "expected_market_ids": [], "candidate_ids": ["pmxt_candidate_8d5742f402659dabd733", "pmxt_candidate_690e0d3c9bf11cf77133", "pmxt_candidate_721ba66cd3a45a1b0671", "pmxt_candidate_fd848ee9c295396e2f3a", "pmxt_candidate_47e1a797ca569a3e085d", "pmxt_candidate_57ae4edbdd1c3c89ac81", "pmxt_candidate_5f2429d1c418b0b9e5f3", "pmxt_candidate_7bb4f3faaa25fc57c4ee", "pmxt_candidate_cf808058738e89a67c1a"], "gap_axes": ["terminal_no_winner_treatment"]},
+    {"ordinal": 2, "resource_id": "kalshi-presnom-terms", "venue": "kalshi", "kind": "pdf", "url": "https://assets.kalshi.com/contract_terms/PRESNOM.pdf", "expected_media_type": "application/pdf", "expected_event_id": null, "expected_market_ids": [], "candidate_ids": ["pmxt_candidate_68f36067448490a9ed48", "pmxt_candidate_093b3d59fde18b10a289", "pmxt_candidate_154820cbf06559e5b7c1"], "gap_axes": ["deadline_role", "external_terms", "terminal_rules", "resolution_authority", "group_set_and_other"]},
+    {"ordinal": 3, "resource_id": "kalshi-gov-terms", "venue": "kalshi", "kind": "pdf", "url": "https://assets.kalshi.com/contract_terms/GOV.pdf", "expected_media_type": "application/pdf", "expected_event_id": null, "expected_market_ids": [], "candidate_ids": ["pmxt_candidate_8756452d08adab8a6bdb", "pmxt_candidate_b8aef6caa557ab7b4434"], "gap_axes": ["accelerated_trigger_and_source_set", "deadline_role", "terminal_and_void_cancel", "resolution_authority_and_fallback"]},
+    {"ordinal": 4, "resource_id": "polymarket-event-179312", "venue": "polymarket", "kind": "json", "url": "https://gamma-api.polymarket.com/events/179312", "expected_media_type": "application/json", "expected_event_id": "179312", "expected_market_ids": ["1235556", "1235571", "1235568", "1235557"], "candidate_ids": ["pmxt_candidate_8d5742f402659dabd733", "pmxt_candidate_721ba66cd3a45a1b0671", "pmxt_candidate_fd848ee9c295396e2f3a", "pmxt_candidate_57ae4edbdd1c3c89ac81"], "gap_axes": ["terminal_no_winner_treatment"]},
+    {"ordinal": 5, "resource_id": "polymarket-event-202857", "venue": "polymarket", "kind": "json", "url": "https://gamma-api.polymarket.com/events/202857", "expected_media_type": "application/json", "expected_event_id": "202857", "expected_market_ids": ["1357373", "1357385", "1357376", "1357387", "1357382"], "candidate_ids": ["pmxt_candidate_690e0d3c9bf11cf77133", "pmxt_candidate_47e1a797ca569a3e085d", "pmxt_candidate_5f2429d1c418b0b9e5f3", "pmxt_candidate_7bb4f3faaa25fc57c4ee", "pmxt_candidate_cf808058738e89a67c1a"], "gap_axes": ["terminal_no_winner_treatment"]},
+    {"ordinal": 6, "resource_id": "polymarket-event-31875", "venue": "polymarket", "kind": "json", "url": "https://gamma-api.polymarket.com/events/31875", "expected_media_type": "application/json", "expected_event_id": "31875", "expected_market_ids": ["562008", "561988", "562002"], "candidate_ids": ["pmxt_candidate_68f36067448490a9ed48", "pmxt_candidate_093b3d59fde18b10a289", "pmxt_candidate_154820cbf06559e5b7c1"], "gap_axes": ["deadline_role", "external_terms", "terminal_rules", "resolution_authority", "group_set_and_other"]},
+    {"ordinal": 7, "resource_id": "polymarket-event-59234", "venue": "polymarket", "kind": "json", "url": "https://gamma-api.polymarket.com/events/59234", "expected_media_type": "application/json", "expected_event_id": "59234", "expected_market_ids": ["635014"], "candidate_ids": ["pmxt_candidate_8756452d08adab8a6bdb"], "gap_axes": ["accelerated_trigger_and_source_set", "deadline_role", "terminal_and_void_cancel", "resolution_authority_and_fallback"]},
+    {"ordinal": 8, "resource_id": "polymarket-event-57096", "venue": "polymarket", "kind": "json", "url": "https://gamma-api.polymarket.com/events/57096", "expected_media_type": "application/json", "expected_event_id": "57096", "expected_market_ids": ["628940"], "candidate_ids": ["pmxt_candidate_b8aef6caa557ab7b4434"], "gap_axes": ["accelerated_trigger_and_source_set", "deadline_role", "terminal_and_void_cancel", "resolution_authority_and_fallback"]}
+  ],
+  "output": {
+    "run_id": "20260829T235900000000Z_rule_evidence_v1",
+    "path": "data/pmxt/rule_evidence/runs/20260829T235900000000Z_rule_evidence_v1"
+  }
+}
