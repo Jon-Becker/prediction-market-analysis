@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import importlib
+import types
 from pathlib import Path
 
 import pytest
 
+import src.common.analysis as analysis_module
 from src.common.analysis import Analysis
 from src.common.indexer import Indexer
 
@@ -45,6 +47,37 @@ def test_analysis_discovery():
     """Analysis.load() should find at least one concrete analysis."""
     analyses = Analysis.load()
     assert len(analyses) > 0, "No analyses discovered in src/analysis/"
+
+
+def test_analysis_discovery_ignores_imported_class_like_objects(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+):
+    analysis_dir = tmp_path / "analysis"
+    analysis_dir.mkdir()
+    (analysis_dir / "fixture.py").write_text("# fixture module\n", encoding="utf-8")
+    module_name = "src.analysis.fixture"
+    module = types.ModuleType(module_name)
+    local_analysis = type(
+        "LocalAnalysis",
+        (Analysis,),
+        {"__module__": module_name, "run": lambda self: None},
+    )
+    module.LocalAnalysis = local_analysis
+    module.ImportedAnalysis = Analysis
+    invalid_class_like = types.SimpleNamespace(__module__=module_name)
+    monkeypatch.setattr(importlib, "import_module", lambda name: module)
+    monkeypatch.setattr(
+        analysis_module.inspect,
+        "getmembers",
+        lambda module, predicate: [
+            ("ImportedAnalysis", Analysis),
+            ("InvalidClassLike", invalid_class_like),
+            ("LocalAnalysis", local_analysis),
+        ],
+    )
+
+    assert Analysis.load(analysis_dir) == [local_analysis]
 
 
 @pytest.mark.parametrize("cls", Analysis.load(), ids=lambda c: c.__name__)

@@ -180,7 +180,13 @@ class Analysis(ABC):
                 continue
 
             for _, obj in inspect.getmembers(module, inspect.isclass):
-                if issubclass(obj, cls) and obj is not cls and not inspect.isabstract(obj):
+                if getattr(obj, "__module__", None) != module.__name__:
+                    continue
+                try:
+                    is_analysis = issubclass(obj, cls)
+                except TypeError:
+                    continue
+                if is_analysis and obj is not cls and not inspect.isabstract(obj):
                     analyses.append(obj)
 
         return analyses
