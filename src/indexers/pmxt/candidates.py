@@ -414,8 +414,7 @@ def normalize_clusters(
                     "book_status": "NOT_REFRESHED",
                     "price_source": "PMXT_CATALOG_ONLY",
                     "catalog_price_conflicts_with_displayed_spread": any(
-                        outcome["catalog_quote_coherence_status"] == "OUTSIDE_DISPLAYED_SPREAD"
-                        for outcome in outcomes
+                        outcome["catalog_quote_coherence_status"] == "OUTSIDE_DISPLAYED_SPREAD" for outcome in outcomes
                     ),
                     "fair_value_status": "NOT_CALCULATED",
                     "live_eligible": False,

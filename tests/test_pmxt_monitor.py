@@ -633,10 +633,7 @@ def test_pmxt_429_is_persisted_once_with_exact_bounded_evidence_and_no_native_re
 ) -> None:
     attempts: list[httpx.Request] = []
     api_key = "fixture_secret_must_not_be_persisted"
-    raw_body = (
-        b'{"error":"rate_limit_exceeded","plan":"free",'
-        b'"limit":60,"used":60,"window":"1 minute"}'
-    )
+    raw_body = b'{"error":"rate_limit_exceeded","plan":"free","limit":60,"used":60,"window":"1 minute"}'
 
     def rate_limited(request: httpx.Request) -> httpx.Response:
         attempts.append(request)
@@ -733,10 +730,7 @@ def test_pmxt_success_response_reflecting_key_is_withheld_and_never_persisted_as
     raw_pmxt = json.loads((run_dir / "raw_pmxt.json").read_text(encoding="utf-8"))
     assert "payload" not in raw_pmxt
     assert raw_pmxt["router_error"]["reason_code"] == "PMXT_RESPONSE_CREDENTIAL_ECHO"
-    assert (
-        raw_pmxt["router_error"]["evidence"]["response"]["body"]["capture_status"]
-        == "WITHHELD_API_KEY_ECHO"
-    )
+    assert raw_pmxt["router_error"]["evidence"]["response"]["body"]["capture_status"] == "WITHHELD_API_KEY_ECHO"
     persisted = b"".join(path.read_bytes() for path in run_dir.iterdir() if path.is_file())
     assert api_key.encode() not in persisted
 

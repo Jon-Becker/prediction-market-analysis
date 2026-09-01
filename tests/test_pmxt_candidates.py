@@ -129,10 +129,7 @@ def test_router_rejects_redirect_response_even_if_body_looks_valid() -> None:
 
 def test_router_429_minute_body_and_safe_headers_are_exact_evidence_without_retry() -> None:
     requests: list[httpx.Request] = []
-    raw_body = (
-        b'{\n  "error": "rate_limit_exceeded", "plan": "free", '
-        b'"limit": 60, "used": 60, "window": "1 minute"\n}'
-    )
+    raw_body = b'{\n  "error": "rate_limit_exceeded", "plan": "free", "limit": 60, "used": 60, "window": "1 minute"\n}'
 
     def handler(request: httpx.Request) -> httpx.Response:
         requests.append(request)

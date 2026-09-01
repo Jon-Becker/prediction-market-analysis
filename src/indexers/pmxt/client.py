@@ -337,9 +337,7 @@ class PmxtRouterClient:
             items.append([name, value])
             grouped.setdefault(name, []).append(value)
 
-        headers: dict[str, Any] = {
-            name: values[0] if len(values) == 1 else values for name, values in grouped.items()
-        }
+        headers: dict[str, Any] = {name: values[0] if len(values) == 1 else values for name, values in grouped.items()}
         metadata = {
             "retention": "EXPLICIT_ALLOWLIST",
             "max_items": _MAX_RETAINED_HEADER_ITEMS,
@@ -384,9 +382,7 @@ class PmxtRouterClient:
                 "complete": False,
                 "max_response_bytes": self._max_response_bytes,
                 "representation": "HTTP_ENTITY_BYTES_ACCEPT_ENCODING_IDENTITY",
-                "credential_scan_status": (
-                    "PRESENT" if credential_scan_status == "PRESENT" else "UNKNOWN_INCOMPLETE"
-                ),
+                "credential_scan_status": ("PRESENT" if credential_scan_status == "PRESENT" else "UNKNOWN_INCOMPLETE"),
             }
         elif credential_scan_status == "PRESENT":
             body_evidence = {
