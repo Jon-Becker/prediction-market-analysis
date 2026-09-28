@@ -66,15 +66,13 @@ def fetch_release_calendar(
         raise ValueError("timeout must be positive")
 
     params = {"limit": str(limit)}
+    headers = {"Accept": "application/json", "User-Agent": "prediction-market-analysis/1.0"}
     token = api_key or os.getenv("FXMACRODATA_API_KEY") or os.getenv("FXMD_API_KEY")
     if token:
-        params["api_key"] = token
+        headers["X-API-Key"] = token
 
     url = f"{base_url.rstrip('/')}/calendar/{normalized_currency.lower()}?{urlencode(params)}"
-    request = Request(
-        url,
-        headers={"Accept": "application/json", "User-Agent": "prediction-market-analysis/1.0"},
-    )
+    request = Request(url, headers=headers)
 
     try:
         with urlopen(request, timeout=timeout) as response:

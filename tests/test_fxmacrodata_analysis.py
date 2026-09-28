@@ -63,6 +63,7 @@ def test_fetch_release_calendar_uses_canonical_route_and_caps_rows(monkeypatch):
 
     def fake_urlopen(request, timeout):
         captured["url"] = request.full_url
+        captured["api_key"] = request.get_header("X-api-key")
         captured["timeout"] = timeout
         return FakeResponse(payload)
 
@@ -76,7 +77,8 @@ def test_fetch_release_calendar_uses_canonical_route_and_caps_rows(monkeypatch):
 
     assert rows == [payload["data"][0]]
     assert captured == {
-        "url": "https://api.fxmacrodata.com/v1/calendar/usd?limit=1&api_key=placeholder-token",
+        "url": "https://api.fxmacrodata.com/v1/calendar/usd?limit=1",
+        "api_key": "placeholder-token",
         "timeout": 7,
     }
 
