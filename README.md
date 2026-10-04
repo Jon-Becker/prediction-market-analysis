@@ -99,6 +99,7 @@ If you've found an issue or have a question, please open an issue [here](https:/
 
 ## Research & Citations
 
+- Reichenbach, F., Walther, M. (2026). _When Can Prediction Market Prices Be Trusted? Price Informativeness, Calibration, and Bias on Polymarket_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7552098
 - Yurchyna, V. (2026). _Composition Shift and the Measurement of Bias in a Growing Prediction Market: Evidence from Kalshi, 2021–2026_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7364100
 - Becker, J. (2026). _The Microstructure of Wealth Transfer in Prediction Markets_. Jbecker. https://jbecker.dev/research/prediction-market-microstructure
 - Becker, J. (2026). _The Microstructure of Wealth Transfer in Prediction Markets_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7217640
