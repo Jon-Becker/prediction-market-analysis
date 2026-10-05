@@ -67,12 +67,15 @@ def fetch_release_calendar(
 
     params = {"limit": str(limit)}
     headers = {"Accept": "application/json", "User-Agent": "prediction-market-analysis/1.0"}
-    token = api_key or os.getenv("FXMACRODATA_API_KEY") or os.getenv("FXMD_API_KEY")
-    if token:
-        headers["X-API-Key"] = token
+    token = (api_key or os.getenv("FXMACRODATA_API_KEY") or os.getenv("FXMD_API_KEY") or "").strip()
+    if any(char.isspace() or ord(char) < 32 for char in token):
+        raise FXMacroDataError("FXMacroData API key contains invalid characters")
 
     url = f"{base_url.rstrip('/')}/calendar/{normalized_currency.lower()}?{urlencode(params)}"
     request = Request(url, headers=headers)
+    if token:
+        # Unredirected headers are not copied to a redirect target, so the key stays on this host.
+        request.add_unredirected_header("X-API-Key", token)
 
     try:
         with urlopen(request, timeout=timeout) as response:

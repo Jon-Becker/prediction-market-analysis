@@ -95,6 +95,33 @@ def test_fetch_release_calendar_redacts_transport_errors(monkeypatch):
     assert "placeholder-token" not in str(raised.value)
 
 
+def test_fetch_release_calendar_does_not_forward_key_on_redirect(monkeypatch):
+    captured = {}
+
+    def fake_urlopen(request, timeout):
+        captured["redirectable"] = dict(request.headers)
+        captured["unredirected"] = dict(request.unredirected_hdrs)
+        return FakeResponse({"data": []})
+
+    monkeypatch.setattr("src.common.fxmacrodata.urlopen", fake_urlopen)
+    fetch_release_calendar("USD", api_key="placeholder-token")
+
+    assert "X-api-key" not in captured["redirectable"]
+    assert captured["unredirected"]["X-api-key"] == "placeholder-token"
+
+
+def test_fetch_release_calendar_rejects_malformed_key_without_echoing_it(monkeypatch):
+    def fail(request, timeout):
+        raise AssertionError("request should not be sent")
+
+    monkeypatch.setattr("src.common.fxmacrodata.urlopen", fail)
+
+    with pytest.raises(FXMacroDataError, match="invalid characters") as raised:
+        fetch_release_calendar("USD", api_key="placeholder\ntoken")
+
+    assert "placeholder" not in str(raised.value)
+
+
 def test_macro_release_activity_uses_exact_window_boundaries():
     event_time = datetime(2026, 8, 14, 12, tzinfo=timezone.utc)
     offsets = [-61, -60, -1, 0, 1, 60, 61]
