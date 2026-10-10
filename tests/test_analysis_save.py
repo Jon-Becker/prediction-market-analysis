@@ -75,6 +75,14 @@ class TestSaveStaticFigureWithData:
         loaded = pd.read_csv(saved["csv"])
         pd.testing.assert_frame_equal(loaded, df)
 
+    def test_excel_roundtrips(self, tmp_path: Path):
+        df = _make_dataframe()
+        output = AnalysisOutput(data=df, figure=_make_figure())
+        saved = _StubAnalysis(output).save(tmp_path, formats=["xlsx"])
+
+        loaded = pd.read_excel(saved["xlsx"])
+        pd.testing.assert_frame_equal(loaded, df)
+
     def test_json_has_required_keys(self, tmp_path: Path):
         output = AnalysisOutput(figure=_make_figure(), chart=_make_chart())
         saved = _StubAnalysis(output).save(tmp_path, formats=["json"])
