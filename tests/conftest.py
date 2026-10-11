@@ -203,6 +203,30 @@ def kalshi_markets_dir(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 
 @pytest.fixture(scope="session")
+def release_calendar_path(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    d = tmp_path_factory.mktemp("fxmacrodata_calendar")
+    path = d / "calendar_usd.json"
+    event_time = pd.Timestamp("2024-06-02 04:00:00", tz="UTC")
+    path.write_text(
+        json.dumps(
+            {
+                "currency": "USD",
+                "data": [
+                    {
+                        "release": "inflation",
+                        "announcement_datetime": int(event_time.timestamp()),
+                        "release_date_confirmed": True,
+                        "release_time_assumed": False,
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    return path
+
+
+@pytest.fixture(scope="session")
 def polymarket_trades_dir(tmp_path_factory: pytest.TempPathFactory) -> Path:
     d = tmp_path_factory.mktemp("polymarket_trades")
     _make_polymarket_ctf_trades().to_parquet(d / "trades.parquet")
@@ -250,6 +274,7 @@ def collateral_lookup_path(tmp_path_factory: pytest.TempPathFactory) -> Path:
 def all_fixture_dirs(
     kalshi_trades_dir: Path,
     kalshi_markets_dir: Path,
+    release_calendar_path: Path,
     polymarket_trades_dir: Path,
     polymarket_legacy_trades_dir: Path,
     polymarket_markets_dir: Path,
@@ -260,6 +285,7 @@ def all_fixture_dirs(
     return {
         "kalshi_trades_dir": kalshi_trades_dir,
         "kalshi_markets_dir": kalshi_markets_dir,
+        "release_calendar_path": release_calendar_path,
         "polymarket_trades_dir": polymarket_trades_dir,
         "polymarket_legacy_trades_dir": polymarket_legacy_trades_dir,
         "polymarket_markets_dir": polymarket_markets_dir,
