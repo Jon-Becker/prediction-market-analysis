@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import importlib
 import inspect
+import json
 import sys
 from abc import ABC, abstractmethod
 from collections.abc import Generator
@@ -109,7 +110,8 @@ class Analysis(ABC):
             dpi: Resolution for raster formats (default: 300).
 
         Returns:
-            Dict mapping format to saved file path.
+            Dict mapping format to saved file path. When metadata is present,
+            it is always saved to a separate JSON file under the "metadata" key.
         """
         if formats is None:
             formats = ["png", "pdf", "csv"]
@@ -148,6 +150,12 @@ class Analysis(ABC):
             path = output_dir / f"{self.name}.json"
             path.write_text(output.chart.to_json())
             saved["json"] = path
+
+        # Preserve diagnostics even when only the default figure/CSV formats are requested.
+        if output.metadata is not None:
+            path = output_dir / f"{self.name}.metadata.json"
+            path.write_text(json.dumps(output.metadata, indent=2))
+            saved["metadata"] = path
 
         return saved
 
