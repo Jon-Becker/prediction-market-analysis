@@ -29,7 +29,10 @@ class MakerTakerReturnsByCategoryAnalysis(Analysis):
     ):
         super().__init__(
             name="maker_taker_returns_by_category",
-            description="Maker vs taker excess returns by market category",
+            description=(
+                "Maker vs taker excess returns by market category; finalized yes/no settlements only "
+                "(scalar and other results excluded; counts in metadata)"
+            ),
         )
         base_dir = Path(__file__).parent.parent.parent.parent
         self.trades_dir = Path(trades_dir or base_dir / "data" / "kalshi" / "trades")
@@ -38,6 +41,8 @@ class MakerTakerReturnsByCategoryAnalysis(Analysis):
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
         con = duckdb.connect()
+
+        coverage = self._settlement_coverage(con)
 
         # Get taker and maker returns by category
         df = con.execute(
@@ -151,13 +156,64 @@ class MakerTakerReturnsByCategoryAnalysis(Analysis):
                 }
             )
 
-        group_df = pd.DataFrame(group_stats)
+        group_df = pd.DataFrame(
+            group_stats,
+            columns=[
+                "group",
+                "taker_excess",
+                "maker_excess",
+                "gap",
+                "taker_n",
+                "maker_n",
+                "taker_volume",
+                "maker_volume",
+                "taker_pnl",
+                "maker_pnl",
+            ],
+        )
         group_df = group_df.sort_values("taker_volume", ascending=False)
 
         fig = self._create_figure(group_df)
         chart = self._create_chart(group_df)
 
-        return AnalysisOutput(figure=fig, data=group_df, chart=chart)
+        con.close()
+        return AnalysisOutput(figure=fig, data=group_df, chart=chart, metadata={"settlement_coverage": coverage})
+
+    def _settlement_coverage(self, con: duckdb.DuckDBPyConnection) -> dict:
+        """Count finalized markets and local trade rows admitted/excluded by the binary model."""
+        coverage = con.execute(
+            f"""
+            WITH finalized_markets AS (
+                SELECT ticker, event_ticker, COALESCE(result IN ('yes', 'no'), FALSE) AS included
+                FROM '{self.markets_dir}/*.parquet'
+                WHERE status = 'finalized'
+            ),
+            trade_counts AS (
+                SELECT t.ticker, COUNT(*) AS n_trades
+                FROM '{self.trades_dir}/*.parquet' t
+                INNER JOIN finalized_markets m ON t.ticker = m.ticker
+                GROUP BY t.ticker
+            )
+            SELECT
+                {CATEGORY_SQL.replace("event_ticker", "m.event_ticker")} AS category,
+                COUNT(*) FILTER (WHERE m.included) AS included_markets,
+                COUNT(*) FILTER (WHERE NOT m.included) AS excluded_markets,
+                COALESCE(SUM(t.n_trades) FILTER (WHERE m.included), 0) AS included_trades,
+                COALESCE(SUM(t.n_trades) FILTER (WHERE NOT m.included), 0) AS excluded_trades
+            FROM finalized_markets m
+            LEFT JOIN trade_counts t ON m.ticker = t.ticker
+            GROUP BY category
+            """
+        ).df()
+        coverage["group"] = coverage["category"].apply(get_group)
+        counts = ["included_markets", "excluded_markets", "included_trades", "excluded_trades"]
+        grouped = coverage.groupby("group")[counts].sum().astype("int64").reset_index()
+        return {
+            "scope": "Finalized markets only; included results are yes/no. All other results, including scalar "
+            "and missing results, are excluded. Trades count local trade rows, not contracts or positions.",
+            "totals": {column: int(grouped[column].sum()) for column in counts},
+            "by_group": grouped.to_dict("records"),
+        }
 
     def _create_figure(self, group_df: pd.DataFrame) -> plt.Figure:
         """Create the matplotlib figure."""

@@ -150,3 +150,21 @@ class TestSaveEdgeCases:
 
         assert nested.exists()
         assert "png" in saved
+
+
+class TestSaveMetadata:
+    """Diagnostics are saved alongside exports without replacing chart JSON."""
+
+    def test_metadata_saved_with_default_formats(self, tmp_path: Path):
+        metadata = {"settlement_coverage": {"excluded_markets": 0}}
+        saved = _StubAnalysis(AnalysisOutput(metadata=metadata)).save(tmp_path)
+        assert set(saved) == {"metadata"}
+        assert saved["metadata"].name == "stub_analysis.metadata.json"
+        assert json.loads(saved["metadata"].read_text()) == metadata
+
+    def test_metadata_and_chart_json_are_separate(self, tmp_path: Path):
+        chart = _make_chart()
+        saved = _StubAnalysis(AnalysisOutput(chart=chart, metadata={})).save(tmp_path, formats=["json"])
+        assert set(saved) == {"json", "metadata"}
+        assert json.loads(saved["json"].read_text()) == chart.to_dict()
+        assert json.loads(saved["metadata"].read_text()) == {}
