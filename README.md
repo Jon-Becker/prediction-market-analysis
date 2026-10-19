@@ -99,6 +99,7 @@ If you've found an issue or have a question, please open an issue [here](https:/
 
 ## Research & Citations
 
+- Kagan, N., Baiocchi, R. (2026). _Who Calibrates Markets? Evidence from Trader Micro-Data_. Kalshi Research, working paper. https://kalshi.com/research/kalshi-research-who-calibrates-markets.pdf
 - Reichenbach, F., Walther, M. (2026). _When Can Prediction Market Prices Be Trusted? Price Informativeness, Calibration, and Bias on Polymarket_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7552098
 - Akey, P., Grégoire, V., Harvie, N., Martineau, C. (2026). _Trades, Quotes, and Price Discovery in Prediction Markets_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7547106
 - Mace, C., Johnson, H. (2026). _Adverse Selection without Private Information: Evidence from Sports Prediction Markets_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7546718
