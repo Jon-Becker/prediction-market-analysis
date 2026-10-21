@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 from pathlib import Path
 from typing import Any
@@ -22,6 +23,9 @@ def parse_release_calendar(payload: Any) -> list[dict[str, Any]]:
     if not isinstance(payload, dict):
         raise FXMacroDataError("FXMacroData calendar response must be an object")
 
+    if "error" in payload or "detail" in payload:
+        raise FXMacroDataError("FXMacroData calendar response contains an error")
+
     data = payload.get("data")
     if not isinstance(data, list):
         raise FXMacroDataError("FXMacroData calendar response must contain a data list")
@@ -33,6 +37,12 @@ def parse_release_calendar(payload: Any) -> list[dict[str, Any]]:
         timestamp = item.get("announcement_datetime")
         if isinstance(timestamp, bool) or not isinstance(timestamp, (int, float)):
             raise FXMacroDataError(f"FXMacroData calendar row {index} must contain a Unix announcement_datetime")
+        try:
+            finite = math.isfinite(timestamp)
+        except OverflowError:
+            finite = False
+        if not finite:
+            raise FXMacroDataError(f"FXMacroData calendar row {index} must contain a finite announcement_datetime")
         rows.append(dict(item))
 
     return sorted(rows, key=lambda row: float(row["announcement_datetime"]))
