@@ -108,6 +108,7 @@ If you've found an issue or have a question, please open an issue [here](https:/
 - Becker, J. (2026). _The Microstructure of Wealth Transfer in Prediction Markets_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=7217640
 - Cardozo, M., Rivero-Wildemauwe, J. I. (2026). _The Favorite-Longshot Bias in Prediction Markets: Evidence from Polymarket_. arXiv. https://arxiv.org/abs/2609.12878
 - Le, N. A. (2026). _Decomposing Crowd Wisdom: Domain-Specific Calibration Dynamics in Prediction Markets_. arXiv. https://arxiv.org/abs/2602.19520
+- Akey P., Gregoire, V., Harvie, N., Martineau, C. (2026). _Liquidity and Price Discovery in Prediction Markets_. Ontario Securities Commission Research Grant Competition. https://www.osc.ca/sites/default/files/2026-10/research-grant-competition-2026-liquidity-and-price-discovery-in-prediction-markets.pdf
 - Akey P., Gregoire, V., Harvie, N., Martineau, C. (2026). _Who Wins and Who Loses In Prediction Markets? Evidence from Polymarket_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6443103
 - Vedova, J. (2026). _Who Profits from Prediction Markets? Execution, not Information_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6191618
 - Brown, A. (2026). _Cassandra Or the Boy Who Cried Wolf? Are Prediction Markets Effective Early Warning Systems?_. SSRN. https://papers.ssrn.com/sol3/papers.cfm?abstract_id=6381538
