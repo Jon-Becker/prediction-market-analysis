@@ -14,6 +14,7 @@ import pandas as pd
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 
+
 class ReturnsByProximityToCloseAnalysis(Analysis):
     """Analyze the excess returns of maker trades based on their proximity to the market's closing time."""
 
@@ -44,7 +45,7 @@ class ReturnsByProximityToCloseAnalysis(Analysis):
                     print(f"Invalid event category. Please enter one of the following: {', '.join(valid_categories)}")
             except ValueError:
                 print("Invalid event category. Please enter a valid category.")
-    
+
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
         con = duckdb.connect()
@@ -59,7 +60,9 @@ class ReturnsByProximityToCloseAnalysis(Analysis):
         ).df()
         valid_categories = categories_df["event_category"].dropna().tolist()
 
-        category = self._get_category_input("Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories)
+        category = self._get_category_input(
+            "Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories
+        )
         self.category = category
 
         date_range_qry_str, self.start_date, self.end_date = self._get_date_range_query_string()
@@ -124,7 +127,6 @@ class ReturnsByProximityToCloseAnalysis(Analysis):
             """
         ).df()
 
-
         # Pivot to compare YES vs NO at each price
         df_yes = df[df["maker_side"] == "YES"].copy()
         df_no = df[df["maker_side"] == "NO"].copy()
@@ -158,7 +160,7 @@ class ReturnsByProximityToCloseAnalysis(Analysis):
         chart = self._create_chart(comparison)
 
         return AnalysisOutput(figure=fig, data=comparison, chart=chart)
-    
+
     def _create_figure(self, df: pd.DataFrame) -> plt.Figure:
         """Create the matplotlib figure."""
         fig, ax = plt.subplots(figsize=(12, 7))
@@ -184,7 +186,7 @@ class ReturnsByProximityToCloseAnalysis(Analysis):
         ax.set_xlabel("Days to Close")
         ax.set_ylabel("Excess Return (pp)")
 
-        category_label = self.category 
+        category_label = self.category
 
         if self.start_date and self.end_date:
             ax.set_title(
@@ -200,9 +202,8 @@ class ReturnsByProximityToCloseAnalysis(Analysis):
             )
         else:
             ax.set_title("Maker Excess Returns by Proximity to Close")
-        
+
         ax.set_xlim(0, 30)
-        # ax.set_xticks(range(0, 101, 10))
         ax.legend(loc="upper right")
         ax.grid(True, alpha=0.3)
         plt.tight_layout()

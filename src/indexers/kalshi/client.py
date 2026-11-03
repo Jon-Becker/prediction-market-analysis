@@ -2,10 +2,8 @@ from collections.abc import Generator
 from typing import Optional
 
 from src.common.client import HttpClient
+from src.indexers.kalshi.models import Event, Market, Trade
 
-from src.indexers.kalshi.models import Market, Event, Trade
-
-# KALSHI_API_HOST = "https://api.elections.kalshi.com/trade-api/v2"
 KALSHI_API_HOST = "https://external-api.kalshi.com/trade-api/v2"
 
 
@@ -99,7 +97,7 @@ class KalshiClient:
         params = {"limit": limit, **kwargs}
         data = self.http.get("/markets", params=params)
         return [Market.from_dict(m) for m in data.get("markets", [])]
-    
+
     def list_events(self, limit: int = 200, **kwargs) -> list[Event]:
         params = {"limit": limit, **kwargs}
         data = self.http.get("/events", params=params)
@@ -133,8 +131,10 @@ class KalshiClient:
         cursor: Optional[str] = None,
         min_close_ts: Optional[int] = None,
         max_close_ts: Optional[int] = None,
-        status: Optional[str] = None, #Available options: unopened, open, paused, closed, settled
-        mve_filter: Optional[str] = None, #Filter by multivariate events (combos). 'only' returns only multivariate events, 'exclude' excludes multivariate events.
+        # One of: unopened, open, paused, closed, settled
+        status: Optional[str] = None,
+        # Multivariate (combo) events: "only" returns only them, "exclude" leaves them out
+        mve_filter: Optional[str] = None,
     ) -> Generator[tuple[list[Market], Optional[str]], None, None]:
         while True:
             params = {"limit": limit}
@@ -158,13 +158,13 @@ class KalshiClient:
 
             if not cursor:
                 break
-                
+
     def iter_historical_markets(
         self,
         limit: int = 1000,
         cursor: Optional[str] = None,
-        mve_filter: Optional[str] = "exclude", #Filter by multivariate events (combos). 'only' returns only multivariate events, 'exclude' excludes multivariate events.
-        get_event_categories: bool = True
+        # Multivariate (combo) events: "only" returns only them, "exclude" leaves them out
+        mve_filter: Optional[str] = "exclude",
     ) -> Generator[tuple[list[Market], Optional[str]], None, None]:
         while True:
             params = {"limit": limit}
@@ -189,7 +189,8 @@ class KalshiClient:
         cursor: Optional[str] = None,
         min_close_ts: Optional[int] = None,
         max_close_ts: Optional[int] = None,
-        status: Optional[str] = None, #Available options: unopened, open, paused, closed, settled
+        # One of: unopened, open, paused, closed, settled
+        status: Optional[str] = None,
     ) -> Generator[tuple[list[Market], Optional[str]], None, None]:
         while True:
             params = {"limit": limit}
@@ -201,15 +202,18 @@ class KalshiClient:
                 params["max_close_ts"] = max_close_ts
             if status is not None:
                 params["status"] = status
-            
-            params["with_nested_markets"] = "true" # This tells the API to return markets nested within their events
+
+            # Return each event's markets nested inside it
+            params["with_nested_markets"] = "true"
 
             data = self.http.get("/events", params=params)
 
-            markets = [Market.from_dict(m | {"event_category": e.get("category", "")}) for e in data.get("events", []) for m in e.get("markets", [])]
-            # markets = [m | {"event_category": e.get("category", "")} for e in data.get("events", []) for m in e.get("markets", [])]
-            
-            
+            markets = [
+                Market.from_dict(m | {"event_category": e.get("category", "")})
+                for e in data.get("events", [])
+                for m in e.get("markets", [])
+            ]
+
             cursor = data.get("cursor")
 
             yield markets, cursor

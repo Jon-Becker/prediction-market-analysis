@@ -37,7 +37,6 @@ class KalshiNewTradesIndexer(Indexer):
 
         self.client = KalshiClient()
 
-
     def run(self) -> None:
         BATCH_SIZE = 10000
         DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -74,7 +73,7 @@ class KalshiNewTradesIndexer(Indexer):
         # )
 
         tradeless_tickers = duckdb.sql(
-            f"""
+            """
             WITH tradeless_markets AS (
                 SELECT 
                     DISTINCT m.ticker
@@ -146,7 +145,7 @@ class KalshiNewTradesIndexer(Indexer):
             finally:
                 pass
 
-        # Sequential fetching (for debugging)        
+        # Sequential fetching (for debugging)
         # pbar = tqdm(total=len(tickers_to_process), desc="Fetching trades")
         # for ticker in tickers_to_process:
         #     try:
@@ -166,7 +165,6 @@ class KalshiNewTradesIndexer(Indexer):
         #     except Exception as e:
         #         pbar.update(1)
         #         tqdm.write(f"Error fetching {ticker}: {e}")
-
 
         # Concurrent fetching
         pbar = tqdm(total=len(tickers_to_process), desc="Fetching trades")
@@ -194,7 +192,6 @@ class KalshiNewTradesIndexer(Indexer):
                     tqdm.write(f"Error fetching {ticker}: {e}")
                 futures.pop(future, None)
         pbar.close()
-
 
         self.client.close()
         # Save remaining

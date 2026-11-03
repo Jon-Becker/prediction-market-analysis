@@ -1,7 +1,6 @@
 .DS_Store
 .env
 
-
 # Python-generated files
 __pycache__/
 *.py[oc]
@@ -24,6 +23,7 @@ research/*
 !research/sections
 
 scratchpad
+scratch
 
 fig
 *.tar.zst

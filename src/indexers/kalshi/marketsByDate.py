@@ -10,9 +10,10 @@ from src.indexers.kalshi.client import KalshiClient
 DATA_DIR = Path("data/kalshi/markets")
 CURSOR_FILE = Path("data/kalshi/.backfill_cursor")
 
-#Hard code for now, eventually take user input
-MIN_CLOSE_TS = 1772323200 # 03/01/2026  
+# Hard code for now, eventually take user input
+MIN_CLOSE_TS = 1772323200  # 03/01/2026
 MAX_CLOSE_TS = 1779565337
+
 
 class KalshiMarketsByDateIndexer(Indexer):
     """Fetches and stores Kalshi markets data."""
@@ -48,8 +49,8 @@ class KalshiMarketsByDateIndexer(Indexer):
             cursor=cursor,
             min_close_ts=self._min_close_ts,
             max_close_ts=self._max_close_ts,
-            status="settled", # Only fetch settled markets 
-            mve_filter="exclude", # Exclude multivariate events (combos) for simplicity
+            status="settled",  # Only fetch settled markets
+            mve_filter="exclude",  # Exclude multivariate events (combos) for simplicity
         ):
             if markets:
                 total_stored = storage.append_markets(markets)

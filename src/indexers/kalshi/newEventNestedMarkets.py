@@ -1,9 +1,10 @@
 """Indexer for Kalshi markets data."""
-import duckdb
 
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
+
+import duckdb
 
 from src.common.indexer import Indexer
 from src.common.storage import ParquetStorage
@@ -32,7 +33,8 @@ class KalshiNewEventNestedMarketsIndexer(Indexer):
             try:
                 date_str = input(prompt)
 
-                if not date_str : return None
+                if not date_str:
+                    return None
 
                 date_obj = datetime.strptime(date_str, "%Y-%m-%d")
                 timestamp = int(date_obj.timestamp())
@@ -48,7 +50,7 @@ class KalshiNewEventNestedMarketsIndexer(Indexer):
         con = duckdb.connect()
 
         df_markets_min_max = con.execute(
-            f"""
+            """
                 WITH resolved_markets as(
                         SELECT close_time as date
                         FROM 'data/kalshi/markets/markets_*.parquet' m
@@ -62,7 +64,6 @@ class KalshiNewEventNestedMarketsIndexer(Indexer):
                     FROM resolved_markets
             """
         ).df()
-
 
         markets_min = df_markets_min_max["min"][0]
         markets_max = df_markets_min_max["max"][0]
@@ -81,20 +82,20 @@ class KalshiNewEventNestedMarketsIndexer(Indexer):
             limit=200,
             cursor=cursor,
             min_close_ts=int(markets_max.timestamp()),
-            status="settled", # Only fetch settled markets
+            status="settled",  # Only fetch settled markets
         ):
-            
             newMarkets = []
 
             if markets:
-
                 for market in markets:
-                    if (market.close_time > markets_max
-                        and market.status == 'finalized'): newMarkets.append(market)
+                    if market.close_time > markets_max and market.status == "finalized":
+                        newMarkets.append(market)
 
                 total_stored = storage.append_markets(newMarkets)
                 total += len(newMarkets)
-                print(f"Fetched {len(markets)} markets, {len(newMarkets)} new. (total new: {total}, stored: {total_stored})")
+                print(
+                    f"Fetched {len(markets)} markets, {len(newMarkets)} new. (total new: {total}, stored: {total_stored})"
+                )
 
             if next_cursor:
                 CURSOR_FILE.write_text(next_cursor)

@@ -27,20 +27,19 @@ class KalshiHistoricalMarketsIndexer(Indexer):
         self._min_close_ts = min_close_ts
         self._max_close_ts = max_close_ts
 
-
     @staticmethod
     def _get_date_input(prompt: str) -> Optional[int]:
         while True:
             try:
                 date_str = input(prompt)
 
-                if not date_str : return None
+                if not date_str:
+                    return None
 
                 return datetime.strptime(date_str, "%Y-%m-%d").replace(tzinfo=timezone.utc)
-                
+
             except ValueError:
                 print("Invalid date format. Please use YYYY-MM-DD (e.g., 2026-03-01)")
-    
 
     def run(self) -> None:
         DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -59,15 +58,15 @@ class KalshiHistoricalMarketsIndexer(Indexer):
         self._max_close = self._get_date_input("Enter maximum close date (YYYY-MM-DD) or leave blank for no maximum: ")
 
         total = 0
-        for markets, next_cursor in client.iter_historical_markets(
-            limit=1000,
-            cursor=cursor
-        ):
-            
-            filtered_markets = [m for m in markets if (self._min_close is None or m.close_time >= self._min_close) and (self._max_close is None or m.close_time <= self._max_close)]
+        for markets, next_cursor in client.iter_historical_markets(limit=1000, cursor=cursor):
+            filtered_markets = [
+                m
+                for m in markets
+                if (self._min_close is None or m.close_time >= self._min_close)
+                and (self._max_close is None or m.close_time <= self._max_close)
+            ]
 
             if filtered_markets:
-
                 total_stored = storage.append_markets(filtered_markets)
                 total += len(filtered_markets)
                 print(f"Fetched {len(filtered_markets)} markets (total: {total}, stored: {total_stored})")

@@ -1,4 +1,3 @@
-
 from __future__ import annotations
 
 import math
@@ -6,20 +5,17 @@ from pathlib import Path
 
 import duckdb
 import matplotlib.pyplot as plt
-from matplotlib.colors import Normalize
-from matplotlib.widgets import Button
-from matplotlib import cm
-
-from mpl_toolkits.mplot3d.art3d import Line3DCollection
-
 import numpy as np
 import pandas as pd
-
+from matplotlib import cm
+from matplotlib.colors import Normalize
+from matplotlib.widgets import Button
+from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
 from src.common.analysis import Analysis, AnalysisOutput
-from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 
-pd.set_option('display.max_rows', 100)
+pd.set_option("display.max_rows", 100)
+
 
 class Maker_Returns_Over_Time_3D_Historical(Analysis):
     """Analyze maker returns by position direction (YES vs NO) and event category over time(historical)."""
@@ -48,11 +44,11 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
     def _get_yes_no(prompt: str) -> str:
         while True:
             try:
-                yes_no = input(prompt).lower() 
+                yes_no = input(prompt).lower()
                 if yes_no in ["yes", "no"]:
                     return yes_no
                 else:
-                    print(f"Invalid selection. Please enter yes or no.")
+                    print("Invalid selection. Please enter yes or no.")
             except ValueError:
                 print("Invalid selection. Please enter yes or no.")
 
@@ -68,7 +64,6 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
             except ValueError:
                 print("Invalid event category. Please enter a valid category.")
 
-
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
         con = duckdb.connect()
@@ -82,7 +77,9 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
         ).df()
         valid_categories = categories_df["category"].dropna().tolist()
 
-        category = self._get_category_input("Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories)
+        category = self._get_category_input(
+            "Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories
+        )
         self.category = category
 
         yes_no = self._get_yes_no("Enter yes or no: ")
@@ -118,19 +115,18 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
 
         self.start_date = min_date
         self.end_date = max_date
-        
+
         delta = max_date - min_date
 
         weeks = math.ceil(delta.days / 7) + 1
 
         # markets_date_range = pd.date_range(start=min_date, end=max_date,  freq="W", inclusive="left")
-        markets_date_range = pd.date_range(start=min_date, periods=weeks,  freq="7D")
+        markets_date_range = pd.date_range(start=min_date, periods=weeks, freq="7D")
         # markets_date_range = pd.date_range(start=min_date, end=max_date, freq="D")
 
         values = []  # Initialize an empty array to store the values
 
         for day, next_day in zip(markets_date_range, markets_date_range[1:]):
-
             print(f"Processing: {day.strftime('%Y-%m-%d')} thru: {next_day.strftime('%Y-%m-%d')}")
 
             df = con.execute(
@@ -142,8 +138,8 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
                     WHERE m.status = 'finalized'
                     AND m.result IN ('yes', 'no')
                     AND e.category = '{category}'
-                    AND m.close_time >= '{day.strftime('%Y-%m-%d')}'
-                    AND m.close_time < '{next_day.strftime('%Y-%m-%d')}'
+                    AND m.close_time >= '{day.strftime("%Y-%m-%d")}'
+                    AND m.close_time < '{next_day.strftime("%Y-%m-%d")}'
                 ),
                 maker_yes_positions AS (
                     -- Maker bought YES (taker sold YES = taker bought NO)
@@ -190,72 +186,72 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
             ).df()
 
             if self.yes_no == "yes":
-                df_result = df[df["maker_side"] == "YES"]  
+                df_result = df[df["maker_side"] == "YES"]
             else:
                 df_result = df[df["maker_side"] == "NO"]
 
-
-            df_result.set_index('price', inplace=True)
+            df_result.set_index("price", inplace=True)
             df_result = df_result.reindex(range(1, 100), fill_value=0)
-            values.append( df_result["excess_return"].tolist() )
+            values.append(df_result["excess_return"].tolist())
 
         values = np.array(values)  # Convert the list of lists to a 2D NumPy array
 
-        print(f"Preparing figure...")
+        print("Preparing figure...")
 
         fig = self._create_figure(z_values=values, y_values=markets_date_range)
 
         return AnalysisOutput(figure=fig, data=None, chart=None)
 
-    
     def _create_figure(self, z_values: np.ndarray, y_values: np.ndarray) -> plt.Figure:
         fig = plt.figure(figsize=(50, 50))
-        ax = fig.add_subplot(111, projection='3d')
+        ax = fig.add_subplot(111, projection="3d")
 
         xlabels = np.array(range(1, 100))  # Prices from 1 to 99
-        xpos = np.arange(xlabels.shape[0]) 
-
+        xpos = np.arange(xlabels.shape[0])
 
         # ylabels = y_values  # Dates
-        ylabels = [ f"{date.strftime('%Y-%m-%d')} - {next_date.strftime('%m-%d')}" for date, next_date in zip(y_values, y_values[1:])]
+        ylabels = [
+            f"{date.strftime('%Y-%m-%d')} - {next_date.strftime('%m-%d')}"
+            for date, next_date in zip(y_values, y_values[1:])
+        ]
         ypos = np.arange(y_values[:-1].shape[0])
-        
+
         xposM, yposM = np.meshgrid(xpos, ypos, copy=False)
 
         zpos = z_values.ravel()
 
         dx = 0.5
         dy = dx * (len(ylabels) / len(xlabels))  # Adjust dy based on the ratio of ylabels to xlabels
-        dz = zpos 
+        dz = zpos
 
-        x = xposM.ravel() 
+        x = xposM.ravel()
 
         xlabels = [label if (i + 1) % 5 == 0 else "" for i, label in enumerate(xlabels)]
 
-        ax.xaxis.set_ticks(xpos + dx/2.)
+        ax.xaxis.set_ticks(xpos + dx / 2.0)
         ax.xaxis.set_ticklabels(xlabels)
 
         y = yposM.ravel()
 
-        ax.yaxis.set_ticks(ypos + dy/2.)
+        ax.yaxis.set_ticks(ypos + dy / 2.0)
         ax.yaxis.set_ticklabels(ylabels)
 
         ax.set_zlim(0, dz.max() * 1.1)  # Set z-axis limit slightly above the max value
 
         # values = np.linspace(0.2, 1., yposM.ravel().shape[0]) # Color values for the bars based on their position in the y-axis
-        values = (dz-dz.min())/np.float64(dz.max()-dz.min())
-        
-        bar_colors = cm.plasma(values)    
+        values = (dz - dz.min()) / np.float64(dz.max() - dz.min())
+
+        bar_colors = cm.plasma(values)
 
         ax.set_box_aspect((2, 2, 1))
 
-        bars = ax.bar3d(x, y, dz*0, dx, dy, dz, shade=True, color=bar_colors, alpha=0.8)
+        bars = ax.bar3d(x, y, dz * 0, dx, dy, dz, shade=True, color=bar_colors, alpha=0.8)
 
-        ax.set_xlabel('Price (cents)')
-        ax.set_ylabel('Date')
-        ax.set_zlabel('Excess Return (pp)')
+        ax.set_xlabel("Price (cents)")
+        ax.set_ylabel("Date")
+        ax.set_zlabel("Excess Return (pp)")
 
-        category_label = self.category 
+        category_label = self.category
 
         ax.set_title(
             f"Maker Excess Returns by Position Direction(No)\nEvent Category: {category_label}, {self.start_date.strftime('%Y-%m-%d')} to {self.end_date.strftime('%Y-%m-%d')}"
@@ -275,35 +271,43 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
             segments = np.concatenate([points[:-1], points[1:]], axis=1)
 
             norm = Normalize(zpos.min(), zpos.max())
-            lc = Line3DCollection(segments, cmap='viridis', norm=norm, linewidths=2)
-            lc.set_array(z_average) # Sets the values used for colormapping
+            lc = Line3DCollection(segments, cmap="viridis", norm=norm, linewidths=2)
+            lc.set_array(z_average)  # Sets the values used for colormapping
 
             ax.add_collection(lc)
 
             lcs.append(lc)
             z_average_final.append(z_average[-1])
 
-        ax.scatter(xpos, ypos[-1], z_average_final, c=z_average_final, cmap='viridis', norm=norm, s=50, label='3-Point Rolling Average')
-        ax.plot(xpos, ypos[-1], z_average_final, color='black', linewidth=1.5)
-        
+        ax.scatter(
+            xpos,
+            ypos[-1],
+            z_average_final,
+            c=z_average_final,
+            cmap="viridis",
+            norm=norm,
+            s=50,
+            label="3-Point Rolling Average",
+        )
+        ax.plot(xpos, ypos[-1], z_average_final, color="black", linewidth=1.5)
+
         def toggle_bars(event):
             bars.set_visible(not bars.get_visible())
             plt.draw()
-        
+
         def toggle_lines(event):
             for lc in lcs:
                 lc.set_visible(not lc.get_visible())
             plt.draw()
 
         axBtn = fig.add_axes((0.7, 0.05, 0.1, 0.075))
-        bvis = Button(axBtn, 'Show/Hide Bars')
+        bvis = Button(axBtn, "Show/Hide Bars")
         bvis.on_clicked(toggle_bars)
 
         axBtn2 = fig.add_axes((0.7, 0.15, 0.1, 0.075))
-        bvis2 = Button(axBtn2, 'Show/Hide Moving Average')
+        bvis2 = Button(axBtn2, "Show/Hide Moving Average")
         bvis2.on_clicked(toggle_lines)
 
         plt.show()
 
         return fig
-

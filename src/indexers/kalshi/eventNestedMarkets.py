@@ -31,7 +31,8 @@ class KalshiEventNestedMarketsIndexer(Indexer):
             try:
                 date_str = input(prompt)
 
-                if not date_str : return None
+                if not date_str:
+                    return None
 
                 date_obj = datetime.strptime(date_str, "%Y-%m-%d")
                 timestamp = int(date_obj.timestamp())
@@ -47,8 +48,7 @@ class KalshiEventNestedMarketsIndexer(Indexer):
         min_close_ts = self._get_date_input("Enter minimum close date (YYYY-MM-DD): ")
         max_close_ts = self._get_date_input("Enter maximum close date (YYYY-MM-DD): ")
 
-        if (min_close_ts and
-            min_close_ts > max_close_ts):
+        if min_close_ts and min_close_ts > max_close_ts:
             print("Error: minimum date cannot be after maximum date")
             return
 
@@ -67,7 +67,7 @@ class KalshiEventNestedMarketsIndexer(Indexer):
             cursor=cursor,
             min_close_ts=min_close_ts,
             max_close_ts=max_close_ts,
-            status="settled", # Only fetch settled markets
+            status="settled",  # Only fetch settled markets
         ):
             if markets:
                 total_stored = storage.append_markets(markets)

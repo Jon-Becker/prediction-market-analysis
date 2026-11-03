@@ -171,9 +171,7 @@ class LongshotVolumeShareOverTimeMonthlyAnalysis(Analysis):
     ) -> ChartConfig:
         """Create the chart configuration for web display."""
         # Pivot for stacked bar chart
-        pivot_df = df.pivot_table(index="month", columns="price_bucket", values="volume_share", aggfunc="sum").fillna(
-            0
-        )
+        pivot_df = df.pivot_table(index="month", columns="price_bucket", values="volume_share", aggfunc="sum").fillna(0)
 
         # Reorder columns logically
         bucket_order = [

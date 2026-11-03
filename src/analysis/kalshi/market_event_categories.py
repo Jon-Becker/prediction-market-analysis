@@ -12,7 +12,7 @@ import pandas as pd
 import squarify
 from matplotlib.patches import Patch
 
-from src.analysis.kalshi.util.categories import EVENT_CATEGORIES_COLORS, get_group, get_hierarchy
+from src.analysis.kalshi.util.categories import EVENT_CATEGORIES_COLORS, get_hierarchy
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 
@@ -242,7 +242,9 @@ class MarketEventCategoriesAnalysis(Analysis):
 
         # Add legend for groups
         legend_elements = [
-            Patch(facecolor=EVENT_CATEGORIES_COLORS[g], label=g) for g in df_grouped["group"].tolist() if g in EVENT_CATEGORIES_COLORS
+            Patch(facecolor=EVENT_CATEGORIES_COLORS[g], label=g)
+            for g in df_grouped["group"].tolist()
+            if g in EVENT_CATEGORIES_COLORS
         ]
         ax.legend(
             handles=legend_elements,

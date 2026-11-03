@@ -6,7 +6,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Optional
 
-import time
 import duckdb
 import pandas as pd
 from tqdm import tqdm
@@ -37,7 +36,6 @@ class KalshiHistoricalEventsIndexer(Indexer):
         self._max_workers = max_workers
 
         self.client = KalshiClient()
-
 
     def run(self) -> None:
         BATCH_SIZE = 10000
@@ -109,19 +107,19 @@ class KalshiHistoricalEventsIndexer(Indexer):
             ticker_str = ",".join(tickers)
 
             try:
-                events = self.client.list_events(
-                    tickers=ticker_str
-                )
-                if not events   :
+                events = self.client.list_events(tickers=ticker_str)
+                if not events:
                     return []
                 fetched_at = datetime.utcnow()
                 return [
-                    {**asdict(event), "_fetched_at": fetched_at} for event in events if event.event_ticker not in existing_tickers
+                    {**asdict(event), "_fetched_at": fetched_at}
+                    for event in events
+                    if event.event_ticker not in existing_tickers
                 ]
             finally:
                 pass
 
-        # Sequential fetching (for debugging)        
+        # Sequential fetching (for debugging)
         # pbar = tqdm(total=len(tickers_to_process), desc="Fetching trades")
         # for ticker in tickers_to_process:
         #     try:
@@ -141,7 +139,6 @@ class KalshiHistoricalEventsIndexer(Indexer):
         #     except Exception as e:
         #         pbar.update(1)
         #         tqdm.write(f"Error fetching {ticker}: {e}")
-
 
         # Concurrent fetching in chunks of tickers (up to 100 per request)
         CHUNK_TICKERS = 100
@@ -173,13 +170,11 @@ class KalshiHistoricalEventsIndexer(Indexer):
                 futures.pop(future, None)
         pbar.close()
 
-
         self.client.close()
         # Save remaining
         if all_events:
             total_events_saved += save_batch(all_events)
 
         print(
-            f"\nBackfill events complete: {len(tickers_to_process)} events processed, "
-            f"{total_events_saved} events saved"
+            f"\nBackfill events complete: {len(tickers_to_process)} events processed, {total_events_saved} events saved"
         )

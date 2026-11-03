@@ -63,7 +63,9 @@ class MakerReturnsByDirectionEventCategoryAnalysis(Analysis):
         ).df()
         valid_categories = categories_df["event_category"].dropna().tolist()
 
-        category = self._get_category_input("Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories)
+        category = self._get_category_input(
+            "Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories
+        )
         self.category = category
 
         date_range_qry_str, self.start_date, self.end_date = self._get_date_range_query_string()
@@ -183,7 +185,7 @@ class MakerReturnsByDirectionEventCategoryAnalysis(Analysis):
         ax.set_xlabel("Maker's Purchase Price (cents)")
         ax.set_ylabel("Excess Return (pp)")
 
-        category_label = self.category 
+        category_label = self.category
 
         if self.start_date and self.end_date:
             ax.set_title(
@@ -199,7 +201,7 @@ class MakerReturnsByDirectionEventCategoryAnalysis(Analysis):
             )
         else:
             ax.set_title("Maker Excess Returns by Position Direction")
-        
+
         ax.set_xlim(1, 99)
         ax.set_xticks(range(0, 101, 10))
         ax.legend(loc="upper right")

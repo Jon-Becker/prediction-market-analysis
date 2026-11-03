@@ -26,11 +26,11 @@ from __future__ import annotations
 import importlib
 import inspect
 import sys
-from datetime import datetime,timedelta
 from abc import ABC, abstractmethod
 from collections.abc import Generator
 from contextlib import contextmanager
 from dataclasses import dataclass
+from datetime import datetime, timedelta
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -67,7 +67,7 @@ class Analysis(ABC):
         self.output_type = "2D"
 
     @staticmethod
-    def _get_date_input(prompt: str) -> datetime.datetime | None:
+    def _get_date_input(prompt: str) -> datetime | None:
         while True:
             try:
                 date_str = input(prompt)
@@ -80,8 +80,7 @@ class Analysis(ABC):
                 print("Invalid date format. Please use YYYY-MM-DD (e.g., 2026-03-01)")
 
     @staticmethod
-    def _get_date_range_query_string() -> tuple[str, datetime.datetime | None, datetime.datetime | None]:
-
+    def _get_date_range_query_string() -> tuple[str, datetime | None, datetime | None]:
         print("Enter date range for analysis")
 
         while True:
@@ -92,18 +91,17 @@ class Analysis(ABC):
                 print("Start date cannot be after end date. Please try again.")
                 continue
             break
-        
+
         query_string = ""
 
         if start_date:
             query_string = f"AND close_time >= DATE '{start_date.strftime('%Y-%m-%d')}'"
-            
+
         if end_date:
             next_day = end_date + timedelta(days=1)
             query_string += f" AND close_time < DATE '{next_day.strftime('%Y-%m-%d')}'"
 
         return query_string, start_date, end_date
-
 
     @contextmanager
     def progress(self, description: str) -> Generator[None, None, None]:

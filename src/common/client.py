@@ -77,7 +77,6 @@ class HttpClient:
                 time.sleep(wait)
             self._last_request = time.monotonic()
 
-
     def get(self, url: str, *, params: Optional[dict] = None) -> Union[dict, list]:
         return self._request("GET", url, params=params)
 

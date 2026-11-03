@@ -37,7 +37,6 @@ class KalshiHistoricalTradesIndexer(Indexer):
 
         self.client = KalshiClient()
 
-
     def run(self) -> None:
         BATCH_SIZE = 10000
         DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -122,7 +121,7 @@ class KalshiHistoricalTradesIndexer(Indexer):
             finally:
                 pass
 
-        # Sequential fetching (for debugging)        
+        # Sequential fetching (for debugging)
         # pbar = tqdm(total=len(tickers_to_process), desc="Fetching trades")
         # for ticker in tickers_to_process:
         #     try:
@@ -142,7 +141,6 @@ class KalshiHistoricalTradesIndexer(Indexer):
         #     except Exception as e:
         #         pbar.update(1)
         #         tqdm.write(f"Error fetching {ticker}: {e}")
-
 
         # Concurrent fetching
         pbar = tqdm(total=len(tickers_to_process), desc="Fetching trades")
@@ -170,7 +168,6 @@ class KalshiHistoricalTradesIndexer(Indexer):
                     tqdm.write(f"Error fetching {ticker}: {e}")
                 futures.pop(future, None)
         pbar.close()
-
 
         self.client.close()
         # Save remaining

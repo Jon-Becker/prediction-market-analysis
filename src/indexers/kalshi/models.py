@@ -66,7 +66,7 @@ class Market:
     created_time: Optional[datetime]
     open_time: Optional[datetime]
     close_time: Optional[datetime]
-    event_category: Optional[str] # Category returned by the API, e.g. "Politics", "Sports", etc.
+    event_category: Optional[str]  # Category returned by the API, e.g. "Politics", "Sports", etc.
 
     @classmethod
     def from_dict(cls, data: dict) -> "Market":
@@ -112,7 +112,8 @@ class Market:
             # New fields
             event_category=data.get("event_category"),
         )
-    
+
+
 @dataclass
 class Event:
     event_ticker: str
@@ -128,5 +129,5 @@ class Event:
             series_ticker=data["series_ticker"],
             sub_title=data["sub_title"],
             title=data["title"],
-            category=data.get("category", "")
+            category=data.get("category", ""),
         )

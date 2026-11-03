@@ -176,4 +176,3 @@ class KalshiCalibrationDeviationOverTimeAnalysis(Analysis):
             xLabel="Date",
             yLabel="Mean Absolute Deviation (%)",
         )
-

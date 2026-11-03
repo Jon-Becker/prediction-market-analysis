@@ -616,7 +616,7 @@ EVENT_CATEGORIES_COLORS = {
     "Science and Technology": "#00ffff",
     "Crypto": "#ffff00",
     "Climate and Weather": "#88ddff",
-    "Financials": "#ffcc00"
+    "Financials": "#ffcc00",
 }
 
 

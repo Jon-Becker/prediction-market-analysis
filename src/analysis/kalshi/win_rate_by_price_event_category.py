@@ -54,7 +54,9 @@ class WinRateByPriceEventCategoryAnalysis(Analysis):
         ).df()
         valid_categories = categories_df["event_category"].dropna().tolist()
 
-        category = self._get_category_input("Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories)
+        category = self._get_category_input(
+            "Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories
+        )
 
         self.name += f"_{category.replace(' ', '_').lower()}"
 

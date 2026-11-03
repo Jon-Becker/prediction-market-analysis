@@ -61,7 +61,7 @@ class Indexer(ABC):
             module_name = "src.indexers." + ".".join(module_parts)
             try:
                 module = importlib.import_module(module_name)
-            except ImportError as e:
+            except ImportError:
                 continue
 
             for _, obj in inspect.getmembers(module, inspect.isclass):
