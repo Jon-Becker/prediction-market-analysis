@@ -12,95 +12,67 @@ from matplotlib.colors import Normalize
 from matplotlib.widgets import Button
 from mpl_toolkits.mplot3d.art3d import Line3DCollection
 
+from src.analysis.kalshi.util.events import DEFAULT_EVENTS_DIR, prompt_event_category
 from src.common.analysis import Analysis, AnalysisOutput
+from src.common.util.prompts import prompt_choice
 
 pd.set_option("display.max_rows", 100)
 
 
-class Maker_Returns_Over_Time_3D_Historical(Analysis):
-    """Analyze maker returns by position direction (YES vs NO) and event category over time(historical)."""
+class MakerReturnsOverTime3DAnalysis(Analysis):
+    """Analyze maker returns by position direction (YES vs NO) and event category over time.
+
+    Shows an interactive 3D bar chart: price (x) by week (y) by maker excess return (z),
+    with a 3-week rolling average line per price level.
+    """
 
     def __init__(
         self,
         trades_dir: Path | str | None = None,
-        events_dir: Path | str | None = None,
         markets_dir: Path | str | None = None,
+        events_dir: Path | str | None = None,
     ):
         super().__init__(
-            name="3d_maker_returns_over_time_historical",
-            description="Maker excess returns by position direction (YES vs NO) and event category over time(historical)",
+            name="3d_maker_returns_over_time",
+            description="Maker excess returns by position direction (YES vs NO) and event category over time",
         )
         self.output_type = "3D"
 
         base_dir = Path(__file__).parent.parent.parent.parent
-        self.trades_dir = Path(trades_dir or base_dir / "data" / "kalshi" / "historical" / "trades")
-        self.events_dir = Path(events_dir or base_dir / "data" / "kalshi" / "historical" / "events")
-        self.markets_dir = Path(markets_dir or base_dir / "data" / "kalshi" / "historical" / "markets")
+        self.trades_dir = Path(trades_dir or base_dir / "data" / "kalshi" / "trades")
+        self.markets_dir = Path(markets_dir or base_dir / "data" / "kalshi" / "markets")
+        self.events_dir = Path(events_dir or DEFAULT_EVENTS_DIR)
         self.category: str | None = None
         self.start_date = None
         self.end_date = None
-
-    @staticmethod
-    def _get_yes_no(prompt: str) -> str:
-        while True:
-            try:
-                yes_no = input(prompt).lower()
-                if yes_no in ["yes", "no"]:
-                    return yes_no
-                else:
-                    print("Invalid selection. Please enter yes or no.")
-            except ValueError:
-                print("Invalid selection. Please enter yes or no.")
-
-    @staticmethod
-    def _get_category_input(prompt: str, valid_categories: list) -> int:
-        while True:
-            try:
-                event_category = input(prompt)
-                if event_category in valid_categories:
-                    return event_category
-                else:
-                    print(f"Invalid event category. Please enter one of the following: {', '.join(valid_categories)}")
-            except ValueError:
-                print("Invalid event category. Please enter a valid category.")
 
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
         con = duckdb.connect()
 
-        # Get distinct event categories for user selection
-        categories_df = con.execute(
-            f"""
-            SELECT DISTINCT category
-            FROM '{self.events_dir}/*.parquet'
-            """
-        ).df()
-        valid_categories = categories_df["category"].dropna().tolist()
-
-        category = self._get_category_input(
-            "Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories
-        )
+        category = prompt_event_category(self.events_dir)
         self.category = category
 
-        yes_no = self._get_yes_no("Enter yes or no: ")
+        yes_no = prompt_choice("Maker side to plot (yes or no): ", ["yes", "no"])
         self.yes_no = yes_no
 
         date_range_qry_str, self.start_date, self.end_date = self._get_date_range_query_string()
 
-        self.name = f"3d_maker_returns_over_time_{category.replace(' ', '_').lower()}_{yes_no}"
+        self.name = f"{self.name}_{category.replace(' ', '_').lower()}_{yes_no}"
 
+        # Date span to plot: days with at least 100 resolved markets in this category
         df_market_dates = con.execute(
             f"""
             WITH resolved_markets as(
-                SELECT DATE(close_time) as date, count(*) as n_markets
-                FROM '{self.markets_dir}/markets_*.parquet' m
+                SELECT DATE(m.close_time) as date, count(*) as n_markets
+                FROM '{self.markets_dir}/*.parquet' m
                 INNER JOIN '{self.events_dir}/events_*.parquet' e ON e.event_ticker = m.event_ticker
                 WHERE 1=1
                 AND m.status = 'finalized'
                 AND m.volume >= 100
                 AND e.category = '{category}'
                 {date_range_qry_str}
-                GROUP BY DATE(close_time)
+                GROUP BY DATE(m.close_time)
                 HAVING count(*) >= 100
                 ORDER BY date ASC
             )
@@ -113,6 +85,10 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
         min_date = df_market_dates["min"][0]
         max_date = df_market_dates["max"][0]
 
+        if pd.isna(min_date):
+            print(f"No days with at least 100 resolved '{category}' markets in this range, nothing to plot.")
+            return AnalysisOutput()
+
         self.start_date = min_date
         self.end_date = max_date
 
@@ -120,9 +96,7 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
 
         weeks = math.ceil(delta.days / 7) + 1
 
-        # markets_date_range = pd.date_range(start=min_date, end=max_date,  freq="W", inclusive="left")
         markets_date_range = pd.date_range(start=min_date, periods=weeks, freq="7D")
-        # markets_date_range = pd.date_range(start=min_date, end=max_date, freq="D")
 
         values = []  # Initialize an empty array to store the values
 
@@ -136,10 +110,10 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
                     FROM '{self.markets_dir}/*.parquet' m
                     INNER JOIN '{self.events_dir}/events_*.parquet' e ON e.event_ticker = m.event_ticker
                     WHERE m.status = 'finalized'
-                    AND m.result IN ('yes', 'no')
-                    AND e.category = '{category}'
-                    AND m.close_time >= '{day.strftime("%Y-%m-%d")}'
-                    AND m.close_time < '{next_day.strftime("%Y-%m-%d")}'
+                      AND m.result IN ('yes', 'no')
+                      AND e.category = '{category}'
+                      AND m.close_time >= '{day.strftime("%Y-%m-%d")}'
+                      AND m.close_time < '{next_day.strftime("%Y-%m-%d")}'
                 ),
                 maker_yes_positions AS (
                     -- Maker bought YES (taker sold YES = taker bought NO)
@@ -209,14 +183,13 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
         xlabels = np.array(range(1, 100))  # Prices from 1 to 99
         xpos = np.arange(xlabels.shape[0])
 
-        # ylabels = y_values  # Dates
         ylabels = [
             f"{date.strftime('%Y-%m-%d')} - {next_date.strftime('%m-%d')}"
             for date, next_date in zip(y_values, y_values[1:])
         ]
         ypos = np.arange(y_values[:-1].shape[0])
 
-        xposM, yposM = np.meshgrid(xpos, ypos, copy=False)
+        xpos_grid, ypos_grid = np.meshgrid(xpos, ypos, copy=False)
 
         zpos = z_values.ravel()
 
@@ -224,21 +197,20 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
         dy = dx * (len(ylabels) / len(xlabels))  # Adjust dy based on the ratio of ylabels to xlabels
         dz = zpos
 
-        x = xposM.ravel()
+        x = xpos_grid.ravel()
 
         xlabels = [label if (i + 1) % 5 == 0 else "" for i, label in enumerate(xlabels)]
 
         ax.xaxis.set_ticks(xpos + dx / 2.0)
         ax.xaxis.set_ticklabels(xlabels)
 
-        y = yposM.ravel()
+        y = ypos_grid.ravel()
 
         ax.yaxis.set_ticks(ypos + dy / 2.0)
         ax.yaxis.set_ticklabels(ylabels)
 
         ax.set_zlim(0, dz.max() * 1.1)  # Set z-axis limit slightly above the max value
 
-        # values = np.linspace(0.2, 1., yposM.ravel().shape[0]) # Color values for the bars based on their position in the y-axis
         values = (dz - dz.min()) / np.float64(dz.max() - dz.min())
 
         bar_colors = cm.plasma(values)
@@ -254,7 +226,7 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
         category_label = self.category
 
         ax.set_title(
-            f"Maker Excess Returns by Position Direction(No)\nEvent Category: {category_label}, {self.start_date.strftime('%Y-%m-%d')} to {self.end_date.strftime('%Y-%m-%d')}"
+            f"Maker Excess Returns by Position Direction ({self.yes_no.upper()})\nEvent Category: {category_label}, {self.start_date.strftime('%Y-%m-%d')} to {self.end_date.strftime('%Y-%m-%d')}"
         )
 
         z_average_final = []
@@ -300,13 +272,13 @@ class Maker_Returns_Over_Time_3D_Historical(Analysis):
                 lc.set_visible(not lc.get_visible())
             plt.draw()
 
-        axBtn = fig.add_axes((0.7, 0.05, 0.1, 0.075))
-        bvis = Button(axBtn, "Show/Hide Bars")
-        bvis.on_clicked(toggle_bars)
+        ax_btn_bars = fig.add_axes((0.7, 0.05, 0.1, 0.075))
+        btn_bars = Button(ax_btn_bars, "Show/Hide Bars")
+        btn_bars.on_clicked(toggle_bars)
 
-        axBtn2 = fig.add_axes((0.7, 0.15, 0.1, 0.075))
-        bvis2 = Button(axBtn2, "Show/Hide Moving Average")
-        bvis2.on_clicked(toggle_lines)
+        ax_btn_lines = fig.add_axes((0.7, 0.15, 0.1, 0.075))
+        btn_lines = Button(ax_btn_lines, "Show/Hide Moving Average")
+        btn_lines.on_clicked(toggle_lines)
 
         plt.show()
 

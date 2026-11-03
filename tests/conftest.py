@@ -63,6 +63,7 @@ def _make_kalshi_markets() -> pd.DataFrame:
                 "result": "yes",
                 "volume": 1000,
                 "event_ticker": "INXD-24JAN01",
+                "close_time": pd.Timestamp("2024-06-03 16:00:00"),
             },
             {
                 "ticker": "MKT-B",
@@ -70,6 +71,29 @@ def _make_kalshi_markets() -> pd.DataFrame:
                 "result": "no",
                 "volume": 2000,
                 "event_ticker": "NFLGAME-25FEB01",
+                "close_time": pd.Timestamp("2024-06-04 20:00:00"),
+            },
+        ]
+    )
+
+
+def _make_kalshi_events() -> pd.DataFrame:
+    """Build minimal Kalshi events DataFrame (one event per fixture market)."""
+    return pd.DataFrame(
+        [
+            {
+                "event_ticker": "INXD-24JAN01",
+                "series_ticker": "INXD",
+                "sub_title": "",
+                "title": "S&P 500 close",
+                "category": "Financials",
+            },
+            {
+                "event_ticker": "NFLGAME-25FEB01",
+                "series_ticker": "NFLGAME",
+                "sub_title": "",
+                "title": "NFL game",
+                "category": "Sports",
             },
         ]
     )
@@ -203,6 +227,13 @@ def kalshi_markets_dir(tmp_path_factory: pytest.TempPathFactory) -> Path:
 
 
 @pytest.fixture(scope="session")
+def kalshi_events_dir(tmp_path_factory: pytest.TempPathFactory) -> Path:
+    d = tmp_path_factory.mktemp("kalshi_events")
+    _make_kalshi_events().to_parquet(d / "events_0_10000.parquet")
+    return d
+
+
+@pytest.fixture(scope="session")
 def polymarket_trades_dir(tmp_path_factory: pytest.TempPathFactory) -> Path:
     d = tmp_path_factory.mktemp("polymarket_trades")
     _make_polymarket_ctf_trades().to_parquet(d / "trades.parquet")
@@ -250,6 +281,7 @@ def collateral_lookup_path(tmp_path_factory: pytest.TempPathFactory) -> Path:
 def all_fixture_dirs(
     kalshi_trades_dir: Path,
     kalshi_markets_dir: Path,
+    kalshi_events_dir: Path,
     polymarket_trades_dir: Path,
     polymarket_legacy_trades_dir: Path,
     polymarket_markets_dir: Path,
@@ -260,6 +292,7 @@ def all_fixture_dirs(
     return {
         "kalshi_trades_dir": kalshi_trades_dir,
         "kalshi_markets_dir": kalshi_markets_dir,
+        "kalshi_events_dir": kalshi_events_dir,
         "polymarket_trades_dir": polymarket_trades_dir,
         "polymarket_legacy_trades_dir": polymarket_legacy_trades_dir,
         "polymarket_markets_dir": polymarket_markets_dir,

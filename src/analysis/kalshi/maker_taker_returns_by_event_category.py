@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
+from src.analysis.kalshi.util.events import DEFAULT_EVENTS_DIR
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 
@@ -25,6 +26,7 @@ class MakerTakerReturnsByEventCategoryAnalysis(Analysis):
         self,
         trades_dir: Path | str | None = None,
         markets_dir: Path | str | None = None,
+        events_dir: Path | str | None = None,
     ):
         super().__init__(
             name="maker_taker_returns_by_event_category",
@@ -33,6 +35,7 @@ class MakerTakerReturnsByEventCategoryAnalysis(Analysis):
         base_dir = Path(__file__).parent.parent.parent.parent
         self.trades_dir = Path(trades_dir or base_dir / "data" / "kalshi" / "trades")
         self.markets_dir = Path(markets_dir or base_dir / "data" / "kalshi" / "markets")
+        self.events_dir = Path(events_dir or DEFAULT_EVENTS_DIR)
 
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
@@ -42,10 +45,11 @@ class MakerTakerReturnsByEventCategoryAnalysis(Analysis):
         df = con.execute(
             f"""
             WITH resolved_markets AS (
-                SELECT ticker, event_category, result
-                FROM '{self.markets_dir}/*.parquet'
-                WHERE status = 'finalized'
-                  AND result IN ('yes', 'no')
+                SELECT m.ticker, e.category AS event_category, m.result
+                FROM '{self.markets_dir}/*.parquet' m
+                INNER JOIN '{self.events_dir}/events_*.parquet' e ON e.event_ticker = m.event_ticker
+                WHERE m.status = 'finalized'
+                  AND m.result IN ('yes', 'no')
             ),
             taker_positions AS (
                 SELECT

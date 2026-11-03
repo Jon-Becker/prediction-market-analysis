@@ -40,6 +40,8 @@ from matplotlib.animation import FuncAnimation
 from matplotlib.figure import Figure
 from tqdm import tqdm
 
+from src.common.util.prompts import prompt_date_range
+
 if TYPE_CHECKING:
     from src.common.interfaces.chart import ChartConfig
 
@@ -67,30 +69,14 @@ class Analysis(ABC):
         self.output_type = "2D"
 
     @staticmethod
-    def _get_date_input(prompt: str) -> datetime | None:
-        while True:
-            try:
-                date_str = input(prompt)
-
-                if not date_str:
-                    return None
-
-                return datetime.strptime(date_str, "%Y-%m-%d")
-            except ValueError:
-                print("Invalid date format. Please use YYYY-MM-DD (e.g., 2026-03-01)")
-
-    @staticmethod
     def _get_date_range_query_string() -> tuple[str, datetime | None, datetime | None]:
+        """Ask for an optional close-date range and return a SQL filter for it.
+
+        Returns (sql, start_date, end_date). `sql` is "" or one or more
+        "AND close_time ..." clauses, with the end date inclusive.
+        """
         print("Enter date range for analysis")
-
-        while True:
-            start_date = Analysis._get_date_input("Start date (YYYY-MM-DD), leave blank for no start date: ")
-            end_date = Analysis._get_date_input("End date (YYYY-MM-DD), leave blank for no end date: ")
-
-            if start_date and end_date and start_date > end_date:
-                print("Start date cannot be after end date. Please try again.")
-                continue
-            break
+        start_date, end_date = prompt_date_range()
 
         query_string = ""
 

@@ -208,11 +208,7 @@ class KalshiClient:
 
             data = self.http.get("/events", params=params)
 
-            markets = [
-                Market.from_dict(m | {"event_category": e.get("category", "")})
-                for e in data.get("events", [])
-                for m in e.get("markets", [])
-            ]
+            markets = [Market.from_dict(m) for e in data.get("events", []) for m in e.get("markets", [])]
 
             cursor = data.get("cursor")
 

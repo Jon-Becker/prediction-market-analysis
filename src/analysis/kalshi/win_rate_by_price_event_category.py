@@ -1,4 +1,4 @@
-"""Analyze win rate by price to assess market calibration."""
+"""Analyze win rate by price to assess market calibration, for one event category."""
 
 from __future__ import annotations
 
@@ -8,6 +8,7 @@ import duckdb
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from src.analysis.kalshi.util.events import DEFAULT_EVENTS_DIR, prompt_event_category
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 
@@ -19,6 +20,7 @@ class WinRateByPriceEventCategoryAnalysis(Analysis):
         self,
         trades_dir: Path | str | None = None,
         markets_dir: Path | str | None = None,
+        events_dir: Path | str | None = None,
     ):
         super().__init__(
             name="win_rate_by_price_event_category",
@@ -27,47 +29,27 @@ class WinRateByPriceEventCategoryAnalysis(Analysis):
         base_dir = Path(__file__).parent.parent.parent.parent
         self.trades_dir = Path(trades_dir or base_dir / "data" / "kalshi" / "trades")
         self.markets_dir = Path(markets_dir or base_dir / "data" / "kalshi" / "markets")
-
-    @staticmethod
-    def _get_category_input(prompt: str, valid_categories: list) -> int:
-        while True:
-            try:
-                event_category = input(prompt)
-                if event_category in valid_categories:
-                    return event_category
-                else:
-                    print(f"Invalid event category. Please enter one of the following: {', '.join(valid_categories)}")
-            except ValueError:
-                print("Invalid event category. Please enter a valid category.")
+        self.events_dir = Path(events_dir or DEFAULT_EVENTS_DIR)
+        self.category: str | None = None
 
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
         con = duckdb.connect()
 
-        # Get distinct event categories for user selection
-        categories_df = con.execute(
-            f"""
-            SELECT DISTINCT event_category
-            FROM '{self.markets_dir}/*.parquet'
-            WHERE status = 'finalized'
-            """
-        ).df()
-        valid_categories = categories_df["event_category"].dropna().tolist()
-
-        category = self._get_category_input(
-            "Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories
-        )
+        category = prompt_event_category(self.events_dir)
+        self.category = category
 
         self.name += f"_{category.replace(' ', '_').lower()}"
 
         df = con.execute(
             f"""
             WITH resolved_markets AS (
-                SELECT ticker, result
-                FROM '{self.markets_dir}/*.parquet'
-                WHERE status = 'finalized'
-                  AND result IN ('yes', 'no')
-                  AND event_category = '{category}'
+                SELECT m.ticker, m.result
+                FROM '{self.markets_dir}/*.parquet' m
+                INNER JOIN '{self.events_dir}/events_*.parquet' e ON e.event_ticker = m.event_ticker
+                WHERE m.status = 'finalized'
+                  AND m.result IN ('yes', 'no')
+                  AND e.category = '{category}'
             ),
             all_positions AS (
                 -- Taker side
@@ -152,7 +134,7 @@ class WinRateByPriceEventCategoryAnalysis(Analysis):
             data=chart_data,
             xKey="price",
             yKeys=["actual", "implied"],
-            title=f"Actual Win Rate vs Contract Price For {self.name.split('_')[-1].replace('_', ' ').title()}",
+            title=f"Actual Win Rate vs Contract Price For {self.category}",
             strokeDasharrays=[None, "5 5"],
             yUnit=UnitType.PERCENT,
             xLabel="Contract Price (cents)",

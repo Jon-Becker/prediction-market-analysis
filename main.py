@@ -94,7 +94,8 @@ def analyze(name: str | None = None):
 
         if instance.output_type == "3D":
             output = instance.run()
-            output.figure.show()
+            if output.figure is not None:
+                output.figure.show()
         else:
             saved = instance.save(output_dir, formats=["png", "pdf", "csv", "json", "gif"])
             print("Saved files:")

@@ -1,9 +1,8 @@
-"""Analyze maker returns by position direction (YES vs NO).
+"""Analyze taker returns by position direction (YES vs NO) within one event category.
 
-Tests whether maker profits are purely spread compensation or reflect
-directional alpha by comparing maker performance when buying YES vs NO.
-If makers systematically outperform on NO positions, this suggests selective
-positioning rather than passive accommodation.
+The taker-side counterpart to maker_returns_by_direction_and_event_category:
+shows whether takers lose more when buying YES (e.g. longshot bias) than NO,
+and how that differs between categories.
 """
 
 from __future__ import annotations
@@ -14,6 +13,7 @@ import duckdb
 import matplotlib.pyplot as plt
 import pandas as pd
 
+from src.analysis.kalshi.util.events import DEFAULT_EVENTS_DIR, prompt_event_category
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 
@@ -25,6 +25,7 @@ class TakerReturnsByDirectionEventCategoryAnalysis(Analysis):
         self,
         trades_dir: Path | str | None = None,
         markets_dir: Path | str | None = None,
+        events_dir: Path | str | None = None,
     ):
         super().__init__(
             name="taker_returns_by_direction_event_category",
@@ -33,47 +34,25 @@ class TakerReturnsByDirectionEventCategoryAnalysis(Analysis):
         base_dir = Path(__file__).parent.parent.parent.parent
         self.trades_dir = Path(trades_dir or base_dir / "data" / "kalshi" / "trades")
         self.markets_dir = Path(markets_dir or base_dir / "data" / "kalshi" / "markets")
-
-    @staticmethod
-    def _get_category_input(prompt: str, valid_categories: list) -> int:
-        while True:
-            try:
-                event_category = input(prompt)
-                if event_category in valid_categories:
-                    return event_category
-                else:
-                    print(f"Invalid event category. Please enter one of the following: {', '.join(valid_categories)}")
-            except ValueError:
-                print("Invalid event category. Please enter a valid category.")
+        self.events_dir = Path(events_dir or DEFAULT_EVENTS_DIR)
 
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
         con = duckdb.connect()
 
-        # Get distinct event categories for user selection
-        categories_df = con.execute(
-            f"""
-            SELECT DISTINCT event_category
-            FROM '{self.markets_dir}/*.parquet'
-            WHERE status = 'finalized'
-            """
-        ).df()
-        valid_categories = categories_df["event_category"].dropna().tolist()
-
-        category = self._get_category_input(
-            "Enter event category to analyze (e.g., 'Politics', 'Sports'): ", valid_categories
-        )
+        category = prompt_event_category(self.events_dir)
 
         self.name += f"_{category.replace(' ', '_').lower()}"
 
         df = con.execute(
             f"""
             WITH resolved_markets AS (
-                SELECT ticker, result
-                FROM '{self.markets_dir}/*.parquet'
-                WHERE status = 'finalized'
-                  AND result IN ('yes', 'no')
-                  AND event_category = '{category}'
+                SELECT m.ticker, m.result
+                FROM '{self.markets_dir}/*.parquet' m
+                INNER JOIN '{self.events_dir}/events_*.parquet' e ON e.event_ticker = m.event_ticker
+                WHERE m.status = 'finalized'
+                  AND m.result IN ('yes', 'no')
+                  AND e.category = '{category}'
             ),
             taker_yes_positions AS (
                 -- Taker bought YES (maker sold YES = maker bought NO)

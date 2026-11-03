@@ -37,6 +37,8 @@ def _build_kwargs(cls: type[Analysis], fixture_dirs: dict[str, Path]) -> dict[st
             kwargs[param] = fixture_dirs["kalshi_trades_dir"]
         elif is_kalshi and param == "markets_dir":
             kwargs[param] = fixture_dirs["kalshi_markets_dir"]
+        elif is_kalshi and param == "events_dir":
+            kwargs[param] = fixture_dirs["kalshi_events_dir"]
         elif is_polymarket and param == "trades_dir":
             kwargs[param] = fixture_dirs["polymarket_trades_dir"]
         elif is_polymarket and param == "legacy_trades_dir":
@@ -47,6 +49,21 @@ def _build_kwargs(cls: type[Analysis], fixture_dirs: dict[str, Path]) -> dict[st
             kwargs[param] = fixture_dirs["polymarket_blocks_dir"]
 
     return kwargs
+
+
+def _fake_input(prompt: str) -> str:
+    """Answer the interactive prompts some Kalshi analyses ask before running."""
+    prompt = prompt.lower()
+    if "category" in prompt:
+        return "Sports"
+    if "yes or no" in prompt:
+        return "yes"
+    return ""  # Dates: leave blank for no filter
+
+
+@pytest.fixture(autouse=True)
+def _answer_prompts(monkeypatch: pytest.MonkeyPatch):
+    monkeypatch.setattr("builtins.input", _fake_input)
 
 
 @pytest.mark.parametrize("cls", _STATIC_ANALYSES, ids=lambda c: c.__name__)

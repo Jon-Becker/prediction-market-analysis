@@ -13,6 +13,7 @@ import squarify
 from matplotlib.patches import Patch
 
 from src.analysis.kalshi.util.categories import EVENT_CATEGORIES_COLORS, get_hierarchy
+from src.analysis.kalshi.util.events import DEFAULT_EVENTS_DIR
 from src.common.analysis import Analysis, AnalysisOutput
 from src.common.interfaces.chart import ChartConfig, ChartType, UnitType
 
@@ -23,6 +24,7 @@ class MarketEventCategoriesAnalysis(Analysis):
     def __init__(
         self,
         markets_dir: Path | str | None = None,
+        events_dir: Path | str | None = None,
     ):
         super().__init__(
             name="market_event_categories",
@@ -30,6 +32,7 @@ class MarketEventCategoriesAnalysis(Analysis):
         )
         base_dir = Path(__file__).parent.parent.parent.parent
         self.markets_dir = Path(markets_dir or base_dir / "data" / "kalshi" / "markets")
+        self.events_dir = Path(events_dir or DEFAULT_EVENTS_DIR)
 
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
@@ -39,11 +42,12 @@ class MarketEventCategoriesAnalysis(Analysis):
         df_raw = con.execute(
             f"""
             SELECT
-                event_category AS category,
-                SUM(COALESCE(volume, 0)) AS total_volume,
+                e.category AS category,
+                SUM(COALESCE(m.volume, 0)) AS total_volume,
                 COUNT(*) AS market_count
-            FROM '{self.markets_dir}/*.parquet'
-            GROUP BY category
+            FROM '{self.markets_dir}/*.parquet' m
+            INNER JOIN '{self.events_dir}/events_*.parquet' e ON e.event_ticker = m.event_ticker
+            GROUP BY e.category
             ORDER BY total_volume DESC
             """
         ).df()
