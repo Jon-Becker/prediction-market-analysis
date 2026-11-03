@@ -1,11 +1,13 @@
-"""Indexer for Kalshi markets data."""
+"""Indexer for Kalshi historical markets data (the /historical/markets endpoint)."""
 
-from datetime import datetime, timezone
+from __future__ import annotations
+
+from datetime import timedelta
 from pathlib import Path
-from typing import Optional
 
 from src.common.indexer import Indexer
 from src.common.storage import ParquetStorage
+from src.common.util.prompts import prompt_date_range
 from src.indexers.kalshi.client import KalshiClient
 
 DATA_DIR = Path("data/kalshi/historical/markets")
@@ -13,33 +15,13 @@ CURSOR_FILE = Path("data/kalshi/historical/.backfill_cursor")
 
 
 class KalshiHistoricalMarketsIndexer(Indexer):
-    """Fetches and stores Kalshi markets data."""
+    """Fetches and stores Kalshi historical markets, optionally limited to a close-date range."""
 
-    def __init__(
-        self,
-        min_close_ts: Optional[int] = None,
-        max_close_ts: Optional[int] = None,
-    ):
+    def __init__(self):
         super().__init__(
             name="kalshi_historical_markets",
             description="Backfills Historical Kalshi markets data to parquet files",
         )
-        self._min_close_ts = min_close_ts
-        self._max_close_ts = max_close_ts
-
-    @staticmethod
-    def _get_date_input(prompt: str) -> Optional[int]:
-        while True:
-            try:
-                date_str = input(prompt)
-
-                if not date_str:
-                    return None
-
-                return datetime.strptime(date_str, "%Y-%m-%d").replace(tzinfo=timezone.utc)
-
-            except ValueError:
-                print("Invalid date format. Please use YYYY-MM-DD (e.g., 2026-03-01)")
 
     def run(self) -> None:
         DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -54,16 +36,19 @@ class KalshiHistoricalMarketsIndexer(Indexer):
             if cursor:
                 print(f"Resuming from cursor: {cursor[:20]}...")
 
-        self._min_close = self._get_date_input("Enter minimum close date (YYYY-MM-DD) or leave blank for no minimum: ")
-        self._max_close = self._get_date_input("Enter maximum close date (YYYY-MM-DD) or leave blank for no maximum: ")
+        # The historical endpoint has no close-date filter, so filter client-side
+        print("Enter close-date range for markets")
+        min_close, max_close = prompt_date_range(utc=True)
+        # Make the end date inclusive of the whole day
+        before_close = max_close + timedelta(days=1) if max_close else None
 
         total = 0
         for markets, next_cursor in client.iter_historical_markets(limit=1000, cursor=cursor):
             filtered_markets = [
                 m
                 for m in markets
-                if (self._min_close is None or m.close_time >= self._min_close)
-                and (self._max_close is None or m.close_time <= self._max_close)
+                if (min_close is None or m.close_time >= min_close)
+                and (before_close is None or m.close_time < before_close)
             ]
 
             if filtered_markets:
