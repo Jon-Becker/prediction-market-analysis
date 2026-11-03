@@ -2,6 +2,18 @@
 
 Data is stored as Parquet files in `data/{kalshi,polymarket}/`.
 
+Kalshi data is split the same way the API serves it:
+
+| Directory | Contents | Indexer |
+|-----------|----------|---------|
+| `data/kalshi/markets/` | Recent settled markets | Kalshi Event Nested Markets (or Kalshi Markets) |
+| `data/kalshi/trades/` | Trades for recent markets | Kalshi Trades / Kalshi Trades Finalized |
+| `data/kalshi/historical/markets/` | Older markets from `/historical/markets` | Kalshi Historical Markets |
+| `data/kalshi/historical/trades/` | Trades from `/historical/trades` | Kalshi Historical Trades |
+| `data/kalshi/events/` | Events for both recent and historical markets | Kalshi Events |
+
+Recent and historical markets and trades share the schemas below. Join markets to events on `event_ticker` to get the event category.
+
 ## Kalshi Markets
 
 Each row represents a prediction market contract.
@@ -45,6 +57,27 @@ Each row represents a single trade execution.
 | `_fetched_at` | datetime | When this record was fetched |
 
 **Note on Kalshi prices:** Prices are in cents. A `yes_price` of 65 means the contract costs $0.65 and pays $1.00 if the outcome is "Yes" (implied probability: 65%). The `no_price` is always `100 - yes_price`.
+
+## Kalshi Events
+
+Each row represents an event: a group of related markets (e.g., all the markets for one NFL game).
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `event_ticker` | string | Unique event identifier, matches `event_ticker` on markets |
+| `series_ticker` | string | Series the event belongs to (e.g., `NFLGAME`) |
+| `sub_title` | string | Event subtitle |
+| `title` | string | Human-readable event title |
+| `category` | string | Category assigned by Kalshi (e.g., `Sports`, `Crypto`, `Politics`) |
+| `_fetched_at` | datetime | When this record was fetched |
+
+Example join:
+
+```sql
+SELECT m.ticker, m.result, e.category
+FROM 'data/kalshi/markets/*.parquet' m
+JOIN 'data/kalshi/events/events_*.parquet' e ON e.event_ticker = m.event_ticker
+```
 
 ## Polymarket Markets
 

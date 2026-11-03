@@ -1,6 +1,6 @@
 """Analyze longshot volume share evolution over time.
 
-Computes quarterly volume share by price bucket to assess whether
+Computes monthly volume share by price bucket to assess whether
 taker preferences for longshots changed over time or remained constant.
 """
 

@@ -1,7 +1,7 @@
 [project]
 name = "prediction-market-data"
 version = "0.1.0"
-description = "Add your description here"
+description = "Data collection and analysis framework for Kalshi and Polymarket prediction market data"
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = [
