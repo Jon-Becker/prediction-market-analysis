@@ -49,6 +49,16 @@ make analyze
 
 This opens an interactive menu to select which analysis to run. You can run all analyses or select a specific one. Output files (PNG, PDF, CSV, JSON) are saved to `output/`.
 
+Kalshi analyses using binary win/loss outcomes include only `yes`/`no` results.
+Fractional settlements (`result = 'scalar'`) cannot be represented by that model
+and are excluded; this can affect category coverage, including tied sports games.
+The `maker_taker_returns_by_category` analysis saves
+`maker_taker_returns_by_category.metadata.json` alongside its outputs, with included
+and excluded finalized-market counts and local trade-row counts, both overall and
+by category group. The audit includes markets with no local trades and groups with
+only excluded markets; missing results are also counted as excluded. It does not
+measure the effect of those exclusions on returns or change the return weighting.
+
 ### Packaging Data
 
 To compress the data directory for storage/distribution:

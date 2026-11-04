@@ -10,6 +10,11 @@ make analyze
 
 This opens an interactive menu to select which analysis to run. You can run all analyses or select a specific one. Output files (PNG, PDF, CSV, JSON) are saved to `output/`.
 
+If an analysis returns `AnalysisOutput.metadata`, `save()` always writes that
+JSON-serializable dictionary to `<name>.metadata.json`, including with the default
+formats. The returned paths include a `metadata` entry. Chart JSON remains in
+`<name>.json`.
+
 ## Basic Template
 
 ```python
@@ -75,6 +80,11 @@ SELECT
 FROM '{kalshi_trades}/*.parquet' t
 INNER JOIN resolved_markets m ON t.ticker = m.ticker
 ```
+
+This binary outcome query excludes fractional (`scalar`) settlements and missing
+or other results. Do not interpret those exclusions as losses. The
+`maker_taker_returns_by_category` analysis reports their finalized-market and
+local trade-row counts in its metadata, overall and by category group.
 
 ### Analyze both taker and maker positions
 
