@@ -8,9 +8,9 @@ KALSHI_API_HOST = "https://external-api.kalshi.com/trade-api/v2"
 
 
 class KalshiClient:
-    def __init__(self, host: str = KALSHI_API_HOST):
+    def __init__(self, host: str = KALSHI_API_HOST, rate_limit: int = 20):
         self.host = host
-        self.http = HttpClient(base_url=host, rate_limit=20)
+        self.http = HttpClient(base_url=host, rate_limit=rate_limit)
 
     def __enter__(self):
         return self

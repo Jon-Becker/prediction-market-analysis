@@ -35,8 +35,9 @@ class KalshiEventsIndexer(Indexer):
         )
         self._max_workers = max_workers
 
-        self.client = KalshiClient()
-
+        # unauth requests to /events endpoint is rate-limited to 4 requests/sec discovered through testing
+        self.client = KalshiClient(rate_limit=4)
+    
     @staticmethod
     def _load_existing_tickers() -> set[str]:
         if not any(DATA_DIR.glob("events_*.parquet")):
