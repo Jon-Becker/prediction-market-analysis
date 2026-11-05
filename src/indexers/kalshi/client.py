@@ -134,7 +134,7 @@ class KalshiClient:
         # One of: unopened, open, paused, closed, settled
         status: Optional[str] = None,
         # Multivariate (combo) events: "only" returns only them, "exclude" leaves them out
-        mve_filter: Optional[str] = None,
+        mve_filter: Optional[str] = "exclude",
     ) -> Generator[tuple[list[Market], Optional[str]], None, None]:
         while True:
             params = {"limit": limit}
