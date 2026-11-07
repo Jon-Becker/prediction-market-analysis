@@ -51,7 +51,7 @@ class KalshiTradesIndexerBase(Indexer):
         self._max_ts = max_ts
         self._max_workers = max_workers
 
-        self.client = KalshiClient()
+        self.client = KalshiClient(rate_limit=5)
 
     @abstractmethod
     def _fetch_trades(self, ticker: str) -> list[Trade]:

@@ -4,17 +4,22 @@ A framework for analyzing prediction market data, including the largest publicly
 
 > **About this fork.** This is a fork of [Jon-Becker/prediction-market-analysis](https://github.com/Jon-Becker/prediction-market-analysis). The original framework, Polymarket support and the original analyses are Jon Becker's work. The Kalshi changes and new analyses described below are mine.
 
+> [!WARNING]
+**Recent testing has shown that Kalshi's API is limiting unauth'd requests at undocumented rates that differ for each endpoint. A future update should implement Kalshi account auth to improve preformance. In the meantime, the KalshiClient in each indexer should be configured with a rate limit discovered through use.**
+
 ## What's New in This Fork
 
 ### Kalshi data collection
 
-- **Updated for Kalshi API changes.** Uses the current API host and Kalshi's separate `/historical/markets` and `/historical/trades` endpoints, which serve older settled data.
+- **Updated for Kalshi API changes.** Uses the current API host and Kalshi's separate `/historical/markets` and `/historical/trades` endpoints, which serve historical data.
 - **Recent and historical datasets.** Data is stored as `data/kalshi/{markets,trades}` and `data/kalshi/historical/{markets,trades}`, mirroring how the API serves it, so each set can be refreshed on its own.
-- **API-supplied event categories.** Replaces the original regex-based categorization of event tickers with the `category` Kalshi returns for each event (Sports, Crypto, Politics, ...). Events are stored once in `data/kalshi/events` and shared by both datasets.
+- **API-supplied event categories.** Replaces the original regex-based categorization of event tickers with the `category` Kalshi returns for each event (Sports, Crypto, Politics, ...). A new indexer for pulling events from the API based on event tickers drawn from indexed markets is added. Events are stored once in `data/kalshi/events` and shared by both datasets.
 - **Memory fix for the trades indexer.** The original indexer kept a reference to every completed future, so each market's full trade list stayed in memory for the whole run, and it ran out of RAM on the full dataset. Completed futures are now released as soon as their trades are buffered, all worker threads share one rate-limited HTTP client instead of creating one per market, and deduplication loads only the saved market tickers instead of every trade ID.
 - **Incremental updates.** Indexers can fetch only markets newer than what's already saved, or only finalized markets that are missing trades.
 
 ### New analyses
+
+**Certain analyses now allow date input to specify range over which to do analysis**
 
 | Analysis | What it shows |
 | --- | --- |
@@ -25,13 +30,15 @@ A framework for analyzing prediction market data, including the largest publicly
 | `returns_by_proximity_to_close` | Maker excess returns by how close to market close the trade happened |
 | `market_event_categories` | Treemap of notional volume by event category |
 | `longshot_volume_share_over_time_monthly` | Monthly share of taker volume in longshot contracts (1–20¢) |
-| `maker_returns_over_time_3d` (+ `_historical`) | Interactive 3D chart of maker excess returns by price and week, with a rolling average per price |
+| `maker_returns_over_time_3d` (+ `_historical`) | Interactive 3D chart of maker excess returns by price and week for a given category, with a rolling average per price |
 
 Category analyses ask which category to analyze when run.
 
 ![Maker vs taker excess returns by event category](docs/images/maker_taker_returns_by_event_category.png)
 
 *Maker vs taker excess returns by event category, historical Kalshi data. Makers earn positive excess returns in nearly every category, and the gap is largest in thin categories like Mentions and Social.*
+
+# Jon Becker's original Readme follows:
 
 ## Overview
 
@@ -116,7 +123,7 @@ This creates a zstd-compressed tar archive (`data.tar.zst`) and removes the `dat
 │   │   ├── markets/        # Recent markets
 │   │   ├── trades/         # Recent trades
 │   │   ├── events/         # Events + category (shared by recent and historical)
-│   │   └── historical/
+│   │   └── historical/     # New in this fork
 │   │       ├── markets/
 │   │       └── trades/
 │   └── polymarket/
