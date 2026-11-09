@@ -35,10 +35,8 @@ class TradeSizeByRoleAnalysis(Analysis):
 
     def run(self) -> AnalysisOutput:
         """Execute the analysis and return outputs."""
-        con = duckdb.connect()
-
         # Get aggregate trade size stats for takers and makers
-        df = con.execute(
+        df = duckdb.execute(
             f"""
             WITH resolved_markets AS (
                 SELECT ticker, result
@@ -105,8 +103,9 @@ class TradeSizeByRoleAnalysis(Analysis):
         x = np.arange(2)
         width = 0.35
 
-        mean_sizes = df.set_index("role")["mean_trade_size"]
-        median_sizes = df.set_index("role")["median_trade_size"]
+        by_role = df.set_index("role")
+        mean_sizes = by_role["mean_trade_size"]
+        median_sizes = by_role["median_trade_size"]
 
         ax.bar(
             x - width / 2,
