@@ -155,6 +155,32 @@ The `Analysis.save()` method handles output automatically:
 
 All outputs are saved to `output/` with the analysis name as the filename.
 
+## Macro Release Activity
+
+`MacroReleaseActivityAnalysis` compares Kalshi trading activity in configurable
+windows immediately before and after confirmed economic releases. It reads the
+FXMacroData `/v1/calendar/{currency}` contract and excludes unconfirmed rows and
+rows whose release time is explicitly marked as assumed.
+
+The default USD calendar is public and does not require an API key. For a
+reproducible study, save a calendar response and pass its path as
+`release_calendar_path`. Optional authenticated requests read
+`FXMACRODATA_API_KEY` or `FXMD_API_KEY` from the environment.
+
+```python
+from src.analysis.kalshi.macro_release_activity import MacroReleaseActivityAnalysis
+
+analysis = MacroReleaseActivityAnalysis(
+    release_calendar_path="data/fxmacrodata/calendar_usd.json",
+    pre_window_minutes=60,
+    post_window_minutes=60,
+)
+output = analysis.run()
+```
+
+Only scheduled release timestamps are used. Indicator values, forecasts, and
+post-release revisions are not inputs to this analysis.
+
 ## Dependencies
 
 Scripts have access to these libraries (see `pyproject.toml`):
